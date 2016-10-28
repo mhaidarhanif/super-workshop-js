@@ -28,6 +28,10 @@ const books = require('./data.js')
 // ROUTING
 // -----------------------------------------------------------------------------
 
+// req.body   >>> /data + { id: 0 }
+// req.params >>> /data/:id
+// req.query  >>> /data?q={id}
+
 router.get('/ping', (req, res) => {
   res.json({ 'message': 'PONG!' })
 })
@@ -47,14 +51,31 @@ router.post('/books', (req, res) => {
 })
 
 router.get('/books/:id', (req, res) => {
-  // req.body   >>> /data + { id: 0 }
-  // req.params >>> /data/:id
-  // req.query  >>> /data?q={id}
-  let book = books.filter(book => {
-    return book.id === req.params.id
-  })
+  const book = books.filter(book => {
+    return book.id === Number(req.params.id)
+  })[0]
 
-  res.json(book)
+  if (!book) res.status(404).json({ 'message': "No book found" })
+
+  res.status(200).json(book)
+})
+
+// DELETE
+
+router.delete('/books/:id', (req, res) => {
+  // get book by id
+  const book = books.filter(book => {
+    return book.id === Number(req.params.id)
+  })[0]
+
+  // send 404 if book not found
+  if (!book) res.status(404).json({ 'message': "No book found" })
+
+  // delete the book by id from array of book
+  books.splice(books.indexOf(book), 1)
+
+  // send success message
+  res.status(200).json({ 'message': `Book ${req.params.id} has been deleted` })
 })
 
 // -----------------------------------------------------------------------------
