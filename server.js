@@ -78,6 +78,30 @@ router.delete('/books/:id', (req, res) => {
   res.status(200).json({ 'message': `Book ${req.params.id} has been deleted` })
 })
 
+// PUT
+
+router.put('/books/:id', (req, res) => {
+  // get book by id
+  const book = books.filter(book => {
+    return book.id == req.params.id
+  })[0]
+  if (!book) res.status(404).json({ message: "No book found" })
+
+  const index = books.indexOf(book)
+  const keys = Object.keys(req.body)
+
+  keys.forEach(key => {
+    // book[key] = req.body[key]
+    book.id = Number(req.body.id)
+    book.name = req.body.name
+    book.price = Number(req.body.price)
+  })
+
+  books[index] = book
+
+  res.json(book)
+})
+
 // -----------------------------------------------------------------------------
 // REGISTER ROUTES
 // -----------------------------------------------------------------------------
