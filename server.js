@@ -11,7 +11,7 @@ const cors = require('cors')
 
 // Initiate Express
 const app = express()
-const router = app.Router()
+const router = express.Router()
 
 // -----------------------------------------------------------------------------
 // APP CONFIGURATION
@@ -22,4 +22,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(cors())
 
-const data = require('./data.json')
+const books = require('./data.js')
+
+console.log(books)
