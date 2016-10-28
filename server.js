@@ -46,6 +46,16 @@ router.post('/books', (req, res) => {
   res.json(book)
 })
 
+router.get('/books/:id', (req, res) => {
+  // req.body   >>> /data + { id: 0 }
+  // req.params >>> /data/:id
+  // req.query  >>> /data?q={id}
+  let book = books.filter(book => {
+    return book.id === req.params.id
+  })
+
+  res.json(book)
+})
 
 // -----------------------------------------------------------------------------
 // REGISTER ROUTES
