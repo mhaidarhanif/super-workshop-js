@@ -1,0 +1,23 @@
+{
+  "name": "express-workshop",
+  "version": "1.0.0",
+  "description": "Express Workshop",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mhaidarh/express-workshop.git"
+  },
+  "keywords": [
+    "express",
+    "workshop"
+  ],
+  "author": "M Haidar Hanif <npm@mhaidarhanif.com> (https://mhaidarhanif.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mhaidarh/express-workshop/issues"
+  },
+  "homepage": "https://github.com/mhaidarh/express-workshop#readme"
+}
