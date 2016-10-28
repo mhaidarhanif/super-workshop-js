@@ -24,4 +24,32 @@ app.use(cors())
 
 const books = require('./data.js')
 
-console.log(books)
+// -----------------------------------------------------------------------------
+// ROUTING
+// -----------------------------------------------------------------------------
+
+router.get('/ping', (req, res) => {
+  res.json({ 'message': 'PONG!' })
+})
+
+router.get('/books', (req, res) => {
+  res.json(books)
+})
+
+// -----------------------------------------------------------------------------
+// REGISTER ROUTES
+// -----------------------------------------------------------------------------
+
+app.use('/', router)
+
+// -----------------------------------------------------------------------------
+// RUN THE APP
+// -----------------------------------------------------------------------------
+
+const host = process.env.HOST || "localhost"
+const port = process.env.PORT || "3000"
+
+app.listen(port, host, (err) => {
+  if (err) console.log(err)
+  console.log(`Server is running on ${host}:${port}`)
+})
