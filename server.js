@@ -36,6 +36,17 @@ router.get('/books', (req, res) => {
   res.json(books)
 })
 
+router.post('/books', (req, res) => {
+  const book = {
+    id: Number(req.body.id),
+    name: req.body.name,
+    price: Number(req.body.price)
+  }
+  books.push(book)
+  res.json(book)
+})
+
+
 // -----------------------------------------------------------------------------
 // REGISTER ROUTES
 // -----------------------------------------------------------------------------
