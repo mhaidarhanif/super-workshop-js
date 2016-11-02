@@ -17,37 +17,65 @@ module.exports = {
   },
 
   /*
-    GET
-    api/books
-  */
+   * @api {get} /books Get all books
+   * @apiName getBooks
+   * @apiGroup Books
+   *
+   * @apiSuccess {Number} isbn  Book ISBN (international standard book number)
+   * @apiSuccess {String} name  Book title
+   * @apiSuccess {Number} price Book retail price
+   */
   getBooks: (req, res) => {
-    res.json(books)
+    Book.find({}, (err, data) => {
+      if (err) res.status(400).json({ 'error': `Error: ${err}` })
+      if (!data) res.status(404).json({ 'message': 'No books found' })
+      res.status(200).json(data)
+    })
   },
 
   /*
-    POST
-    api/books
-  */
-  postBooks: (req, res) => {
+   * @api {post} /books Post a new book
+   * @apiName postBooks
+   * @apiGroup Books
+   *
+   * @apiParams {Number} isbn  Book ISBN
+   * @apiParams {String} name  Book title
+   * @apiParams {Number} price Book retail price
+   *
+   * @apiSuccess {JSON} isbn, name, price
+   */
+  postBook: (req, res) => {
     const book = {
-      id: Number(req.body.id),
+      isbn: req.body.isbn,
       name: req.body.name,
       price: Number(req.body.price)
     }
-    books.push(book)
-    res.json(book)
+    Book.create(book, (err, data) => {
+      if (err) res.status(400).json({ 'error': `Error: ${err}` })
+      if (!data) res.status(304).json({ 'message': 'Failed to post book' })
+      res.status(200).json(data)
+    })
   },
 
   /*
-    GET
-    api/books/:id
-  */
-  getBookById: (req, res) => {
-    const book = books.filter(book => {
-      return book.id === Number(req.params.id)
-    })[0]
-    if (!book) res.status(404).json({ 'message': "No book found" })
-    res.status(200).json(book)
+   * @api {get} /books/:isbn Get book by ISBN
+   * @apiName getBookByISBN
+   * @apiGroup Books
+   *
+   * @apiParams {String} isbn   Book id is ISBN
+   *
+   * @apiSuccess {Number} isbn  Book ISBN
+   * @apiSuccess {String} name  Book title
+   * @apiSuccess {Number} price Book retail price
+   */
+  getBookByISBN: (req, res) => {
+    Book.findOne({
+      isbn: req.params.isbn
+    }, (err, data) => {
+      if (err) res.status(400).json({ 'error': `Error: ${err}` })
+      if (!data) res.status(404).json({ 'message': 'No book found' })
+      res.status(200).json(data)
+    })
   },
 
   /*

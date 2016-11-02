@@ -14,8 +14,8 @@ const books = require('../data/books.js')
 
 router.get('/ping', controller.ping)
 router.get('/books', controller.getBooks)
-router.post('/books', controller.postBooks)
-router.get('/books/:id', controller.getBookById)
+router.post('/books', controller.postBook)
+router.get('/books/:isbn', controller.getBookByISBN)
 router.delete('/books/:id', controller.deleteBookById)
 router.put('/books/:id', controller.updateBookById)
 
