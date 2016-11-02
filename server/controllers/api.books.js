@@ -1,4 +1,8 @@
-const books = require('../data/books.js')
+// LEGACY DATA WITH JSON
+const books = require('../data/books')
+
+// DATA WITH MONGOOSE MODEL
+const Book = require('../models/books')
 
 // -----------------------------------------------------------------------------
 // CONTROLLING
