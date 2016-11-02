@@ -13,6 +13,7 @@ module.exports = {
     PING
   */
   ping: (req, res) => {
+    console.log('ping');
     res.json({ 'message': 'PONG!' })
   },
 
@@ -27,6 +28,7 @@ module.exports = {
    */
   getBooks: (req, res) => {
     Book.find({}, (err, data) => {
+      // console.log('getBooks:', data)
       if (err) res.status(400).json({ 'error': `Error: ${err}` })
       if (!data) res.status(404).json({ 'message': 'Failed to get all books' })
       res.status(200).json(data)
@@ -51,6 +53,7 @@ module.exports = {
       price: Number(req.body.price)
     }
     Book.create(book, (err, data) => {
+      console.log('postBook:', data)
       if (err) res.status(400).json({ 'error': `Error: ${err}` })
       if (!data) res.status(304).json({ 'message': 'Failed to post book with that data' })
       res.status(200).json(data)
@@ -72,6 +75,7 @@ module.exports = {
     Book.findOne({
       isbn: req.params.isbn
     }, (err, data) => {
+      console.log('getBookByISBN:', data)
       if (err) res.status(400).json({ 'error': `Error: ${err}` })
       if (!data) res.status(404).json({ 'message': 'Failed to get book by ISBN' })
       res.status(200).json(data)
@@ -86,6 +90,7 @@ module.exports = {
     Book.findOneAndRemove({
       isbn: req.params.isbn
     }, (err, data) => {
+      console.log('deleteBookByISBN:', data)
       if (err) res.status(400).json({ 'error': `Error: ${err}` })
       if (!data) res.status(404).json({ 'message': 'No book found' })
       res.status(200).json({ 'message': `Book ${req.params.isbn} has been deleted` })
@@ -107,7 +112,7 @@ module.exports = {
       new: true,
       upsert: true
     }, (err, data) => {
-      console.log(data)
+      console.log('updateBookByISBN:', data)
       if (err) res.status(400).json({ 'error': `Error: ${err}` })
       if (!data) res.status(404).json({ 'message': 'Failed to update book by ISBN' })
       res.status(200).json(data)
