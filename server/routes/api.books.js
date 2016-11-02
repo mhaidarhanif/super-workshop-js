@@ -16,7 +16,7 @@ router.get('/ping', controller.ping)
 router.get('/books', controller.getBooks)
 router.post('/books', controller.postBook)
 router.get('/books/:isbn', controller.getBookByISBN)
-router.delete('/books/:id', controller.deleteBookById)
-router.put('/books/:id', controller.updateBookById)
+router.delete('/books/:isbn', controller.deleteBookByISBN)
+router.put('/books/:isbn', controller.updateBookByISBN)
 
 module.exports = router

@@ -80,24 +80,23 @@ module.exports = {
 
   /*
     DELETE
-    api/books/:id
+    api/books/:isbn
   */
-  deleteBookById: (req, res) => {
-    // get book by id
-    const book = books.filter(book => {
-      return book.id === Number(req.params.id)
-    })[0]
-    if (!book) res.status(404).json({ 'message': "No book found" })
-      // delete the book by id from array of book
-    books.splice(books.indexOf(book), 1)
-    res.status(200).json({ 'message': `Book ${req.params.id} has been deleted` })
+  deleteBookByISBN: (req, res) => {
+    Book.findOneAndRemove({
+      isbn: req.params.isbn
+    }, (err, data) => {
+      if (err) res.status(400).json({ 'error': `Error: ${err}` })
+      if (!data) res.status(404).json({ 'message': 'No book found' })
+      res.status(200).json({ 'message': `Book ${req.params.id} has been deleted` })
+    })
   },
 
   /*
     PUT
-    api/books/:id
+    api/books/:isbn
   */
-  updateBookById: (req, res) => {
+  updateBookByISBN: (req, res) => {
     const book = books.filter(book => {
       return book.id == req.params.id
     })[0]
