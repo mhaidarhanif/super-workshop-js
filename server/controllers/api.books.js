@@ -83,9 +83,14 @@ module.exports = {
   },
 
   /*
-    DELETE
-    api/books/:isbn
-  */
+   * @api {delete} /books/:isbn Delete book by ISBN
+   * @apiName deleteBookByISBN
+   * @apiGroup Books
+   *
+   * @apiParams {String} isbn   Book id is ISBN
+   *
+   * @apiSuccess {JSON} message Book ISBN has been deleted
+   */
   deleteBookByISBN: (req, res) => {
     Book.findOneAndRemove({
       isbn: req.params.isbn
@@ -98,9 +103,16 @@ module.exports = {
   },
 
   /*
-    PUT
-    api/books/:isbn
-  */
+   * @api {put} /books/:isbn Update book by ISBN
+   * @apiName updateBookByISBN
+   * @apiGroup Books
+   *
+   * @apiParams {Number} isbn  Book ISBN
+   * @apiParams {String} name  Book title
+   * @apiParams {Number} price Book retail price
+   *
+   * @apiSuccess {JSON} isbn, name, price
+   */
   updateBookByISBN: (req, res) => {
     Book.findOneAndUpdate({
       isbn: req.params.isbn
