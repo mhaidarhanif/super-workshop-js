@@ -4,6 +4,9 @@
 // NODE MODULES
 // -----------------------------------------------------------------------------
 
+// CONFIG
+require('dotenv').config()
+
 // Express dependencies
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -12,6 +15,9 @@ const cors = require('cors')
 // Initiate Express
 const app = express()
 const router = express.Router()
+
+// Data and modeling
+const mongoose = require('mongoose')
 
 // -----------------------------------------------------------------------------
 // APP MODULES
@@ -23,10 +29,14 @@ const apiBooks = require('./routes/api.books')
 // APP CONFIGURATION
 // -----------------------------------------------------------------------------
 
-// req.body
+// EXPRESS
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(cors())
+
+// MONGODB
+mongoose.Promise = global.Promise // native Node.js promise
+mongoose.connect(process.env.MONGODB_URI)
 
 // -----------------------------------------------------------------------------
 // REGISTER ROUTES
