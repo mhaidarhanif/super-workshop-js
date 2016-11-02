@@ -1,0 +1,26 @@
+{
+  "name": "express-workshop-client",
+  "description": "Express Workshop Client",
+  "main": "index.html",
+  "authors": [
+    "M Haidar Hanif <npm@mhaidarhanif.com> (https://mhaidarhanif.com)"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "express",
+    "workshop",
+    "client"
+  ],
+  "homepage": "https://github.com/mhaidarh/express-workshop",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.1.1",
+    "semantic": "^2.2.6"
+  }
+}
