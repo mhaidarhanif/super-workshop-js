@@ -17,7 +17,7 @@ const router = express.Router()
 // APP MODULES
 // -----------------------------------------------------------------------------
 
-const routeBooks = require('./routes/books')
+const apiBooks = require('./routes/api.books')
 
 // -----------------------------------------------------------------------------
 // APP CONFIGURATION
@@ -32,7 +32,7 @@ app.use(cors())
 // REGISTER ROUTES
 // -----------------------------------------------------------------------------
 
-app.use('/api', routeBooks)
+app.use('/api', apiBooks)
 
 // -----------------------------------------------------------------------------
 // RUN THE APP
