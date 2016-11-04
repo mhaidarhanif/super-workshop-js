@@ -1,12 +1,33 @@
 /*global $, jQuery, EJS, Handlebars, Router */
 $(document).ready(function () {
-  let api = `http://localhost:3000/api`
+  // Configuration
+  const api = `http://localhost:3000/api`
+
+  // jQuery objects
   let $description = $('#description')
 
+  // Handlebars templates
+  let $listOfBooks = $('#books-list-template').html()
+
+  // ---------------------------------------------------------------------------
+  // jQuery DOM
+
+  $description.html(`Changed description`)
+
+  // ---------------------------------------------------------------------------
+  // Handlebars DOM
+
   // Get all data from server
-  $.getJSON(`${api}/books`, function (data) {
+  $.getJSON(`${api}/books`, (data) => {
     // console.log(data)
-    $description.html(`${data[0].isbn}: ${data[0].name} ($${data[0].price})`)
+    // console.log($listOfBooks)
+
+    let test = Handlebars.compile($listOfBooks)
+    $('#books-list-table').append(test(data))
+
   })
+
+
+
 
 })

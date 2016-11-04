@@ -17,11 +17,40 @@
       <p id="description" class="ui blue segment">
         Tulisan di sini. 😀
       </p>
+
+      <table id="books-list-table" class="ui celled table">
+        <thead id="books-list-header">
+          <tr>
+            <th>ISBN</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Update</th>
+            <th>Remove</th>
+          </tr>
+        </thead>
+      </table>
     </div>
+
+    <div class="ui star rating" data-rating="3" data-max-rating="3"></div>
 
   </body>
 
+  <script id="books-list-template" type="text/x-handlebars-template">
+    <tbody id="books-list-content">
+      {{#each this}}
+      <tr>
+        <td class="three wide">{{isbn}}</td>
+        <td>{{name}}</td>
+        <td class="two wide">${{price}}</td>
+        <td class="one wide selectable warning"><a href="/admin/update/{{isbn}}">Update</a></td>
+        <td class="one wide selectable negative"><a href="/admin/delete/{{isbn}}">Remove</a></td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </script>
+
   <script src="lib/jquery/dist/jquery.min.js" charset="utf-8"></script>
+  <script src="lib/semantic/dist/semantic.min.js" charset="utf-8"></script>
   <script src="lib/ejs/ejs.min.js" charset="utf-8"></script>
   <script src="lib/handlebars/handlebars.min.js" charset="utf-8"></script>
   <script src="scripts/index.js" charset="utf-8"></script>
