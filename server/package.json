@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "Express Workshop",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
+    "start": "node server",
+    "dev": "nodemon server",
+    "seed": "node seeds",
     "test": "mocha"
   },
   "repository": {
