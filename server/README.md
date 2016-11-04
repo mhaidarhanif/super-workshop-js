@@ -23,6 +23,8 @@ npm start
 | `api/books`       | GET  | Get all books
 | `api/books`       | POST | Post a new book
 | `api/books/:isbn` | GET  | Get book by ISBN
+| `api/books/:isbn` | PUT  | Update book by ISBN
+| `api/books/:isbn` | DEL  | Delete book by ISBN
 
 --------------------------------------------------------------------------------
 
