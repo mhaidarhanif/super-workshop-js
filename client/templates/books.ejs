@@ -1,10 +1,10 @@
-<h1><%= title %></h1>
-<ul>
-  <% for (var i=0; i < supplies.length; i++) { %>
-    <li>
-      <a href='supplies/<%= supplies[i] %>'>
-        <%= supplies[i] %>
-      </a>
-    </li>
-    <% } %>
-</ul>
+<tbody id="books-list-content">
+  <% books.forEach(function(book){ %>
+    <tr>
+      <td class="three wide">{{book.isbn}}</td>
+      <td>{{book.name}}</td>
+      <td class="two wide">${{book.price}}</td>
+    </tr>
+    <% each %>
+      <% }) %>
+</tbody>
