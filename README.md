@@ -2,6 +2,11 @@
 
 This experimental repo is designed for easy learning curve of implementing these technologies:
 
+Tooling:
+
+* Git
+* Terminal and zsh
+
 Web Development:
 
 * HTML and EJS
@@ -11,6 +16,8 @@ Web Development:
 * Express
 * EJS
 * jQuery
+* Vue
+* React
 
 Web Application:
 
@@ -33,6 +40,8 @@ Testing:
 
 * Mocha
 * Chai
+* Nightmare
+* Travis
 
 --------------------------------------------------------------------------------
 
@@ -41,7 +50,7 @@ Testing:
 Make sure you have installed the latest Node.js and npm. Afterwards, install the required global dependencies.
 
 ```sh
-npm install -g nodemon live-server bower mocha
+npm install -g nodemon live-server bower mocha vue-cli
 ```
 
 Then open `client` and `server` directory separately.
