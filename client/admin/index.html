@@ -15,23 +15,23 @@
     <div class="ui container">
 
       <div class="ui secondary menu">
-  <a class="ui item" href="/">Home</a>
-  <a class="ui item" href="/admin">Admin</a>
-  <div class="right menu">
-    <div class="item">
-      <div class="ui icon input">
-        <input type="text" placeholder="Search...">
-        <i class="search link icon"></i>
+        <a class="ui item" href="/">Home</a>
+        <a class="ui item" href="/admin">Admin</a>
+        <div class="right menu">
+          <div class="item">
+            <div class="ui icon input">
+              <input type="text" placeholder="Search...">
+              <i class="search link icon"></i>
+            </div>
+          </div>
+          <a class="ui item">Sign up</a>
+          <a class="ui item">Sign in</a>
+        </div>
       </div>
-    </div>
-    <a class="ui item">Sign up</a>
-    <a class="ui item">Sign in</a>
-  </div>
-</div>
 
-      <h1 id="logo" class="ui orange header">Express Workshop</h1>
+      <h1 id="logo" class="ui orange header">Express Workshop (Admin Mode)</h1>
       <p id="description" class="ui blue segment">
-        An end user experience. 😀
+        An administration mode.
       </p>
 
       <table id="books-list-table" class="ui celled table">
@@ -40,6 +40,8 @@
             <th>ISBN</th>
             <th>Title</th>
             <th>Price</th>
+            <th>Update</th>
+            <th>Remove</th>
           </tr>
         </thead>
       </table>
@@ -49,13 +51,15 @@
 
   </body>
 
-  <script id="books-list-template" type="text/x-handlebars-template">
+  <script id="books-list-template-admin" type="text/x-handlebars-template">
     <tbody id="books-list-content">
       {{#each this}}
       <tr>
         <td class="three wide">{{isbn}}</td>
         <td>{{name}}</td>
         <td class="two wide">${{price}}</td>
+        <td class="one wide selectable warning"><a href="/admin/edit/{{isbn}}">Update</a></td>
+        <td class="one wide selectable negative"><a href="/admin/edit/{{isbn}}">Remove</a></td>
       </tr>
       {{/each}}
     </tbody>
@@ -64,6 +68,6 @@
   <script src="/lib/jquery/dist/jquery.min.js" charset="utf-8"></script>
   <script src="/lib/semantic/dist/semantic.min.js" charset="utf-8"></script>
   <script src="/lib/handlebars/handlebars.min.js" charset="utf-8"></script>
-  <script src="/scripts/index.js" charset="utf-8"></script>
+  <script src="/scripts/admin/index.js" charset="utf-8"></script>
 
 </html>
