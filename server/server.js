@@ -10,6 +10,7 @@ require('dotenv').config()
 // Express dependencies
 const express = require('express')
 const bodyParser = require('body-parser')
+const expressSession = require('express-session')
 const expressValidator = require('express-validator')
 const cors = require('cors')
 
@@ -57,6 +58,13 @@ app.use(cors())
 // MONGODB
 mongoose.Promise = global.Promise // native Node.js promise
 mongoose.connect(process.env.MONGODB_URI)
+
+// SESSION
+app.use(expressSession({
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: false
+}))
 
 // -----------------------------------------------------------------------------
 // REGISTER ROUTES
@@ -118,7 +126,6 @@ passport.use(new GoogleStrategy({
 // Serialization
 passport.serializeUser(Account.serializeUser())
 passport.deserializeUser(Account.deserializeUser())
-
 
 // -----------------------------------------------------------------------------
 // RUN THE APP

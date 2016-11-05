@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Express Workshop - Sign Up</title>
+    <link rel="stylesheet" href="/lib/semantic/dist/semantic.min.css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="/styles/index.css" media="screen" title="no title" charset="utf-8">
+  </head>
+
+  <body>
+
+    <div class="ui account container">
+
+      <div class="ui middle aligned center aligned grid">
+        <div class="column">
+          <h2 class="ui blue image header">
+            <div class="content">Sign in with your account</div>
+          </h2>
+          <form id="signinForm" role="form" name="form" novalidate="" action="http://localhost:3000/api/auth/signin" method="post" class="ui large form">
+            <div class="ui segment">
+              <div class="field">
+                <div class="ui left icon input"><i class="user icon"></i>
+                  <input type="text" name="username" placeholder="username" required="" />
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui left icon input"><i class="lock icon"></i>
+                  <input type="password" name="password" placeholder="p455w0rd" required="" />
+                </div>
+              </div>
+              <input type="submit" class="ui fluid large blue submit button" value="Sign In"></input>
+            </div>
+            <div class="ui error message"></div>
+            <div class="ui message">Don't have? <a href="/signup.html">Sign Up</a></div>
+            <!-- <oauth-buttons classes="btn-block"></oauth-buttons> -->
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+  </body>
+
+  <script src="/lib/jquery/dist/jquery.min.js" charset="utf-8"></script>
+  <script src="/lib/semantic/dist/semantic.min.js" charset="utf-8"></script>
+  <script src="/lib/handlebars/handlebars.min.js" charset="utf-8"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#signinForm').submit((e) => {
+        e.preventDefault()
+        $.post({
+            url: $('#signinForm').attr('action'),
+            data: {
+              username: $('#signinForm input[name=username]').val(),
+              password: $('#signinForm input[name=password]').val()
+            }
+          })
+          .done((data) => {
+            console.log(data)
+              // window.location = '/'
+          })
+          .fail((err) => {
+            console.log('Error:', err)
+          })
+      })
+    })
+  </script>
+
+</html>

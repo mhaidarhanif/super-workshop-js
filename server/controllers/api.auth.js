@@ -7,10 +7,10 @@ module.exports = {
     Create a new account
   */
   signup: (req, res, next) => {
-    // express-validator
     req.checkBody('name', 'Full Name is required').notEmpty()
     req.checkBody('username', 'Username is required').notEmpty()
     req.checkBody('email', 'Email is required').notEmpty()
+    req.checkBody('password', 'Password is required').notEmpty()
 
     // passport-local-mongoose
     Account.register(new Account({
@@ -20,11 +20,23 @@ module.exports = {
       }), req.body.password,
       function (err, account) {
         if (err) return res.json({ error: err.message })
+        if (!account) return res.json({ success: false, message: 'Authentication failed. User not found.' });
+
+        // passport.authenticate('local')(req, res, () => {
+        //   req.session.save(function (err, next) {
+        //     if (err) return next(err)
+        //     res.json(user)
+        //   })
+        // })
+
         passport.authenticate('local')(req, res, () => {
-          req.session.save(function (err, next) {
-            if (err) return next(err)
-            res.json(user)
-          })
+          if (err) return next(err)
+          let data = account.toObject()
+          delete data.salt
+          delete data.hash
+
+          let jwt = jwt.sign(data, process.env.SECRET)
+          res.status(200).json(jwt)
         })
       })
   },
@@ -32,8 +44,14 @@ module.exports = {
   /*
     Sign in a signed up account
   */
-  signin: (req, res) => {
-    res.json(user)
+  signin: (req, res, next) => {
+    req.checkBody('username', 'Username is required').notEmpty()
+    req.checkBody('password', 'Password is required').notEmpty()
+
+    let data = req.user.toObject()
+    delete data.salt
+    delete data.hash
+    res.status(200).send(data)
   },
 
   /*
@@ -41,7 +59,8 @@ module.exports = {
   */
   signout: (req, res) => {
     req.logout()
-    req.session.destroy()
+    res.send(200);
+    // req.session.destroy()
   },
 
   /*

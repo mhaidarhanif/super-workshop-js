@@ -1,3 +1,7 @@
 .ui.container {
   margin-top: 50px;
 }
+
+.ui.account.container {
+  width: 500px;
+}

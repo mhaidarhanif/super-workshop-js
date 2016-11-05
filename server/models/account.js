@@ -18,10 +18,7 @@ var Account = new Schema({
     unique: true
   },
   password: {
-    type: String,
-    required: true,
-    lowercase: true,
-    trim: true
+    type: String
   }
 })
 
