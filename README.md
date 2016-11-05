@@ -77,10 +77,10 @@ live-server
 
 ```sh
 # Sign up a new account
-curl localhost:3000/api/auth/signup -X POST -d "email=admin@admin.com&name=Administrator&username=admin&password=admin"
+curl localhost:3000/auth/signup -X POST -d "email=admin@admin.com&name=Administrator&username=admin&password=admin"
 
 # Sign in
-curl localhost:3000/api/auth/signin -X POST -d "username=admin&password=admin"
+curl localhost:3000/auth/signin -X POST -d "username=admin&password=admin"
 
 # Get list of all accounts
 curl localhost:3000/api/accounts -X GET

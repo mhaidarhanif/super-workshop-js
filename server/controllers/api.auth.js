@@ -34,7 +34,9 @@ module.exports = {
         passport.authenticate('local', (err, user, info) => {
           if (err) return next(err)
           if (!user) return res.status(401).json({ status: 'error', code: 'Sign up then sign in failed.' })
-          res.status(200).json({ token: jwt.sign({ id: user.id }, process.env.SECRET) })
+
+          let profile = { id: user.id, username: user.username, name: user.name }
+          res.status(200).json({ token: jwt.sign(profile, process.env.SECRET) })
         })(req, res, next)
       })
   },
@@ -49,7 +51,9 @@ module.exports = {
     passport.authenticate('local', (err, user, info) => {
       if (err) return next(err)
       if (!user) return res.status(401).json({ status: 'error', code: 'Sign in failed.' })
-      res.status(200).json({ token: jwt.sign({ id: user.id }, process.env.SECRET) })
+
+      let profile = { id: user.id, username: user.username, name: user.name }
+      res.status(200).json({ token: jwt.sign(profile, process.env.SECRET) })
     })(req, res, next)
   },
 

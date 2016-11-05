@@ -84,7 +84,7 @@ app.use(passport.session())
 
 // Normal routes
 app.use('/', api)
-app.use('/api/auth', apiAuth)
+app.use('/auth', apiAuth)
 app.use('/api/accounts', apiAccounts)
 app.use('/api/books', apiBooks)
 
