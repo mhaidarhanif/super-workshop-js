@@ -9,13 +9,6 @@ const Book = require('../models/books')
 // -----------------------------------------------------------------------------
 
 module.exports = {
-  /*
-    PING
-  */
-  ping: (req, res) => {
-    console.log('ping')
-    res.json({ 'message': 'PONG!' })
-  },
 
   /*
    * @api {get} /books Get all books

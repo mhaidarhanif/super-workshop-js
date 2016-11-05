@@ -6,18 +6,18 @@ const books = require('../data/books.js')
 
 // -----------------------------------------------------------------------------
 // ROUTING
+// api/books
 // -----------------------------------------------------------------------------
 
 // req.body   >>> /data + { id: 0 }
 // req.params >>> /data/:id
 // req.query  >>> /data?q={id}
 
-router.get('/ping', controller.ping)
-router.get('/books', controller.getBooks)
-router.post('/books', controller.postBook)
-router.post('/books/search', controller.searchBooks)
-router.get('/books/:isbn', controller.getBookByISBN)
-router.delete('/books/:isbn', controller.deleteBookByISBN)
-router.put('/books/:isbn', controller.updateBookByISBN)
+router.get('/', controller.getBooks)
+router.post('/', controller.postBook)
+router.post('/search', controller.searchBooks)
+router.get('/:isbn', controller.getBookByISBN)
+router.delete('/:isbn', controller.deleteBookByISBN)
+router.put('/:isbn', controller.updateBookByISBN)
 
 module.exports = router
