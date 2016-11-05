@@ -1,20 +1,42 @@
 /*global $, jQuery, EJS, Handlebars, Router */
 $(document).ready(function () {
-  // Configuration
+
   const api = `http://localhost:3000/api`
+  const $menuPanel = $('#menu-panel-template').html()
+  const $booksListTable = $('#books-list-table')
+  const $booksList = $('#books-list-template').html()
 
-  // jQuery objects
-  let $description = $('#description')
+  function getData() {
+    $.getJSON(`${api}/books`, (data) => {
+      let list = Handlebars.compile($booksList)
+      $booksListTable.append(list(data))
+    })
+  }
 
-  // Handlebars templates
-  let $listOfBooks = $('#books-list-template').html()
+  function searchData() {
+    let $searhInput = $('input#search').val();
+    $.ajax({
+        method: "POST",
+        url: "/api/data/search",
+        data: { letter: searhLetter, frequency: serachFrequency },
+        dataType: "json"
+      })
+      .done(function (data) {
+        drawTable(data);
+      }).fail(function () {
+        errorMessage(true, "something wrong, please call administrator");
+      });
+  }
 
-  // ---------------------------------------------------------------------------
+  // Append menu panel based on session
+  $('#menu').append(Handlebars.compile($menuPanel))
 
-  // Get all data from server
-  $.getJSON(`${api}/books`, (data) => {
-    let test = Handlebars.compile($listOfBooks)
-    $('#books-list-table').append(test(data))
+  // Get initial data
+  getData()
+
+  // Search input
+  $('input#search').keyup((e) => {
+    searchData()
   })
 
 })
