@@ -61,6 +61,28 @@ module.exports = {
   },
 
   /*
+   * @api {post} /books/search Search some books
+   * @apiName searchBooks
+   * @apiGroup Books
+   *
+   * @apiParams {Number} isbn  Book ISBN
+   *
+   * @apiSuccess {JSON} isbn, name, price
+   */
+  searchBooks: (req, res) => {
+    const params = {}
+    if (req.body.isbn) params.isbn = req.body.isbn
+
+    Book.find(params, (err, data) => {
+      console.log('searchBooks:', data)
+      if (err) return res.status(500).send(err)
+      if (err) res.status(400).json({ 'error': `Error: ${err}` })
+      if (!data) res.status(304).json({ 'message': `Failed to search books with params: ${params}` })
+      res.status(200).json(data)
+    })
+  },
+
+  /*
    * @api {get} /books/:isbn Get book by ISBN
    * @apiName getBookByISBN
    * @apiGroup Books
