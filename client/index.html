@@ -44,9 +44,33 @@
       <header>
         <h1 id="logo" class="ui orange header">Express Workshop</h1>
         <h2 id="description" class="ui blue segment">
-          An express workshop app.
+          <button id="book-add-button" type="button" name="add" class="ui blue button">Add new book</button>
         </2>
       </header>
+
+      <!-- Book editor -->
+      <section id="book-editor">
+        <script id="book-editor-template" type="text/x-handlebars-template">
+          <div class="ui green segment">
+            <form id="book-editor-form" class="ui form" action="http://localhost:3000/api/books">
+              <div class="fields">
+                <div class="three wide field">
+                  <label>ISBN</label><input type="text" name="isbn" maxlength="16" placeholder="0000">
+                </div>
+                <div class="six wide field">
+                  <label>Title</label><input type="text" name="name" maxlength="100" placeholder="The Book">
+                </div>
+                <div class="two wide field">
+                  <label>Price</label><input type="number" name="price" maxlength="10" placeholder="99">
+                </div>
+              </div>
+              <input class="ui green button" type="submit" name="addNew" value="Add New">
+              <input class="ui purple button" type="button" name="addCancel" value="Cancel">
+            </form>
+          </div>
+        </script>
+      </section>
+
 
       <!-- Book table -->
       <table id="books-list-table" class="ui celled table">
