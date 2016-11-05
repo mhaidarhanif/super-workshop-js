@@ -13,7 +13,7 @@ module.exports = {
     PING
   */
   ping: (req, res) => {
-    console.log('ping');
+    console.log('ping')
     res.json({ 'message': 'PONG!' })
   },
 
@@ -78,7 +78,7 @@ module.exports = {
       if (err) return res.status(500).send(err)
       if (err) res.status(400).json({ 'error': `Error: ${err}` })
       if (!data) res.status(304).json({ 'message': `Failed to search books with params: ${params}` })
-      res.status(200).json(data)
+      res.json(data)
     })
   },
 
