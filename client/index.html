@@ -51,24 +51,28 @@
       <!-- Book table -->
       <table id="books-list-table" class="ui celled table">
         <thead id="books-list-header">
-          <tr>
-            <th class="three wide">ISBN</th>
-            <th>Title</th>
-            <th class="two wide">Price</th>
-            <th class="one wide">Update</th>
-            <th class="one wide">Remove</th>
-          </tr>
+          <script id="books-list-header-template" type="text/x-handlebars-template">
+            <tr>
+              <th class="three wide">ISBN</th>
+              <th>Title</th>
+              <th class="two wide">Price</th>
+              {{#if user.id}}
+              <th class="one wide">Update</th>
+              <th class="one wide">Remove</th>
+              {{/if}}
+            </tr>
+          </script>
         </thead>
         <!-- Books list using template -->
         <tbody id="books-list-content">
-          <script id="books-list-template" type="text/x-handlebars-template">
-          {{#each this}}
+          <script id="books-list-content-template" type="text/x-handlebars-template">
+          {{#each books}}
           <tr>
             <td class="three wide">{{isbn}}</td>
             <td>{{name}}</td>
             <td class="two wide">${{price}}</td>
-            <td class="one wide selectable warning"><a data-isbn="{{isbn}}">Update</a></td>
-            <td class="one wide selectable negative"><a data-isbn="{{isbn}}">Remove</a></td>
+            <td class="one wide selectable warning"><a data-update="{{isbn}}">Update</a></td>
+            <td class="one wide selectable negative"><a data-remove="{{isbn}}">Remove</a></td>
           </tr>
           {{/each}}
           </script>
