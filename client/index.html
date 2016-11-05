@@ -18,9 +18,10 @@
       <div id="menu" class="ui">
         <script id="menu-panel-template" type="text/x-handlebars-template">
           <div class="ui secondary menu">
-            <a class="ui item" href="/">Home</a>
+            <a class="ui item" href="/">Home</a> {{#if name}}
+            <a class="ui blue item" href="/profile/{{ username }}">{{ name }}</a> {{else}}
             <a class="ui item" href="/signup.html">Sign Up</a>
-            <a class="ui item" href="/signin.html">Sign In</a>
+            <a class="ui item" href="/signin.html">Sign In</a> {{/if}}
             <div id="search" class="right menu">
               <div class="item">
                 <div class="ui icon input">
@@ -41,9 +42,9 @@
 
       <!-- Header -->
       <header>
-        <h1 id="logo" class="ui orange header">Express Workshop (Admin Mode)</h1>
+        <h1 id="logo" class="ui orange header">Express Workshop</h1>
         <h2 id="description" class="ui blue segment">
-          An administration mode.
+          An express workshop app.
         </2>
       </header>
 
@@ -80,6 +81,7 @@
   <script src="/lib/jquery/dist/jquery.min.js" charset="utf-8"></script>
   <script src="/lib/semantic/dist/semantic.min.js" charset="utf-8"></script>
   <script src="/lib/handlebars/handlebars.min.js" charset="utf-8"></script>
+  <script src="lib/jwt-decode/build/jwt-decode.min.js" charset="utf-8"></script>
   <script src="/scripts/index.js" charset="utf-8"></script>
 
 </html>

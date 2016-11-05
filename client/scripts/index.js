@@ -7,16 +7,24 @@ $(document).ready(function () {
   const $booksListContent = $('#books-list-content')
   const $booksList = $('#books-list-template').html()
 
-  function getData() {
-    $.getJSON(`${api}/books`, (data) => {
-      let list = Handlebars.compile($booksList)
-      $booksListContent.append(list(data))
-    })
+  function getAccountProfile() {
+    let token = localStorage.getItem('token')
+    if (!token) return {}
+    else {
+      let profile = jwt_decode(token)
+      return profile
+    }
   }
 
-  function renderDataFromSearch(data) {
+  function compileBooksList(data) {
     let list = Handlebars.compile($booksList)
-    $booksListContent.html(list(data))
+    $booksListContent.append(list(data))
+  }
+
+  function getDataFromAPI() {
+    $.getJSON(`${api}/books`, (data) => {
+      compileBooksList(data)
+    })
   }
 
   function searchData() {
@@ -24,25 +32,26 @@ $(document).ready(function () {
     let $name = $('input#searchByName').val();
     // console.log($searchInput)
     $.ajax({
-        method: "POST",
+        method: 'POST',
         url: `${api}/books/search`,
         data: { isbn: $isbn, name: $name },
-        dataType: "json"
+        dataType: 'json'
       })
       .done((data) => {
         // console.log(data)
-        renderDataFromSearch(data)
+        compileBooksList(data)
       })
       .fail((err) => {
         errorMessage(true, 'Something wrong')
       })
   }
 
-  // Append menu panel based on session
-  $('#menu').append(Handlebars.compile($menuPanel))
+  // Append menu panel based on profile
+  let profile = getAccountProfile()
+  $('#menu').append(Handlebars.compile($menuPanel)(profile))
 
   // Get initial data
-  getData()
+  getDataFromAPI()
 
   // Search input
   $('#search input').keyup((e) => {

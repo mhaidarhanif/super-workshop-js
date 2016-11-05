@@ -19,7 +19,7 @@
           <h2 class="ui blue image header">
             <div class="content">Sign in with your account</div>
           </h2>
-          <form id="signinForm" role="form" name="form" novalidate="" action="http://localhost:3000/api/auth/signin" method="post" class="ui large form">
+          <form id="signinForm" role="form" name="form" novalidate="" action="http://localhost:3000/auth/signin" method="post" class="ui large form">
             <div class="ui segment">
               <div class="field">
                 <div class="ui left icon input"><i class="user icon"></i>
@@ -63,7 +63,7 @@
             console.log('data:', data)
             localStorage.setItem('token', data.token)
             console.log('token:', localStorage.getItem('token'))
-              // window.location = '/'
+            window.location = '/'
           })
           .fail((err) => {
             console.log('Error:', err)
