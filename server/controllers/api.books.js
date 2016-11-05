@@ -72,6 +72,7 @@ module.exports = {
   searchBooks: (req, res) => {
     const params = {}
     if (req.body.isbn) params.isbn = req.body.isbn
+    if (req.body.name) params.name = req.body.name
 
     Book.find(params, (err, data) => {
       console.log('searchBooks:', data)

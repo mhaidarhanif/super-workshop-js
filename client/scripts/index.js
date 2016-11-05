@@ -20,12 +20,13 @@ $(document).ready(function () {
   }
 
   function searchData() {
-    let $searchInput = $('input#search').val();
+    let $isbn = $('input#searchByISBN').val();
+    let $name = $('input#searchByName').val();
     // console.log($searchInput)
     $.ajax({
         method: "POST",
         url: `${api}/books/search`,
-        data: { isbn: $searchInput },
+        data: { isbn: $isbn, name: $name },
         dataType: "json"
       })
       .done((data) => {
@@ -44,7 +45,7 @@ $(document).ready(function () {
   getData()
 
   // Search input
-  $('input#search').keyup((e) => {
+  $('#search input').keyup((e) => {
     searchData()
   })
 

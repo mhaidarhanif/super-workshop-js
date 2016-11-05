@@ -19,10 +19,16 @@
         <script id="menu-panel-template" type="text/x-handlebars-template">
           <div class="ui secondary menu">
             <a class="ui item" href="/">Home</a>
-            <div class="right menu">
+            <div id="search" class="right menu">
               <div class="item">
                 <div class="ui icon input">
-                  <input id="search" type="text" placeholder="Search...">
+                  <input id="searchByISBN" type="text" placeholder="Search by ISBN...">
+                  <i class="search link icon"></i>
+                </div>
+              </div>
+              <div class="item">
+                <div class="ui icon input">
+                  <input id="searchByName" type="text" placeholder="Search by Name...">
                   <i class="search link icon"></i>
                 </div>
               </div>
