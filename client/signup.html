@@ -73,6 +73,8 @@
           })
           .done((data) => {
             console.log(data)
+            localStorage.setItem('token', data.token)
+            console.log(localStorage.getItem('token'))
             window.location = '/signin.html'
           })
           .fail((err) => {

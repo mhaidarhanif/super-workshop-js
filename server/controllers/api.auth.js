@@ -1,4 +1,6 @@
 const passport = require('passport')
+const jwt = require('jsonwebtoken')
+
 const Account = require('../models/account')
 
 module.exports = {
@@ -20,7 +22,7 @@ module.exports = {
       }), req.body.password,
       function (err, account) {
         if (err) return res.json({ error: err.message })
-        if (!account) return res.json({ success: false, message: 'Authentication failed. User not found.' });
+        if (!account) return res.json({ success: false, message: 'Sign up failed.' });
 
         // passport.authenticate('local')(req, res, () => {
         //   req.session.save(function (err, next) {
@@ -29,15 +31,11 @@ module.exports = {
         //   })
         // })
 
-        passport.authenticate('local')(req, res, () => {
+        passport.authenticate('local', (err, user, info) => {
           if (err) return next(err)
-          let data = account.toObject()
-          delete data.salt
-          delete data.hash
-
-          let jwt = jwt.sign(data, process.env.SECRET)
-          res.status(200).json(jwt)
-        })
+          if (!user) return res.status(401).json({ status: 'error', code: 'Sign up then sign in failed.' })
+          res.status(200).json({ token: jwt.sign({ id: user.id }, process.env.SECRET) })
+        })(req, res, next)
       })
   },
 
@@ -48,10 +46,11 @@ module.exports = {
     req.checkBody('username', 'Username is required').notEmpty()
     req.checkBody('password', 'Password is required').notEmpty()
 
-    let data = req.user.toObject()
-    delete data.salt
-    delete data.hash
-    res.status(200).send(data)
+    passport.authenticate('local', (err, user, info) => {
+      if (err) return next(err)
+      if (!user) return res.status(401).json({ status: 'error', code: 'Sign in failed.' })
+      res.status(200).json({ token: jwt.sign({ id: user.id }, process.env.SECRET) })
+    })(req, res, next)
   },
 
   /*

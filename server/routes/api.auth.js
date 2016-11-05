@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const passport = require('passport')
+const jwt = require('jsonwebtoken')
 
 const auth = require('../controllers/api.auth.js')
 
@@ -14,7 +15,7 @@ Account
 router.post('/signup', [auth.isAccountExist, auth.isSignedIn], auth.signup)
 
 // SIGN IN
-router.post('/signin', passport.authenticate('local'), auth.signin)
+router.post('/signin', auth.signin)
 
 // SIGN OUT
 router.get('/signout', auth.signout)
