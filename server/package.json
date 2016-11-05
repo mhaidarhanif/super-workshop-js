@@ -30,6 +30,7 @@
     "mongodb": "2.2.11",
     "mongoose": "4.6.5",
     "mongoose-search-plugin": "0.1.2",
-    "mongoose-text-search": "0.0.2"
+    "mongoose-text-search": "0.0.2",
+    "passport-local-mongoose": "4.0.0"
   }
 }
