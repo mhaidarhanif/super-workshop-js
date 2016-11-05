@@ -21,6 +21,9 @@ module.exports = {
         email: req.body.email
       }), req.body.password,
       function (err, account) {
+        if (err.name === 'MongoError' && err.code === 11000) {
+          return res.status(500).send({ succes: false, message: 'Account already exist!' })
+        }
         if (err) return res.json({ error: err.message })
         if (!account) return res.json({ success: false, message: 'Sign up failed.' });
 

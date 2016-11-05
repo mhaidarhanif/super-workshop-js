@@ -47,6 +47,9 @@ module.exports = {
     }
     Book.create(book, (err, data) => {
       console.log('postBook:', data)
+      if (err.name === 'MongoError' && err.code === 11000) {
+        return res.status(500).send({ succes: false, message: 'Book already exist!' })
+      }
       if (err) res.status(400).json({ 'error': `Error: ${err}` })
       if (!data) res.status(304).json({ 'message': 'Failed to post book with that data' })
       res.status(200).json(data)
