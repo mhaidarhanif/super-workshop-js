@@ -5,3 +5,7 @@
 .ui.account.container {
   width: 500px;
 }
+
+.selectable {
+  cursor: pointer;
+}

@@ -25,7 +25,7 @@ $(document).ready(function () {
 
   function compileBooksContent(data) {
     let template = Handlebars.compile($booksListContentTemplate)
-    $booksListContent.append(template({ user: getUser(), books: data }))
+    $booksListContent.html(template({ books: data }))
   }
 
   function getDataFromAPI() {
@@ -35,9 +35,9 @@ $(document).ready(function () {
   }
 
   function searchData() {
-    let $isbn = $('input#searchByISBN').val();
-    let $name = $('input#searchByName').val();
-    // console.log($searchInput)
+    let $isbn = $('input#searchByISBN').val()
+    let $name = $('input#searchByName').val()
+      // console.log($searchInput)
     $.ajax({
         method: 'POST',
         url: `${api}/books/search`,
@@ -48,9 +48,27 @@ $(document).ready(function () {
         compileBooksContent(data)
       })
       .fail((err) => {
-        errorMessage(true, 'Something wrong')
+        console.log('Error', err)
       })
   }
+
+  $booksListContent.on('click', 'td.remove', function () {
+    // $('#update-form').hide()
+    if (confirm('Sure to delete?')) {
+      let isbn = $(this).attr('data-remove')
+      console.log(isbn)
+      $.ajax({
+          method: 'DELETE',
+          url: `${api}/books/${isbn}`,
+          dataType: 'json'
+        })
+        .done((data) => {
+          compileBooksContent(getDataFromAPI())
+        }).fail((err) => {
+          console.log('Error', err)
+        })
+    }
+  })
 
   // Append menu panel based on user
   let user = getUser()
