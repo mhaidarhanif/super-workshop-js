@@ -46,8 +46,9 @@ const Book = require('./models/books')
 
 // Routes
 const api = require('./routes/api')
-const apiBooks = require('./routes/api.books')
 const apiAuth = require('./routes/api.auth')
+const apiAccounts = require('./routes/api.accounts')
+const apiBooks = require('./routes/api.books')
 
 // Helpers
 const providers = require('./helpers/providers')
@@ -83,8 +84,9 @@ app.use(passport.session())
 
 // Normal routes
 app.use('/', api)
-app.use('/api/books', apiBooks)
 app.use('/api/auth', apiAuth)
+app.use('/api/accounts', apiAccounts)
+app.use('/api/books', apiBooks)
 
 // -----------------------------------------------------------------------------
 // PASSPORT

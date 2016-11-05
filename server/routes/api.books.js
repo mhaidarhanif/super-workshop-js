@@ -1,8 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const controller = require('../controllers/api.books')
-const books = require('../data/books.js')
+const api = require('../controllers/api.books')
 
 // -----------------------------------------------------------------------------
 // ROUTING
@@ -13,11 +12,11 @@ const books = require('../data/books.js')
 // req.params >>> /data/:id
 // req.query  >>> /data?q={id}
 
-router.get('/', controller.getBooks)
-router.post('/', controller.postBook)
-router.post('/search', controller.searchBooks)
-router.get('/:isbn', controller.getBookByISBN)
-router.delete('/:isbn', controller.deleteBookByISBN)
-router.put('/:isbn', controller.updateBookByISBN)
+router.get('/', api.getBooks)
+router.post('/', api.postBook)
+router.post('/search', api.searchBooks)
+router.get('/:isbn', api.getBookByISBN)
+router.delete('/:isbn', api.deleteBookByISBN)
+router.put('/:isbn', api.updateBookByISBN)
 
 module.exports = router
