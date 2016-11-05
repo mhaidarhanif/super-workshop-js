@@ -14,6 +14,13 @@ const expressSession = require('express-session')
 const expressValidator = require('express-validator')
 const cors = require('cors')
 
+// JSON Web Tokens
+const jwt = require('jsonwebtoken')
+const ejwt = require('express-jwt')
+const guard = require('express-jwt-permissions')()
+const JwtStrategy = require('passport-jwt').Strategy
+const ExtractJwt = require('passport-jwt').ExtractJwt
+
 // Initiate Express
 const app = express()
 const router = express.Router()
