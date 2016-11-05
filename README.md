@@ -71,6 +71,33 @@ live-server
 
 --------------------------------------------------------------------------------
 
+## Testing
+
+### Account
+
+```sh
+# Sign up a new account
+curl localhost:3000/api/auth/signup -X POST -d "email=admin@admin.com&name=Administrator&username=admin&password=admin"
+
+# Sign in
+curl localhost:3000/api/auth/signin -X POST -d "username=admin&password=admin"
+
+# Get list of all accounts
+curl localhost:3000/api/accounts -X GET
+
+# Delete all accounts
+curl localhost:3000/api/accounts -X DELETE
+```
+
+### Book
+
+```sh
+# Get all books
+curl localhost:3000/api/books -X GET
+```
+
+--------------------------------------------------------------------------------
+
 ## Deployment
 
 ...

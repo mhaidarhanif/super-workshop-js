@@ -17,6 +17,16 @@ module.exports = {
   },
 
   /*
+    Delete all accounts
+  */
+  deleteAccounts: (req, res) => {
+    Account.remove({}, (err) => {
+      if (err) res.status(400).json({ 'error': `Error: ${err}` })
+      res.status(200).json({ 'message': `All accounts has been deleted` })
+    })
+  },
+
+  /*
     Get profile of an account
   */
   getAccountProfile: (req, res) => {
