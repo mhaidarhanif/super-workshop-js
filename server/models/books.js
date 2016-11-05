@@ -5,9 +5,19 @@ const Schema = mongoose.Schema
 // const textSearch = require('mongoose-text-search')
 
 const BookSchema = new Schema({
-  isbn: String,
-  name: String,
-  price: Number
+  isbn: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  name: {
+    type: String,
+    required: true
+  },
+  price: {
+    type: Number,
+    required: true
+  },
 }, {
   timestamps: true
 })
