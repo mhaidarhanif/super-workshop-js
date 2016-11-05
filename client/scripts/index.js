@@ -4,28 +4,37 @@ $(document).ready(function () {
   const api = `http://localhost:3000/api`
   const $menuPanel = $('#menu-panel-template').html()
   const $booksListTable = $('#books-list-table')
+  const $booksListContent = $('#books-list-content')
   const $booksList = $('#books-list-template').html()
 
   function getData() {
     $.getJSON(`${api}/books`, (data) => {
       let list = Handlebars.compile($booksList)
-      $booksListTable.append(list(data))
+      $booksListContent.append(list(data))
     })
   }
 
+  function renderDataFromSearch(data) {
+    let list = Handlebars.compile($booksList)
+    $booksListContent.html(list(data))
+  }
+
   function searchData() {
-    let $searhInput = $('input#search').val();
+    let $searchInput = $('input#search').val();
+    // console.log($searchInput)
     $.ajax({
         method: "POST",
-        url: "/api/data/search",
-        data: { letter: searhLetter, frequency: serachFrequency },
+        url: `${api}/books/search`,
+        data: { isbn: $searchInput },
         dataType: "json"
       })
-      .done(function (data) {
-        drawTable(data);
-      }).fail(function () {
-        errorMessage(true, "something wrong, please call administrator");
-      });
+      .done((data) => {
+        // console.log(data)
+        renderDataFromSearch(data)
+      })
+      .fail((err) => {
+        errorMessage(true, 'Something wrong')
+      })
   }
 
   // Append menu panel based on session
