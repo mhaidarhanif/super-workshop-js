@@ -20,6 +20,8 @@ var Account = new Schema({
   password: {
     type: String
   }
+}, {
+  timestamps: true
 })
 
 Account.plugin(passportLocalMongoose)
