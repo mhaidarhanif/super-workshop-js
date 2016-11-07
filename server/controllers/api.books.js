@@ -39,7 +39,7 @@ module.exports = {
    */
   deleteBooks: (req, res) => {
     Book.remove({}, (err, data) => {
-      console.log('deleteBooks:', data)
+      // console.log('deleteBooks:', data)
       if (err) res.status(400).json({ 'error': `Error: ${err}` })
       else if (!data) res.status(404).json({ 'message': 'Already empty' })
       else res.status(200).json({ 'message': `All books have been deleted` })
@@ -61,12 +61,32 @@ module.exports = {
     const book = {
       isbn: req.body.isbn,
       name: req.body.name,
-      price: Number(req.body.price)
+      price: req.body.price
     }
     Book.create(book, (err, data) => {
       console.log('postBook:', data)
       if (err) res.status(400).json(err)
       else if (!data) res.status(304).json({ 'message': 'Failed to post book with that data' })
+      else res.status(200).json(data)
+    })
+  },
+
+  /*
+   * @api {post} /books Post a new book with owner data
+   */
+  postBookAndOwner: (req, res) => {
+    const book = {
+      isbn: req.body.isbn,
+      name: req.body.name,
+      price: req.body.price,
+      owners: req.body.owner // accountId
+    }
+    console.log('book:', book)
+
+    Book.create(book, (err, data) => {
+      console.log('postBookWithOwner:', data)
+      if (err) res.status(400).json(err)
+      else if (!data) res.status(304).json({ 'message': 'Failed to post book with that data and ownership' })
       else res.status(200).json(data)
     })
   },
@@ -161,9 +181,30 @@ module.exports = {
       console.log('updateBookByISBN:', data)
       if (err) res.status(400).json({ 'error': `Error: ${err}` })
       else if (!data) res.status(404).json({ 'message': 'Failed to update book by ISBN' })
-      res.status(200).json(data)
+      else res.status(200).json(data)
     })
+  },
 
+  /*
+   * @api {put} /books/:isbn/owner Update book by ISBN to put with owner accountId
+   * @apiName updateBookByISBNAndOwner
+   * @apiGroup Books
+   */
+
+  updateBookByISBNAndOwner: (req, res) => {
+    Book.findOneAndUpdate({
+      isbn: req.params.isbn
+    }, {
+      $push: { 'owners': req.body.owner }
+    }, {
+      new: true,
+      upsert: false
+    }, (err, data) => {
+      console.log('updateBookByISBNAndOwner:', data)
+      if (err) res.status(400).json({ 'error': `Error: ${err}` })
+      else if (!data) res.status(404).json({ 'message': 'Failed to update book by ISBN and push owner accountId' })
+      else res.status(200).json(data)
+    })
   }
 
 }

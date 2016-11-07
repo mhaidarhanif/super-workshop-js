@@ -15,9 +15,11 @@ const api = require('../controllers/api.books')
 router.get('/', api.getBooks)
 router.delete('/', api.deleteBooks)
 router.post('/', api.postBook)
+router.post('/owner', api.postBookAndOwner)
 router.post('/search', api.searchBooks)
 router.get('/:isbn', api.getBookByISBN)
 router.delete('/:isbn', api.deleteBookByISBN)
 router.put('/:isbn', api.updateBookByISBN)
+router.put('/:isbn/owner', api.updateBookByISBNAndOwner)
 
 module.exports = router
