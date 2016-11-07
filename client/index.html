@@ -19,7 +19,7 @@
         <script id="menu-panel-template" type="text/x-handlebars-template">
           <div class="ui secondary menu">
             <a class="ui item" href="/">Home</a> {{#if name}}
-            <a class="ui blue item" href="/profile/{{ username }}">{{ name }}</a> {{else}}
+            <a class="ui blue item" href="/profile?username={{ username }}">{{ name }}</a> {{else}}
             <a class="ui item" href="/signup.html">Sign Up</a>
             <a class="ui item" href="/signin.html">Sign In</a> {{/if}}
             <div id="search" class="right menu">
