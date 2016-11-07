@@ -16,6 +16,35 @@ npm start
 
 --------------------------------------------------------------------------------
 
+## Object Model
+
+### Accounts
+
+```json
+{
+  name: String,
+  username: String,
+  email: String,
+  password: String
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+### Books
+
+```json
+{
+  isbn: String,
+  name: String,
+  price: String,
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+--------------------------------------------------------------------------------
+
 ## API
 
 ### Accounts
