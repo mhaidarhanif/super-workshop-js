@@ -34,6 +34,7 @@
     "jsonwebtoken": "7.1.9",
     "mongodb": "2.2.11",
     "mongoose": "4.6.5",
+    "mongoose-increment": "0.6.1",
     "mongoose-search-plugin": "0.1.2",
     "mongoose-text-search": "0.0.2",
     "passport": "0.3.2",

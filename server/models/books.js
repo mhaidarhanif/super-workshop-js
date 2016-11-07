@@ -18,6 +18,13 @@ const BookSchema = new Schema({
     type: Number,
     required: true
   },
+  owners: [
+    {
+      type: Number,
+      foreignField: 'accountId',
+      ref: 'accounts'
+    }
+  ]
 }, {
   timestamps: true
 })

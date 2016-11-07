@@ -1,8 +1,10 @@
-var mongoose = require('mongoose')
-var Schema = mongoose.Schema
-var passportLocalMongoose = require('passport-local-mongoose')
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-var Account = new Schema({
+const increment = require('mongoose-increment');
+const passportLocalMongoose = require('passport-local-mongoose')
+
+const Account = new Schema({
   name: {
     type: String,
     required: true
@@ -19,9 +21,21 @@ var Account = new Schema({
   },
   password: {
     type: String
-  }
+  },
+  books: [
+    {
+      type: Number,
+      foreignField: 'isbn',
+      ref: 'books'
+    }
+  ]
 }, {
   timestamps: true
+})
+
+Account.plugin(increment, {
+  modelName: 'Account',
+  fieldName: 'accountId'
 })
 
 Account.plugin(passportLocalMongoose)
