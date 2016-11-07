@@ -22,7 +22,7 @@ module.exports = {
   deleteAccounts: (req, res) => {
     Account.remove({}, (err) => {
       if (err) res.status(400).json({ 'error': `Error: ${err}` })
-      res.status(200).json({ 'message': `All accounts has been deleted` })
+      res.status(200).json({ 'message': `All accounts have been deleted` })
     })
   },
 
