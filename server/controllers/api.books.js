@@ -29,6 +29,24 @@ module.exports = {
   },
 
   /*
+   * @api {get} /books Delete all books
+   * @apiName deleteBooks
+   * @apiGroup Books
+   *
+   * @apiParam {Number} isbn
+   *
+   * @apiSuccess {JSON} message All books have been deleted
+   */
+  deleteBooks: (req, res) => {
+    Book.remove({}, (err, data) => {
+      console.log('deleteBooks:', data)
+      if (err) res.status(400).json({ 'error': `Error: ${err}` })
+      else if (!data) res.status(404).json({ 'message': 'Already empty' })
+      else res.status(200).json({ 'message': `All books have been deleted` })
+    })
+  },
+
+  /*
    * @api {post} /books Post a new book
    * @apiName postBooks
    * @apiGroup Books

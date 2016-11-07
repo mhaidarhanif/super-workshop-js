@@ -13,6 +13,7 @@ const api = require('../controllers/api.books')
 // req.query  >>> /data?q={id}
 
 router.get('/', api.getBooks)
+router.delete('/', api.deleteBooks)
 router.post('/', api.postBook)
 router.post('/search', api.searchBooks)
 router.get('/:isbn', api.getBookByISBN)
