@@ -20,12 +20,9 @@ module.exports = {
         username: req.body.username,
         email: req.body.email
       }), req.body.password,
-      function (err, account) {
-        if (err.name === 'MongoError' && err.code === 11000) {
-          return res.status(500).send({ succes: false, message: 'Account already exist!' })
-        }
-        if (err) return res.json({ error: err.message })
-        if (!account) return res.json({ success: false, message: 'Sign up failed.' });
+      (err, account) => {
+        if (err) res.json({ error: err.message })
+        if (!account) res.json({ success: false, message: 'Sign up failed.' })
 
         // passport.authenticate('local')(req, res, () => {
         //   req.session.save(function (err, next) {

@@ -23,8 +23,8 @@ module.exports = {
     Book.find({}, (err, data) => {
       // console.log('getBooks:', data)
       if (err) res.status(400).json({ 'error': `Error: ${err}` })
-      if (!data) res.status(404).json({ 'message': 'Failed to get all books' })
-      res.status(200).json(data)
+      else if (!data) res.status(404).json({ 'message': 'Failed to get all books' })
+      else res.status(200).json(data)
     })
   },
 
@@ -47,12 +47,9 @@ module.exports = {
     }
     Book.create(book, (err, data) => {
       console.log('postBook:', data)
-      if (err.name === 'MongoError' && err.code === 11000) {
-        return res.status(500).send({ succes: false, message: 'Book already exist!' })
-      }
-      if (err) res.status(400).json({ 'error': `Error: ${err}` })
-      if (!data) res.status(304).json({ 'message': 'Failed to post book with that data' })
-      res.status(200).json(data)
+      if (err) res.status(400).json(err)
+      else if (!data) res.status(304).json({ 'message': 'Failed to post book with that data' })
+      else res.status(200).json(data)
     })
   },
 
@@ -73,9 +70,9 @@ module.exports = {
     Book.find(params, (err, data) => {
       console.log('searchBooks:', data)
       if (err) return res.status(500).send(err)
-      if (err) res.status(400).json({ 'error': `Error: ${err}` })
-      if (!data) res.status(304).json({ 'message': `Failed to search books with params: ${params}` })
-      res.json(data)
+      else if (err) res.status(400).json({ 'error': `Error: ${err}` })
+      else if (!data) res.status(304).json({ 'message': `Failed to search books with params: ${params}` })
+      else res.json(data)
     })
   },
 
@@ -96,8 +93,8 @@ module.exports = {
     }, (err, data) => {
       console.log('getBookByISBN:', data)
       if (err) res.status(400).json({ 'error': `Error: ${err}` })
-      if (!data) res.status(404).json({ 'message': 'Failed to get book by ISBN' })
-      res.status(200).json(data)
+      else if (!data) res.status(404).json({ 'message': 'Failed to get book by ISBN' })
+      else res.status(200).json(data)
     })
   },
 
@@ -116,8 +113,8 @@ module.exports = {
     }, (err, data) => {
       console.log('deleteBookByISBN:', data)
       if (err) res.status(400).json({ 'error': `Error: ${err}` })
-      if (!data) res.status(404).json({ 'message': 'No book found' })
-      res.status(200).json({ 'message': `Book ${req.params.isbn} has been deleted` })
+      else if (!data) res.status(404).json({ 'message': 'No book found' })
+      else res.status(200).json({ 'message': `Book ${req.params.isbn} has been deleted` })
     })
   },
 
@@ -145,7 +142,7 @@ module.exports = {
     }, (err, data) => {
       console.log('updateBookByISBN:', data)
       if (err) res.status(400).json({ 'error': `Error: ${err}` })
-      if (!data) res.status(404).json({ 'message': 'Failed to update book by ISBN' })
+      else if (!data) res.status(404).json({ 'message': 'Failed to update book by ISBN' })
       res.status(200).json(data)
     })
 
