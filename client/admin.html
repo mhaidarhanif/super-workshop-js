@@ -19,8 +19,7 @@
         <script id="menu-panel-template" type="text/x-handlebars-template">
           <div class="ui menu {{#ifCond username 'admin'}} inverted {{/ifCond}}">
             <a id="menuHome" class="ui item" href="/">Home</a> {{#if name}}
-            <a id="menuProfile" class="ui item" href="/profile.html?id={{ id }}">{{ name }}</a> {{#ifCond username 'admin'}}
-            <a id="menuAdmin" class="ui item" href="/admin.html">Admin Panel</a> {{/ifCond}}
+            <a id="menuProfile" class="ui item" href="/profile.html?id={{ id }}">{{ name }}</a>
             <a id="menuSignOut" class="ui item" href="">Sign Out</a> {{else}}
             <a id="menuSignUp" class="ui item" href="/signup.html">Sign Up</a>
             <a id="menuSignIn" class="ui item" href="/signin.html">Sign In</a> {{/if}}
@@ -49,7 +48,34 @@
       <!-- Header -->
       <header>
         <h1 id="logo" class="ui orange header">Express Workshop</h1>
+        <h2 id="description" class="ui blue segment">
+          <button id="book-add-button" type="button" name="add" class="ui blue button">Add new book</button>
+        </2>
       </header>
+
+      <!-- Book editor -->
+      <section id="book-editor">
+        <script id="book-editor-template" type="text/x-handlebars-template">
+          <div class="ui green segment">
+            <form id="book-editor-form" class="ui form" action="http://localhost:3000/api/books">
+              <div class="fields">
+                <div class="three wide field">
+                  <label>ISBN</label><input type="text" name="isbn" maxlength="16" placeholder="0000">
+                </div>
+                <div class="six wide field">
+                  <label>Title</label><input type="text" name="name" maxlength="100" placeholder="The Book">
+                </div>
+                <div class="two wide field">
+                  <label>Price</label><input type="number" name="price" maxlength="10" placeholder="99">
+                </div>
+              </div>
+              <input class="ui green button" type="submit" name="addNew" value="Add New">
+              <input class="ui purple button" type="button" name="addCancel" value="Cancel">
+            </form>
+          </div>
+        </script>
+      </section>
+
 
       <!-- Book table -->
       <table id="books-list-table" class="ui celled table">
@@ -59,19 +85,25 @@
               <th class="three wide">ISBN</th>
               <th>Title</th>
               <th class="two wide">Price</th>
+              {{#if user.id}}
+              <th class="one wide">Update</th>
+              <th class="one wide">Remove</th>
+              {{/if}}
             </tr>
           </script>
         </thead>
         <!-- Books list using template -->
         <tbody id="books-list-content">
           <script id="books-list-content-template" type="text/x-handlebars-template">
-            {{#each books}}
-            <tr>
-              <td class="three wide">{{isbn}}</td>
-              <td>{{name}}</td>
-              <td class="two wide">${{price}}</td>
-            </tr>
-            {{/each}}
+          {{#each books}}
+          <tr>
+            <td class="three wide">{{isbn}}</td>
+            <td>{{name}}</td>
+            <td class="two wide">${{price}}</td>
+            <td class="one wide selectable warning update" data-update="{{isbn}}"><a>Update</a></td>
+            <td class="one wide selectable negative remove" data-remove="{{isbn}}"><a>Remove</a></td>
+          </tr>
+          {{/each}}
           </script>
         </tbody>
       </table>
@@ -83,6 +115,6 @@
   <script src="/lib/semantic/dist/semantic.min.js" charset="utf-8"></script>
   <script src="/lib/handlebars/handlebars.min.js" charset="utf-8"></script>
   <script src="lib/jwt-decode/build/jwt-decode.min.js" charset="utf-8"></script>
-  <script src="/scripts/index.js" charset="utf-8"></script>
+  <script src="/scripts/admin.js" charset="utf-8"></script>
 
 </html>
