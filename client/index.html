@@ -18,10 +18,11 @@
       <div id="menu" class="ui">
         <script id="menu-panel-template" type="text/x-handlebars-template">
           <div class="ui secondary menu">
-            <a class="ui item" href="/">Home</a> {{#if name}}
-            <a class="ui blue item" href="/profile?username={{ username }}">{{ name }}</a> {{else}}
-            <a class="ui item" href="/signup.html">Sign Up</a>
-            <a class="ui item" href="/signin.html">Sign In</a> {{/if}}
+            <a id="menuHome" class="ui item" href="/">Home</a> {{#if name}}
+            <a id="menuProfile" class="ui item" href="/profile.html?id={{ sub }}">{{ name }}</a>
+            <a id="menuSignOut" class="ui item" href="">Sign Out</a> {{else}}
+            <a id="menuSignUp" class="ui item" href="/signup.html">Sign Up</a>
+            <a id="menuSignIn" class="ui item" href="/signin.html">Sign In</a> {{/if}}
             <div id="search" class="right menu">
               <div class="item">
                 <div class="ui icon input">

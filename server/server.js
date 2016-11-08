@@ -82,7 +82,11 @@ app.use(expressSession({
 app.use(passport.initialize())
 app.use(passport.session())
 
-// Normal routes
+// Middlewares
+const tokenMiddleware = require('./middlewares/token')
+app.use('/token', tokenMiddleware)
+
+// Normal Routes
 app.use('/', api)
 app.use('/auth', apiAuth)
 app.use('/api/accounts', apiAccounts)

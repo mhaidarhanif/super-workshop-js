@@ -14,17 +14,44 @@ $(document).ready(function () {
   const $booksListContentTemplate = $('#books-list-content-template').html()
 
   // ---------------------------------------------------------------------------
+  // Energize!
+  // ---------------------------------------------------------------------------
+
+  // Append menu panel based on authenticated user account
+  $('#menu').append(Handlebars.compile($menuPanelTemplate)(getUser()))
+
+  // Instantiate the book editor
+  compileEmptyBookEditor()
+
+  // Get initial data from server
+  compileBooksHeader()
+  getDataFromAPI()
+
+  // Search input on typing
+  $('#search input').keyup((e) => {
+    searchData()
+  })
+
+  // ---------------------------------------------------------------------------
   // Account / User / Profile
   // ---------------------------------------------------------------------------
 
   function getUser() {
-    let token = localStorage.getItem('token')
+    let token = Auth.getToken()
     if (!token) return {}
     else {
       let user = jwt_decode(token)
       return user
     }
   }
+
+  function signOut() {
+    Auth.deauthenticateUser()
+  }
+
+  $('#menuSignOut').on('click', (e) => {
+    signOut()
+  })
 
   // ---------------------------------------------------------------------------
   // Book Editor
@@ -50,7 +77,8 @@ $(document).ready(function () {
           isbn: $('#book-editor-form input[name=isbn]').val(),
           name: $('#book-editor-form input[name=name]').val(),
           price: $('#book-editor-form input[name=price]').val(),
-        }
+        },
+        headers: { 'Authorization': Auth.getToken() }
       })
       .done((data) => {
         getDataFromAPI()
@@ -108,14 +136,13 @@ $(document).ready(function () {
   // ---------------------------------------------------------------------------
 
   // Update book by ISBN
-  // But first, get its data first
+  // But first, get its data
   $booksListContent.on('click', 'td.update', function () {
     // $('#book-editor').show()
     let isbn = $(this).attr('data-update')
     $.getJSON({
-        method: 'GET',
         url: `${api}/books/${isbn}`,
-        dataType: 'json'
+        headers: { 'Authorization': Auth.getToken() }
       })
       .done((data) => {
         compileBookEditor(data)
@@ -137,7 +164,7 @@ $(document).ready(function () {
       $.ajax({
           method: 'DELETE',
           url: `${api}/books/${isbn}`,
-          dataType: 'json'
+          headers: { 'Authorization': localStorage.getItem('token') }
         })
         .done((data) => {
           compileBooksContent(getDataFromAPI())
@@ -147,24 +174,19 @@ $(document).ready(function () {
     }
   })
 
-  // ---------------------------------------------------------------------------
-  // Energize!
-  // ---------------------------------------------------------------------------
-
-  // Append menu panel based on user
-  let user = getUser()
-  $('#menu').append(Handlebars.compile($menuPanelTemplate)(user))
-
-  // Instantiate the book editor
-  compileEmptyBookEditor()
-
-  // Get initial data
-  compileBooksHeader()
-  getDataFromAPI()
-
-  // Search input
-  $('#search input').keyup((e) => {
-    searchData()
-  })
-
 })
+
+const Auth = {
+  authenticateUser: (token) => {
+    localStorage.setItem('token', token);
+  },
+  isUserAuthenticated: () => {
+    return localStorage.getItem('token') !== null;
+  },
+  deauthenticateUser: () => {
+    localStorage.removeItem('token');
+  },
+  getToken: () => {
+    return localStorage.getItem('token');
+  }
+}
