@@ -12,6 +12,7 @@ const api = require('../controllers/api.books')
 // req.params >>> /data/:id
 // req.query  >>> /data?q={id}
 
+router.get('/seed', api.seedBooks)
 router.get('/', api.getBooks)
 router.delete('/', api.deleteBooks)
 router.post('/', api.postBook)

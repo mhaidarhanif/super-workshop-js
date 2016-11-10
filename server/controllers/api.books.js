@@ -11,6 +11,35 @@ const Book = require('../models/books')
 module.exports = {
 
   /*
+   * @api {get} /books/seed Seed some books
+   * @apiName seedBooks
+   * @apiGroup Books
+   */
+  seedBooks: (req, res) => {
+    const books = [
+      {
+        isbn: 1000,
+        name: 'One Only',
+        price: 11,
+        owners: [1, 3]
+      },
+      {
+        isbn: 2000,
+        name: 'Two Times',
+        price: 22,
+        owners: [2, 3]
+      }
+    ]
+    Book
+      .create(books, (err, data) => {
+        console.log('seedBooks:', data)
+        if (err) res.status(400).json(err)
+        else if (!data) res.status(304).json({ 'message': 'Failed to seed books' })
+        else res.status(200).json(data)
+      })
+  },
+
+  /*
    * @api {get} /books Get all books
    * @apiName getBooks
    * @apiGroup Books
@@ -20,12 +49,14 @@ module.exports = {
    * @apiSuccess {Number} price Book retail price
    */
   getBooks: (req, res) => {
-    Book.find({}, (err, data) => {
-      // console.log('getBooks:', data)
-      if (err) res.status(400).json({ 'error': `Error: ${err}` })
-      else if (!data) res.status(404).json({ 'message': 'Failed to get all books' })
-      else res.status(200).json(data)
-    })
+    Book
+      .find()
+      .exec((err, data) => {
+        // console.log('getBooks:', data)
+        if (err) res.status(400).json({ 'error': `Error: ${err}` })
+        else if (!data) res.status(404).json({ 'message': 'Failed to get all books' })
+        else res.status(200).json(data)
+      })
   },
 
   /*
@@ -38,12 +69,14 @@ module.exports = {
    * @apiSuccess {JSON} message All books have been deleted
    */
   deleteBooks: (req, res) => {
-    Book.remove({}, (err, data) => {
-      // console.log('deleteBooks:', data)
-      if (err) res.status(400).json({ 'error': `Error: ${err}` })
-      else if (!data) res.status(404).json({ 'message': 'Already empty' })
-      else res.status(200).json({ 'message': `All books have been deleted` })
-    })
+    Book
+      .remove()
+      .exec((err, data) => {
+        // console.log('deleteBooks:', data)
+        if (err) res.status(400).json({ 'error': `Error: ${err}` })
+        else if (!data) res.status(404).json({ 'message': 'Already empty' })
+        else res.status(200).json({ 'message': `All books have been deleted` })
+      })
   },
 
   /*
@@ -63,12 +96,13 @@ module.exports = {
       name: req.body.name,
       price: req.body.price
     }
-    Book.create(book, (err, data) => {
-      console.log('postBook:', data)
-      if (err) res.status(400).json(err)
-      else if (!data) res.status(304).json({ 'message': 'Failed to post book with that data' })
-      else res.status(200).json(data)
-    })
+    Book
+      .create(book, (err, data) => {
+        console.log('postBook:', data)
+        if (err) res.status(400).json(err)
+        else if (!data) res.status(304).json({ 'message': 'Failed to post book with that data' })
+        else res.status(200).json(data)
+      })
   },
 
   /*

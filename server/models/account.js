@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const increment = require('mongoose-increment');
 const passportLocalMongoose = require('passport-local-mongoose')
+const sequence = require('mongoose-sequence')
 
-const Account = new Schema({
+const AccountSchema = new Schema({
   name: {
     type: String,
     required: true
@@ -26,18 +26,32 @@ const Account = new Schema({
     {
       type: Number,
       foreignField: 'isbn',
-      ref: 'books'
+      ref: 'Book'
     }
   ]
 }, {
   timestamps: true
 })
 
-Account.plugin(increment, {
-  modelName: 'Account',
-  fieldName: 'accountId'
-})
+// Auto increment accountId
+AccountSchema.plugin(sequence, { inc_field: 'accountId' })
 
-Account.plugin(passportLocalMongoose)
+// Auto crypt password
+AccountSchema.plugin(passportLocalMongoose)
 
-module.exports = mongoose.model('Account', Account)
+// -----------------------------------------------------------------------------
+// POPULATE
+
+// AccountSchema.plugin(deepPopulate)
+
+// AccountSchema.pre('find', function (next) {
+//   this.populate('books.isbn', 'name')
+//   next()
+// })
+// AccountSchema.pre('findOne', function (next) {
+//   this.populate('books.isbn', 'name')
+//   next()
+// })
+// -----------------------------------------------------------------------------
+
+module.exports = mongoose.model('Account', AccountSchema)

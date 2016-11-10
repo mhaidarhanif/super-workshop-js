@@ -31,9 +31,16 @@ module.exports = {
         //   })
         // })
 
-        passport.authenticate('local', (err, user, info) => {
+        passport.authenticate('local', {
+          successRedirect: '/',
+          successFlash: true,
+          failureRedirect: '/auth/signup',
+          failureFlash: true
+        }, (err, user, info) => {
           if (err) return next(err)
           if (!user) return res.status(401).json({ status: 'error', code: 'Sign up succeded but sign in failed.' })
+
+          console.log('>>>>> session:', req.session)
 
           return res.status(200).json({
             token: jwt.sign({
@@ -54,9 +61,16 @@ module.exports = {
     req.checkBody('username', 'Username is required').notEmpty()
     req.checkBody('password', 'Password is required').notEmpty()
 
-    passport.authenticate('local', (err, user, info) => {
+    passport.authenticate('local', {
+      successRedirect: '/',
+      successFlash: true,
+      failureRedirect: '/auth/signin',
+      failureFlash: true
+    }, (err, user, info) => {
       if (err) return next(err)
       if (!user) return res.status(401).json({ status: 'error', code: 'Sign in failed.' })
+
+      console.log('>>>>> session:', req.session)
 
       return res.status(200).json({
         token: jwt.sign({
