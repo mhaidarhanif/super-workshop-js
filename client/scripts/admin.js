@@ -1,7 +1,7 @@
 /*global $, jQuery, EJS, Handlebars, Router */
 $(document).ready(function () {
 
-  if (getUser().username !== 'admin') window.location = '/'
+  if (Auth.getUser().username !== 'admin') window.location = '/'
 
   const api = `http://localhost:3000/api`
   const $menuPanelTemplate = $('#menu-panel-template').html()
@@ -27,7 +27,7 @@ $(document).ready(function () {
   })
 
   // Append menu panel based on authenticated user account
-  $('#menu').append(Handlebars.compile($menuPanelTemplate)(getUser()))
+  $('#menu').append(Handlebars.compile($menuPanelTemplate)(Auth.getUser()))
 
   // Instantiate the book editor
   compileEmptyBookEditor()
@@ -42,73 +42,20 @@ $(document).ready(function () {
   })
 
   // ---------------------------------------------------------------------------
-  // Account / User / Profile
+  // ACTION: Account / User / Profile
   // ---------------------------------------------------------------------------
-
-  function getUser() {
-    let token = Auth.getToken()
-    if (!token) return {}
-    else {
-      let user = jwt_decode(token)
-      return user
-    }
-  }
-
-  function signOut() {
-    Auth.deauthenticateUser()
-  }
 
   $('#menuSignOut').on('click', (e) => {
-    signOut()
+    Auth.deauthenticateUser()
   })
 
   // ---------------------------------------------------------------------------
-  // Book Editor
-  // ---------------------------------------------------------------------------
-
-  function compileEmptyBookEditor() {
-    let template = Handlebars.compile($bookEditorTemplate)
-    $bookEditor.append(template)
-    $bookEditor.hide()
-  }
-
-  // Show book editor template
-  $('#book-add-button').on('click', (e) => {
-    $bookEditor.show()
-  })
-
-  // Template: onSubmit, post a new book
-  $('#book-editor-form').submit((e) => {
-    e.preventDefault()
-    $.post({
-        url: $('#book-editor-form').attr('action'),
-        data: {
-          isbn: $('#book-editor-form input[name=isbn]').val(),
-          name: $('#book-editor-form input[name=name]').val(),
-          price: $('#book-editor-form input[name=price]').val(),
-        },
-        headers: { 'Authorization': Auth.getToken() }
-      })
-      .done((data) => {
-        getDataFromAPI()
-      })
-      .fail((xhr, textStatus, err) => {
-        alert(JSON.parse(xhr.responseText).message)
-      })
-  })
-
-  // Template: onClick, cancel the form
-  $('#book-editor-form input[name=addCancel]').on('click', (e) => {
-    $bookEditor.hide()
-  })
-
-  // ---------------------------------------------------------------------------
-  // Books List
+  // VIEW: Books List
   // ---------------------------------------------------------------------------
 
   function compileBooksHeader() {
     let template = Handlebars.compile($booksListHeaderTemplate)
-    $booksListHeader.append(template({ user: getUser() }))
+    $booksListHeader.append(template({ user: Auth.getUser() }))
   }
 
   function compileBooksContent(data) {
@@ -141,7 +88,48 @@ $(document).ready(function () {
   }
 
   // ---------------------------------------------------------------------------
-  // Books Action
+  // VIEW: Book Editor
+  // ---------------------------------------------------------------------------
+
+  function compileEmptyBookEditor() {
+    let template = Handlebars.compile($bookEditorTemplate)
+    $bookEditor.append(template)
+    $bookEditor.hide()
+  }
+
+  // Show book editor template
+  $('#book-add-button').on('click', (e) => {
+    $bookEditor.show()
+  })
+
+  // Template: onSubmit, post a new book
+  $('#book-editor-form').submit((e) => {
+    e.preventDefault()
+    let dataInput = {
+      isbn: $('#book-editor-form input[name=isbn]').val(),
+      name: $('#book-editor-form input[name=name]').val(),
+      price: $('#book-editor-form input[name=price]').val(),
+    }
+    $.post({
+        url: $('#book-editor-form').attr('action'),
+        data: dataInput,
+        headers: { 'Authorization': `Bearer ${Auth.getToken()}` }
+      })
+      .done((data) => {
+        getDataFromAPI()
+      })
+      .fail((xhr, textStatus, err) => {
+        alert(JSON.parse(xhr.responseText).message)
+      })
+  })
+
+  // Template: onClick, cancel the form
+  $('#book-editor-form input[name=addCancel]').on('click', (e) => {
+    $bookEditor.hide()
+  })
+
+  // ---------------------------------------------------------------------------
+  // ACTION: Books Action
   // ---------------------------------------------------------------------------
 
   // Update book by ISBN
@@ -184,18 +172,3 @@ $(document).ready(function () {
   })
 
 })
-
-const Auth = {
-  authenticateUser: (token) => {
-    localStorage.setItem('token', token);
-  },
-  isUserAuthenticated: () => {
-    return localStorage.getItem('token') !== null;
-  },
-  deauthenticateUser: () => {
-    localStorage.removeItem('token');
-  },
-  getToken: () => {
-    return localStorage.getItem('token');
-  }
-}

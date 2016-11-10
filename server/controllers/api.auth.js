@@ -40,8 +40,6 @@ module.exports = {
           if (err) return next(err)
           if (!user) return res.status(401).json({ status: 'error', code: 'Sign up succeded but sign in failed.' })
 
-          console.log('>>>>> session:', req.session)
-
           return res.status(200).json({
             token: jwt.sign({
               sub: user._id,
@@ -70,8 +68,6 @@ module.exports = {
       if (err) return next(err)
       if (!user) return res.status(401).json({ status: 'error', code: 'Sign in failed.' })
 
-      console.log('>>>>> session:', req.session)
-
       return res.status(200).json({
         token: jwt.sign({
           sub: user._id,
@@ -88,8 +84,8 @@ module.exports = {
   */
   signout: (req, res) => {
     req.logout()
-    res.send(200);
-    // req.session.destroy()
+      // req.session.destroy()
+    res.status(200).json({ message: 'Sign out succeded' })
   },
 
   /*

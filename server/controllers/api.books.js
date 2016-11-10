@@ -28,6 +28,12 @@ module.exports = {
         name: 'Two Times',
         price: 22,
         owners: [2, 3]
+      },
+      {
+        isbn: 3000,
+        name: 'Three Trees',
+        price: 33,
+        owners: [3]
       }
     ]
     Book

@@ -2,8 +2,9 @@
 $(document).ready(function () {
 
   const api = `http://localhost:3000/api`
-  const $menuPanelTemplate = $('#menu-panel-template').html()
+  const auth = `http://localhost:3000/auth`
 
+  const $menuPanelTemplate = $('#menu-panel-template').html()
   const $booksListTable = $('#books-list-table')
   const $booksListHeader = $('#books-list-header')
   const $booksListHeaderTemplate = $('#books-list-header-template').html()
@@ -22,7 +23,7 @@ $(document).ready(function () {
   })
 
   // Append menu panel based on authenticated user account
-  $('#menu').append(Handlebars.compile($menuPanelTemplate)(getUser()))
+  $('#menu').append(Handlebars.compile($menuPanelTemplate)(Auth.getUser()))
 
   // Get initial data from server
   compileBooksHeader()
@@ -34,33 +35,20 @@ $(document).ready(function () {
   })
 
   // ---------------------------------------------------------------------------
-  // Account / User / Profile
+  // ACTION: Account / User / Profile
   // ---------------------------------------------------------------------------
 
-  function getUser() {
-    let token = Auth.getToken()
-    if (!token) return {}
-    else {
-      let user = jwt_decode(token)
-      return user
-    }
-  }
-
-  function signOut() {
-    Auth.deauthenticateUser()
-  }
-
   $('#menuSignOut').on('click', (e) => {
-    signOut()
+    Auth.deauthenticateUser()
   })
 
   // ---------------------------------------------------------------------------
-  // Books List
+  // VIEW: Books List
   // ---------------------------------------------------------------------------
 
   function compileBooksHeader() {
     let template = Handlebars.compile($booksListHeaderTemplate)
-    $booksListHeader.append(template({ user: getUser() }))
+    $booksListHeader.append(template({ user: Auth.getUser() }))
   }
 
   function compileBooksContent(data) {
@@ -92,62 +80,4 @@ $(document).ready(function () {
       })
   }
 
-  // ---------------------------------------------------------------------------
-  // Books Action
-  // ---------------------------------------------------------------------------
-
-  // Update book by ISBN
-  // But first, get its data
-  $booksListContent.on('click', 'td.update', function () {
-    // $('#book-editor').show()
-    let isbn = $(this).attr('data-update')
-    $.getJSON({
-        url: `${api}/books/${isbn}`,
-        headers: { 'Authorization': Auth.getToken() }
-      })
-      .done((data) => {
-        compileBookEditor(data)
-        $('#book-isbn').val(data.isbn)
-        $('#book-name').val(data.name)
-        $('#book-price').val(data.price)
-        $('#book-editor').show()
-      }).fail((err) => {
-        console.log('Error', err)
-      })
-  })
-
-  // Remove book by ISBN
-  $booksListContent.on('click', 'td.remove', function () {
-    // $('#book-editor').hide()
-    if (confirm('Sure to delete?')) {
-      let isbn = $(this).attr('data-remove')
-      console.log(isbn)
-      $.ajax({
-          method: 'DELETE',
-          url: `${api}/books/${isbn}`,
-          headers: { 'Authorization': localStorage.getItem('token') }
-        })
-        .done((data) => {
-          compileBooksContent(getDataFromAPI())
-        }).fail((err) => {
-          console.log('Error', err)
-        })
-    }
-  })
-
 })
-
-const Auth = {
-  authenticateUser: (token) => {
-    localStorage.setItem('token', token)
-  },
-  isUserAuthenticated: () => {
-    return localStorage.getItem('token') !== null
-  },
-  deauthenticateUser: () => {
-    localStorage.removeItem('token')
-  },
-  getToken: () => {
-    return localStorage.getItem('token')
-  }
-}
