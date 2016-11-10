@@ -88,14 +88,16 @@ $(document).ready(function () {
   }
 
   // ---------------------------------------------------------------------------
-  // VIEW: Book Editor
+  // VIEW+ACTION: Books Action
   // ---------------------------------------------------------------------------
 
   function compileEmptyBookEditor() {
-    let template = Handlebars.compile($bookEditorTemplate)
-    $bookEditor.append(template)
+    $bookEditor.append(Handlebars.compile($bookEditorTemplate))
     $bookEditor.hide()
   }
+
+  // --------
+  // Book Add
 
   // Show book editor template
   $('#book-add-button').on('click', (e) => {
@@ -128,9 +130,41 @@ $(document).ready(function () {
     $bookEditor.hide()
   })
 
-  // ---------------------------------------------------------------------------
-  // ACTION: Books Action
-  // ---------------------------------------------------------------------------
+  // ---------
+  // Book Seed
+
+  $('#book-seed-button').on('click', () => {
+    $.get({
+        url: `${api}/books/seed`,
+        headers: { 'Authorization': `Bearer ${Auth.getToken()}` }
+      })
+      .done((data) => {
+        getDataFromAPI()
+      })
+      .fail((xhr, textStatus, err) => {
+        alert(JSON.parse(xhr.responseText).message)
+      })
+  })
+
+  // ---------------
+  // Book Delete All
+
+  $('#book-delete-all-button').on('click', () => {
+    $.ajax({
+        method: 'DELETE',
+        url: `${api}/books`,
+        headers: { 'Authorization': `Bearer ${Auth.getToken()}` }
+      })
+      .done((data) => {
+        getDataFromAPI()
+      })
+      .fail((xhr, textStatus, err) => {
+        alert(JSON.parse(xhr.responseText).message)
+      })
+  })
+
+  // ---------
+  // Book List
 
   // Update book by ISBN
   // But first, get its data
