@@ -1,24 +1,30 @@
-# Express Workshop
+# Workshop JS :gear: Workshop with JavaScript
 
-This experimental repo is designed for easy learning curve of practicing and implementing these technologies:
+This experimental workshop repo is designed for easy learning curve of practicing and implementing friendly best practice of these technologies:
 
 Tooling:
 
 * Terminal and zsh
 * Git
 
+Documentation:
+
+* README
+* API Blueprint
+
 Web Development:
 
 * JavaScript and Node.js
 * HTML, Handlebars, and EJS
 * CSS, PostCSS, and Stylus
-* npm and Bower
-* Express
-* EJS
+* npm, Yarn, and Bower
+* Express and Feathers
 * jQuery
+* Angular
 * Vue
 * React
 * Webpack
+* PM2
 
 Web Application:
 
@@ -57,19 +63,19 @@ Continuous X:
 Make sure you have installed the latest Node.js and npm. Afterwards, install the required global dependencies.
 
 ```sh
-npm install -g nodemon live-server bower mocha vue-cli
+npm install -g nodemon live-server bower mocha vue-cli pm2
 ```
 
-Then open `client` and `server` directory separately.
+Then open `server-*` and `client-*` directory separately.
 
-### Server
+### Server Express
 
 ```sh
 npm install
 npm run dev
 ```
 
-### Client
+### Client jQuery
 
 ```sh
 bower install
@@ -80,7 +86,7 @@ live-server
 
 ## Deployment
 
-**TODO**
+**TODO with PM2**
 
 --------------------------------------------------------------------------------
 

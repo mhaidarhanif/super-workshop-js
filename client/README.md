@@ -1,6 +1,6 @@
-# Express Workshop
+# Client jQuery
 
-Express workshop.
+Client application with jQuery and Handlebars.
 
 ## Setup
 
@@ -8,7 +8,7 @@ Express workshop.
 bower install
 ```
 
-## Usage
+## Development
 
 ```sh
 live-server
