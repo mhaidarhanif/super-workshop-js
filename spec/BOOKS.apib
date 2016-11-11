@@ -1,0 +1,162 @@
+FORMAT: 1A
+HOST: https://localhost:3000/api
+
+# Books
+
+Books API is a simple API allowing consumers to post, get, update, and delete collection of books; as well as tagging the owners. You can view this documentation over at [Apiary](http://docs.super-books.apiary.io).
+
+# Books API Root [/]
+
+Resources related to books in the API.
+
+This resource does not have any specific attributes. Instead it offers the initial API affordances in the form of the links in the JSON body.
+
+It is recommend to follow the "url" link values, [Link](https://tools.ietf.org/html/rfc5988) or "Location" headers where applicable to retrieve resources. Instead of constructing your own URLs, to keep your client decoupled from implementation details.
+
+## Retrieve the Entry Point [GET]
+
++ Response 200 (application/json)
+
+        {
+          "books_url": "/books"
+        }
+
+## Group Book
+
+Resources related to books in the API.
+
+## Books [/books{?page}]
+
++ Parameters
+  + page: 1 (optional, number) - The page of books to return.
+
+### Get List of All Books [GET]
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Link: </books?page=1>; rel="next"
+
+    + Body
+
+            [
+              {
+                "isbn": 1000,
+                "title": "One Only",
+                "price": 11,
+                "owners": [ 1 ]
+              },
+              {
+                "isbn": 2000,
+                "title": "Two Times",
+                "price": 22,
+                "owners": [ 2 ]
+              }
+            ]
+
+### Post a New Book [POST]
+
+We may post a new book detail using this action. It takes a JSON object containing an ISBN, title, price, and optionally a collection of owners.
+
++ isbn (number) - ISBN
++ title (string) - Book title
++ owners (array[number]) - List of owners with accountId
+
++ Request (application/json)
+
+        {
+          "isbn": 3000,
+          "title": "Three Trees",
+          "owners": [ 3 ]
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+              Location: /questions/3
+
+    + Body
+
+              {
+                "isbn": 3000,
+                "title": "Three Trees",
+                "price": 33,
+                "owners": [ 3 ]
+              }
+
+## Book [/books/{book_id}]
+
+A Book object has the following attributes:
+
++ title - Book title.
++ published - Whether the books has been published or not.
++ publishedAt - An ISO8601 date when the book was published.
++ owners - An array of Account objects.
++ url - Permalink of the book.
+
++ Parameters
+  + book_id: 1 (required, number) - ID of the Book in form of an integer.
+
+### Get a Book Detail [GET]
+
++ Response 200 (application/json)
+
+        {
+          "isbn": 1000,
+          "title": "One Only",
+          "price": 11,
+          "owners": [ 1 ]
+        }
+
+### Delete a Book Detail [DELETE]
+
++ Response 200 (application/json)
+
+        {
+          "message": "Book has been deleted."
+        }
+
+## Book Owner [/books/{book_id}/owners/{owner_id}]
+
++ Parameters
+  + book_id: 1 (required, number) - ID of the Book in form of an integer.
+  + owner_id: 1 (required, number) - ID of the Owner/Account in form of an integer.
+
+### Get an Owner Detail [GET]
+
++ Response 200 (application/json)
+
+        {
+          "accountId": 1,
+          "username": "admin",
+          "name": "Admin Alpha"
+        }
+
+### Post an Owner Detail [POST]
+
+We may post a new owner/account ID to a specific book.
+
++ accountId (number) - Account ID
+
++ Request (application/json)
+
+        {
+          "accountId": 2
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+              Location: /questions/1
+
+    + Body
+
+              {
+                "isbn": 1000,
+                "title": "One Only",
+                "price": 11,
+                "owners": [ 1, 2 ]
+              }
