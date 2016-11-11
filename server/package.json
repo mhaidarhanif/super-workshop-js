@@ -42,6 +42,7 @@
     "mongoose": "4.6.5",
     "mongoose-deep-populate": "3.0.0",
     "mongoose-increment": "0.6.1",
+    "mongoose-paginate": "5.0.3",
     "mongoose-populate-virtuals": "1.0.3",
     "mongoose-search-plugin": "0.1.2",
     "mongoose-sequence": "3.1.0",

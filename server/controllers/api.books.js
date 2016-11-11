@@ -66,6 +66,33 @@ module.exports = {
   },
 
   /*
+   * @api {get} /books?page=20 Get all books with pagination
+   * @apiName getBooksPaginated
+   * @apiGroup Books
+   *
+   * @apiSuccess {Number} isbn  Book ISBN (international standard book number)
+   * @apiSuccess {String} name  Book title
+   * @apiSuccess {Number} price Book retail price
+   */
+  getBooksPaginated: (req, res) => {
+    console.log('........', req.query)
+
+    Book
+      .paginate({}, {
+        select: 'isbn name price owners',
+        page: req.query.page || 1,
+        limit: req.query.limit || 10
+      })
+      .then((result) => {
+        const data = result.docs
+        console.log('getBooksPaginated:', data[0])
+          // if (err) res.status(400).json({ 'error': `Error: ${err}` })
+          // else if (!data) res.status(404).json({ 'message': 'Failed to get all books' })
+        res.status(200).json(data[0])
+      })
+  },
+
+  /*
    * @api {get} /books Delete all books
    * @apiName deleteBooks
    * @apiGroup Books

@@ -1,6 +1,17 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+// Paginate list of all data
+const mongoosePaginate = require('mongoose-paginate')
+
+mongoosePaginate.paginate.options = {
+  // lean: true,
+  // leanWithId: false,
+  page: 1,
+  limit: 10,
+  sort: { updatedAt: -1 }
+};
+
 // TODO: Use full text search
 // const searchPlugin = require('mongoose-search-plugin')
 // const textSearch = require('mongoose-text-search')
@@ -29,6 +40,8 @@ const BookSchema = new Schema({
 }, {
   timestamps: true
 })
+
+BookSchema.plugin(mongoosePaginate)
 
 // -----------------------------------------------------------------------------
 // POPULATE
