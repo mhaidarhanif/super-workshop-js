@@ -16,26 +16,8 @@ module.exports = {
    * @apiGroup Books
    */
   seedBooks: (req, res) => {
-    const books = [
-      {
-        isbn: 1000,
-        name: 'One Only',
-        price: 11,
-        owners: [1, 3]
-      },
-      {
-        isbn: 2000,
-        name: 'Two Times',
-        price: 22,
-        owners: [2, 3]
-      },
-      {
-        isbn: 3000,
-        name: 'Three Trees',
-        price: 33,
-        owners: [3]
-      }
-    ]
+    const books = require('../data/books.json')
+    console.log(books)
     Book
       .create(books, (err, data) => {
         console.log('seedBooks:', data)
@@ -75,8 +57,6 @@ module.exports = {
    * @apiSuccess {Number} price Book retail price
    */
   getBooksPaginated: (req, res) => {
-    console.log('........', req.query)
-
     Book
       .paginate({}, {
         select: 'isbn name price owners',
@@ -85,10 +65,10 @@ module.exports = {
       })
       .then((result) => {
         const data = result.docs
-        console.log('getBooksPaginated:', data[0])
+        console.log('getBooksPaginated:', data)
           // if (err) res.status(400).json({ 'error': `Error: ${err}` })
           // else if (!data) res.status(404).json({ 'message': 'Failed to get all books' })
-        res.status(200).json(data[0])
+        res.status(200).json(data)
       })
   },
 

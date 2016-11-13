@@ -41,6 +41,12 @@ const BookSchema = new Schema({
   timestamps: true
 })
 
+// BookSchema.virtual('lenders', {
+//   ref: 'Account',
+//   localField: 'username', // Find account where `localField`
+//   foreignField: 'isbn'    // is equal to `foreignField`
+// })
+
 BookSchema.plugin(mongoosePaginate)
 
 // -----------------------------------------------------------------------------
