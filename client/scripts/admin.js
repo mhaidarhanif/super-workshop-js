@@ -112,7 +112,8 @@ $(document).ready(function () {
       name: $('#book-editor-form input[name=name]').val(),
       price: $('#book-editor-form input[name=price]').val(),
     }
-    $.post({
+    $.ajax({
+        method: 'POST',
         url: $('#book-editor-form').attr('action'),
         data: dataInput,
         headers: { 'Authorization': `Bearer ${Auth.getToken()}` }
@@ -130,12 +131,28 @@ $(document).ready(function () {
     $bookEditor.hide()
   })
 
-  // ---------
-  // Book Seed
+  // --------------
+  // Book Seed Some
 
   $('#book-seed-button').on('click', () => {
-    $.get({
+    $.ajax({
         url: `${api}/books/seed`,
+        headers: { 'Authorization': `Bearer ${Auth.getToken()}` }
+      })
+      .done((data) => {
+        getDataFromAPI()
+      })
+      .fail((xhr, textStatus, err) => {
+        alert(JSON.parse(xhr.responseText).message)
+      })
+  })
+
+  // -------------
+  // Book Seed Lot
+
+  $('#book-seed-lot-button').on('click', () => {
+    $.ajax({
+        url: `${api}/books/seedlot`,
         headers: { 'Authorization': `Bearer ${Auth.getToken()}` }
       })
       .done((data) => {
@@ -166,8 +183,7 @@ $(document).ready(function () {
   // ---------
   // Book List
 
-  // Update book by ISBN
-  // But first, get its data
+  // Update book by ISBN. But first, get its data.
   $booksListContent.on('click', 'td.update', function () {
     // $('#book-editor').show()
     let isbn = $(this).attr('data-update')

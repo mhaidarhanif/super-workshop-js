@@ -1,6 +1,6 @@
 {
   "name": "express-workshop-client",
-  "description": "Express Workshop Client",
+  "description": "Workshop JS Client",
   "main": "index.html",
   "authors": [
     "M Haidar Hanif <npm@mhaidarhanif.com> (https://mhaidarhanif.com)"

@@ -58,6 +58,7 @@ $(document).ready(function () {
 
   function getDataFromAPI() {
     $.getJSON(`${api}/books`, (data) => {
+      console.log(data)
       compileBooksContent(data)
     })
   }
