@@ -65,17 +65,17 @@
             <form id="book-editor-form" class="ui form" action="http://localhost:3000/api/books">
               <div class="fields">
                 <div class="three wide field">
-                  <label>ISBN</label><input type="text" name="isbn" maxlength="16" placeholder="0000">
+                  <label>ISBN</label><input id="input-book-isbn" type="text" name="isbn" maxlength="16" placeholder="0000">
                 </div>
                 <div class="six wide field">
-                  <label>Title</label><input type="text" name="name" maxlength="100" placeholder="The Book">
+                  <label>Title</label><input id="input-book-name" type="text" name="name" maxlength="100" placeholder="The Book">
                 </div>
                 <div class="two wide field">
-                  <label>Price</label><input type="number" name="price" maxlength="10" placeholder="99">
+                  <label>Price</label><input id="input-book-price" type="number" name="price" maxlength="10" placeholder="99">
                 </div>
               </div>
-              <input class="ui orange button" type="submit" name="addNew" value="Add New">
-              <input class="ui purple button" type="button" name="addCancel" value="Cancel">
+              <input class="ui orange button" type="submit" name="add" value="Add or Update">
+              <input class="ui purple button" type="button" name="cancel" value="Cancel">
             </form>
           </div>
         </script>
@@ -111,11 +111,11 @@
         <script id="books-list-content-template" type="text/x-handlebars-template">
           {{#each books}}
           <tr>
-            <td class="three wide">{{isbn}}</td>
-            <td>{{name}}</td>
-            <td class="two wide">${{price}}</td>
-            <td class="one wide selectable center aligned warning update" data-update="{{isbn}}"><a><i class="large orange edit icon"></i></a></td>
-            <td class="one wide selectable center aligned negative remove" data-remove="{{isbn}}"><a><i class="large red remove icon"></i></a></td>
+            <td class="isbn">{{isbn}}</td>
+            <td class="name">{{name}}</td>
+            <td class="price"><i class="dollar icon"></i><span>{{price}}</span></td>
+            <td class="selectable center aligned warning update" data-update="{{isbn}}"><a><i class="large orange edit icon"></i></a></td>
+            <td class="selectable center aligned negative remove" data-remove="{{isbn}}"><a><i class="large red remove icon"></i></a></td>
           </tr>
           {{/each}}
         </script>
