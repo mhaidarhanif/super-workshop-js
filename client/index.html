@@ -25,34 +25,18 @@
             <a id="menuSignUp" class="ui item" href="/signup.html">Sign Up</a>
             <a id="menuSignIn" class="ui item" href="/signin.html">Sign In</a> {{/if}}
           </div>
-          <div class="ui center secondary menu">
-            <div id="search" class="right menu">
-              <div class="item">
-                <div class="ui icon input">
-                  <input id="searchByISBN" type="text" placeholder="Search by ISBN...">
-                  <i class="search link icon"></i>
-                </div>
-              </div>
-              <div class="item">
-                <div class="ui icon input">
-                  <input id="searchByName" type="text" placeholder="Search by Name...">
-                  <i class="search link icon"></i>
-                </div>
-              </div>
-            </div>
-          </div>
         </script>
       </div>
 
-      <div class="ui hidden divider"></div>
-
       <!-- Header -->
       <header>
-        <h1 id="logo" class="ui orange header">Workshop JS</h1>
+        <span class="ui hidden divider"></span>
+        <h1 id="logo" class="ui orange header center aligned">Workshop JS</h1>
+        <span class="ui hidden divider"></span>
       </header>
 
       <!-- Book table -->
-      <table id="books-list-table" class="ui celled table">
+      <table id="books-list-table" class="ui celled table" cellspacing="0" width="100%">
 
         <!-- Books header and footer -->
         <script id="books-list-header-footer-template" type="text/x-handlebars-template">
@@ -74,16 +58,17 @@
 
         <!-- Books list content -->
         <tbody id="books-list-content">
-          <script id="books-list-content-template" type="text/x-handlebars-template">
-            {{#each books}}
-            <tr>
-              <td class="three wide">{{isbn}}</td>
-              <td>{{name}}</td>
-              <td class="two wide">${{price}}</td>
-            </tr>
-            {{/each}}
-          </script>
         </tbody>
+        <!-- Books list content template -->
+        <script id="books-list-content-template" type="text/x-handlebars-template">
+          {{#each books}}
+          <tr>
+            <td>{{isbn}}</td>
+            <td>{{name}}</td>
+            <td>${{price}}</td>
+          </tr>
+          {{/each}}
+        </script>
 
       </table>
 
@@ -93,6 +78,9 @@
   </body>
 
   <script src="/lib/jquery/dist/jquery.min.js" charset="utf-8"></script>
+  <script src="/lib/datatables/media/js/jquery.dataTables.min.js" charset="utf-8"></script>
+  <script src="/lib/datatables/media/js/dataTables.semanticui.min.js" charset="utf-8"></script>
+
   <script src="/lib/semantic/dist/semantic.min.js" charset="utf-8"></script>
   <script src="/lib/handlebars/handlebars.min.js" charset="utf-8"></script>
   <script src="lib/jwt-decode/build/jwt-decode.min.js" charset="utf-8"></script>

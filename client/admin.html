@@ -43,18 +43,20 @@
         </script>
       </div>
 
-      <div class="ui hidden divider"></div>
-
       <!-- Header -->
       <header>
-        <h1 id="logo" class="ui orange header">Workshop JS</h1>
-        <h2 id="description" class="ui blue segment">
-          <button id="book-add-button" type="button" name="add" class="ui blue button">Add new book</button>
-          <button id="book-seed-button" type="button" name="seed" class="ui green button">Seed some books</button>
-          <button id="book-seed-lot-button" type="button" name="seedlot" class="ui teal button">Seed a lot of books</button>
-          <button id="book-delete-all-button" type="button" name="deleteAll" class="ui red button">Delete all books</button>
-        </2>
+        <span class="ui hidden divider"></span>
+        <h1 id="logo" class="ui orange header center aligned">Workshop JS</h1>
+        <span class="ui hidden divider"></span>
       </header>
+
+      <!-- Modifier Buttons -->
+      <div id="modifiers" class="ui blue segment">
+        <button id="book-add-button" type="button" name="add" class="ui blue button">Add new book</button>
+        <button id="book-seed-button" type="button" name="seed" class="ui green button">Seed some books</button>
+        <button id="book-seed-lot-button" type="button" name="seedlot" class="ui teal button">Seed a lot of books</button>
+        <button id="book-delete-all-button" type="button" name="deleteAll" class="ui red button">Delete all books</button>
+      </div>
 
       <!-- Book editor -->
       <section id="book-editor">
@@ -104,22 +106,24 @@
 
         <!-- Books list content -->
         <tbody id="books-list-content">
-          <script id="books-list-content-template" type="text/x-handlebars-template">
-            {{#each books}}
-            <tr>
-              <td class="three wide">{{isbn}}</td>
-              <td>{{name}}</td>
-              <td class="two wide">${{price}}</td>
-              <td class="one wide selectable center aligned warning update" data-update="{{isbn}}"><a><i class="large orange edit icon"></i></a></td>
-              <td class="one wide selectable center aligned negative remove" data-remove="{{isbn}}"><a><i class="large red remove icon"></i></a></td>
-            </tr>
-            {{/each}}
-          </script>
         </tbody>
+        <!-- Books list content template -->
+        <script id="books-list-content-template" type="text/x-handlebars-template">
+          {{#each books}}
+          <tr>
+            <td class="three wide">{{isbn}}</td>
+            <td>{{name}}</td>
+            <td class="two wide">${{price}}</td>
+            <td class="one wide selectable center aligned warning update" data-update="{{isbn}}"><a><i class="large orange edit icon"></i></a></td>
+            <td class="one wide selectable center aligned negative remove" data-remove="{{isbn}}"><a><i class="large red remove icon"></i></a></td>
+          </tr>
+          {{/each}}
+        </script>
 
       </table>
 
-    </div> <!-- ui container -->
+    </div>
+    <!-- ui container -->
 
   </body>
 

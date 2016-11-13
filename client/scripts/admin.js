@@ -16,99 +16,101 @@ $(document).ready(function () {
   // ---------------------------------------------------------------------------
 
   function compileEmptyBookEditor() {
+
     $bookEditor.append(Handlebars.compile($bookEditorTemplate))
     $bookEditor.hide()
+
+    // --------
+    // Book Add
+
+    // Show book editor template
+    $('#book-add-button').on('click', (e) => {
+      $bookEditor.show()
+    })
+
+    // onSubmit, post a new book
+    $('#book-editor-form').submit((e) => {
+      e.preventDefault()
+      let dataInput = {
+        isbn: $('#book-editor-form input[name=isbn]').val(),
+        name: $('#book-editor-form input[name=name]').val(),
+        price: $('#book-editor-form input[name=price]').val(),
+      }
+      $.ajax({
+          method: 'POST',
+          url: $('#book-editor-form').attr('action'),
+          data: dataInput,
+          headers: { 'Authorization': `Bearer ${Auth.getToken()}` }
+        })
+        .done((data) => {
+          getDataFromAPI()
+        })
+        .fail((xhr, textStatus, err) => {
+          alert(JSON.parse(xhr.responseText).message)
+        })
+    })
+
+    // onClick, cancel the form
+    $('#book-editor-form input[name=addCancel]').on('click', (e) => {
+      $bookEditor.hide()
+    })
+
+    // --------------
+    // Book Seed Some
+
+    $('#book-seed-button').on('click', () => {
+      $.ajax({
+          url: `${api}/books/seed`,
+          headers: { 'Authorization': `Bearer ${Auth.getToken()}` }
+        })
+        .done((data) => {
+          getDataFromAPI()
+        })
+        .fail((xhr, textStatus, err) => {
+          alert(JSON.parse(xhr.responseText).message)
+        })
+    })
+
+    // -------------
+    // Book Seed Lot
+
+    $('#book-seed-lot-button').on('click', () => {
+      $.ajax({
+          url: `${api}/books/seedlot`,
+          headers: { 'Authorization': `Bearer ${Auth.getToken()}` }
+        })
+        .done((data) => {
+          getDataFromAPI()
+        })
+        .fail((xhr, textStatus, err) => {
+          alert(JSON.parse(xhr.responseText).message)
+        })
+    })
+
+    // ---------------
+    // Book Delete All
+
+    $('#book-delete-all-button').on('click', () => {
+      $.ajax({
+          method: 'DELETE',
+          url: `${api}/books`,
+          headers: { 'Authorization': `Bearer ${Auth.getToken()}` }
+        })
+        .done((data) => {
+          getDataFromAPI()
+        })
+        .fail((xhr, textStatus, err) => {
+          alert(JSON.parse(xhr.responseText).message)
+        })
+    })
+
   }
-
-  // --------
-  // Book Add
-
-  // Show book editor template
-  $('#book-add-button').on('click', (e) => {
-    $bookEditor.show()
-  })
-
-  // Template: onSubmit, post a new book
-  $('#book-editor-form').submit((e) => {
-    e.preventDefault()
-    let dataInput = {
-      isbn: $('#book-editor-form input[name=isbn]').val(),
-      name: $('#book-editor-form input[name=name]').val(),
-      price: $('#book-editor-form input[name=price]').val(),
-    }
-    $.ajax({
-        method: 'POST',
-        url: $('#book-editor-form').attr('action'),
-        data: dataInput,
-        headers: { 'Authorization': `Bearer ${Auth.getToken()}` }
-      })
-      .done((data) => {
-        getDataFromAPI()
-      })
-      .fail((xhr, textStatus, err) => {
-        alert(JSON.parse(xhr.responseText).message)
-      })
-  })
-
-  // Template: onClick, cancel the form
-  $('#book-editor-form input[name=addCancel]').on('click', (e) => {
-    $bookEditor.hide()
-  })
-
-  // --------------
-  // Book Seed Some
-
-  $('#book-seed-button').on('click', () => {
-    $.ajax({
-        url: `${api}/books/seed`,
-        headers: { 'Authorization': `Bearer ${Auth.getToken()}` }
-      })
-      .done((data) => {
-        getDataFromAPI()
-      })
-      .fail((xhr, textStatus, err) => {
-        alert(JSON.parse(xhr.responseText).message)
-      })
-  })
-
-  // -------------
-  // Book Seed Lot
-
-  $('#book-seed-lot-button').on('click', () => {
-    $.ajax({
-        url: `${api}/books/seedlot`,
-        headers: { 'Authorization': `Bearer ${Auth.getToken()}` }
-      })
-      .done((data) => {
-        getDataFromAPI()
-      })
-      .fail((xhr, textStatus, err) => {
-        alert(JSON.parse(xhr.responseText).message)
-      })
-  })
-
-  // ---------------
-  // Book Delete All
-
-  $('#book-delete-all-button').on('click', () => {
-    $.ajax({
-        method: 'DELETE',
-        url: `${api}/books`,
-        headers: { 'Authorization': `Bearer ${Auth.getToken()}` }
-      })
-      .done((data) => {
-        getDataFromAPI()
-      })
-      .fail((xhr, textStatus, err) => {
-        alert(JSON.parse(xhr.responseText).message)
-      })
-  })
 
   // ---------
   // Book List
 
   // Update book by ISBN. But first, get its data.
-  $booksListContent.on('click', 'td.update', function () {
+  $booksListTable.on('click', 'td.update', function () {
     // $('#book-editor').show()
     let isbn = $(this).attr('data-update')
     $.getJSON({
@@ -127,7 +129,8 @@ $(document).ready(function () {
   })
 
   // Remove book by ISBN
-  $booksListContent.on('click', 'td.remove', function () {
+
+  $booksListTable.on('click', 'td.remove', function () {
     // $('#book-editor').hide()
     let isbn = $(this).attr('data-remove')
     if (confirm(`Sure to delete book with ISBN ${isbn}?`)) {

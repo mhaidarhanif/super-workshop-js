@@ -6,6 +6,10 @@
   width: 500px;
 }
 
+.ui.selection.dropdown {
+  min-width: 80px;
+}
+
 .selectable {
   cursor: pointer;
 }

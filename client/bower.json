@@ -30,6 +30,7 @@
     "vue-router": "^2.0.1",
     "vuex": "^2.0.0",
     "axios": "^0.15.2",
-    "jwt-decode": "^2.1.0"
+    "jwt-decode": "^2.1.0",
+    "datatables": "^1.10.12"
   }
 }
