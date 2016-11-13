@@ -1,18 +1,18 @@
 [
   {
-    "isbn": 1000,
+    "isbn": "1000",
     "name": "One Only",
     "price": 11,
     "owners": [1, 3]
   },
   {
-    "isbn": 2000,
+    "isbn": "2000",
     "name": "Two Times",
     "price": 22,
     "owners": [2, 3]
   },
   {
-    "isbn": 3000,
+    "isbn": "3000",
     "name": "Three Trees",
     "price": 33,
     "owners": [3]

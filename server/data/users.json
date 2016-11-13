@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Administrator",
+    "username": "admin",
+    "email": "admin@admin.com",
+    "password": "admin"
+  },
+  {
+    "name": "Developer",
+    "username": "dev",
+    "email": "dev@dev.com",
+    "password": "dev"
+  }
+  {
+    "name": "Tester",
+    "username": "test",
+    "email": "test@test.com",
+    "password": "test"
+  },
+  {
+    "name": "Operator",
+    "username": "ops",
+    "email": "ops@ops.com",
+    "password": "ops"
+  },
+  {
+    "name": "User",
+    "username": "user",
+    "email": "user@user.com",
+    "password": "user"
+  }
+]

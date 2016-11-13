@@ -13,6 +13,7 @@ const api = require('../controllers/api.books')
 // req.query  >>> /data?q={id}
 
 router.get('/seed', api.seedBooks)
+router.get('/seedlot', api.seedBooksLot)
   // router.get('/', api.getBooks)
 router.get('/', api.getBooksPaginated)
 router.delete('/', api.deleteBooks)

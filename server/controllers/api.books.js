@@ -17,12 +17,27 @@ module.exports = {
    */
   seedBooks: (req, res) => {
     const books = require('../data/books.json')
-    console.log(books)
     Book
       .create(books, (err, data) => {
-        console.log('seedBooks:', data)
+        // console.log('seedBooks:', data)
         if (err) res.status(400).json(err)
         else if (!data) res.status(304).json({ 'message': 'Failed to seed books' })
+        else res.status(200).json(data)
+      })
+  },
+
+  /*
+   * @api {get} /books/seedlot Seed a lot of books
+   * @apiName seedBooksLot
+   * @apiGroup Books
+   */
+  seedBooksLot: (req, res) => {
+    const booksLot = require('../data/books.lot.json')
+    Book
+      .create(booksLot, (err, data) => {
+        // console.log('seedBooksLot:', data)
+        if (err) res.status(400).json(err)
+        else if (!data) res.status(304).json({ 'message': 'Failed to seed a lot of books' })
         else res.status(200).json(data)
       })
   },

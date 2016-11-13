@@ -1,7 +1,7 @@
 {
   "name": "express-workshop",
   "version": "1.0.0",
-  "description": "Express Workshop",
+  "description": "Workshop JS",
   "main": "server.js",
   "scripts": {
     "start": "node server",
@@ -30,6 +30,8 @@
   "homepage": "https://github.com/mhaidarh/express-workshop#readme",
   "dependencies": {
     "body-parser": "1.15.2",
+    "casual": "1.5.8",
+    "chance": "1.0.4",
     "cors": "2.8.1",
     "dotenv": "2.0.0",
     "express": "4.14.0",
@@ -37,7 +39,9 @@
     "express-jwt-permissions": "0.5.0",
     "express-session": "1.14.2",
     "express-validator": "2.21.0",
+    "faker": "3.1.0",
     "jsonwebtoken": "7.1.9",
+    "mocker-data-generator": "1.2.5",
     "mongodb": "2.2.11",
     "mongoose": "4.6.5",
     "mongoose-deep-populate": "3.0.0",
@@ -55,9 +59,11 @@
     "passport-jwt": "2.2.0",
     "passport-local": "1.0.0",
     "passport-local-mongoose": "4.0.0",
-    "passport-twitter": "1.0.4"
+    "passport-twitter": "1.0.4",
+    "unirest": "0.5.1"
   },
   "devDependencies": {
+    "chance-cli": "1.0.6",
     "mocha": "3.1.2",
     "nodemon": "1.11.0",
     "pm2": "2.1.4"
