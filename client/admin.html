@@ -79,38 +79,47 @@
         </script>
       </section>
 
-
       <!-- Book table -->
       <table id="books-list-table" class="ui celled table">
-        <thead id="books-list-header">
-          <script id="books-list-header-template" type="text/x-handlebars-template">
+
+        <!-- Books header and footer -->
+        <script id="books-list-header-footer-template" type="text/x-handlebars-template">
+          <thead id="books-list-header">
             <tr>
               <th class="three wide">ISBN</th>
               <th>Title</th>
               <th class="two wide">Price</th>
-              {{#if user.id}}
-              <th class="one wide">Update</th>
-              <th class="one wide">Remove</th>
-              {{/if}}
+              <th class="one wide center aligned" colspan="2">Action</th>
             </tr>
-          </script>
-        </thead>
-        <!-- Books list using template -->
+          </thead>
+          <tfoot id="books-list-footer">
+            <tr>
+              <th class="three wide">ISBN</th>
+              <th>Title</th>
+              <th class="two wide">Price</th>
+              <th class="one wide center aligned" colspan="2">Action</th>
+            </tr>
+          </tfoot>
+        </script>
+
+        <!-- Books list content -->
         <tbody id="books-list-content">
           <script id="books-list-content-template" type="text/x-handlebars-template">
-          {{#each books}}
-          <tr>
-            <td class="three wide">{{isbn}}</td>
-            <td>{{name}}</td>
-            <td class="two wide">${{price}}</td>
-            <td class="one wide selectable warning update" data-update="{{isbn}}"><a>Update</a></td>
-            <td class="one wide selectable negative remove" data-remove="{{isbn}}"><a>Remove</a></td>
-          </tr>
-          {{/each}}
+            {{#each books}}
+            <tr>
+              <td class="three wide">{{isbn}}</td>
+              <td>{{name}}</td>
+              <td class="two wide">${{price}}</td>
+              <td class="one wide selectable center aligned warning update" data-update="{{isbn}}"><a><i class="large orange edit icon"></i></a></td>
+              <td class="one wide selectable center aligned negative remove" data-remove="{{isbn}}"><a><i class="large red remove icon"></i></a></td>
+            </tr>
+            {{/each}}
           </script>
         </tbody>
+
       </table>
-    </div>
+
+    </div> <!-- ui container -->
 
   </body>
 

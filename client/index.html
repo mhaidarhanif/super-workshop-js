@@ -53,16 +53,26 @@
 
       <!-- Book table -->
       <table id="books-list-table" class="ui celled table">
-        <thead id="books-list-header">
-          <script id="books-list-header-template" type="text/x-handlebars-template">
+
+        <!-- Books header and footer -->
+        <script id="books-list-header-footer-template" type="text/x-handlebars-template">
+          <thead id="books-list-header">
             <tr>
               <th class="three wide">ISBN</th>
               <th>Title</th>
               <th class="two wide">Price</th>
             </tr>
-          </script>
-        </thead>
-        <!-- Books list using template -->
+          </thead>
+          <tfoot id="books-list-footer">
+            <tr>
+              <th class="three wide">ISBN</th>
+              <th>Title</th>
+              <th class="two wide">Price</th>
+            </tr>
+          </tfoot>
+        </script>
+
+        <!-- Books list content -->
         <tbody id="books-list-content">
           <script id="books-list-content-template" type="text/x-handlebars-template">
             {{#each books}}
@@ -74,8 +84,11 @@
             {{/each}}
           </script>
         </tbody>
+
       </table>
+
     </div>
+    <!-- ui container -->
 
   </body>
 
