@@ -30,6 +30,7 @@
   "homepage": "https://github.com/mhaidarh/express-workshop#readme",
   "dependencies": {
     "body-parser": "1.15.2",
+    "camo": "^0.12.3",
     "casual": "1.5.8",
     "chance": "1.0.4",
     "cors": "2.8.1",
@@ -51,6 +52,7 @@
     "mongoose-search-plugin": "0.1.2",
     "mongoose-sequence": "3.1.0",
     "mongoose-text-search": "0.0.2",
+    "nedb": "^1.8.0",
     "passport": "0.3.2",
     "passport-facebook": "2.1.1",
     "passport-github": "1.1.0",
