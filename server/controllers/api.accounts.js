@@ -27,18 +27,15 @@ module.exports = {
   },
 
   /*
-    Get profile of an account
+    Get profile of an account by ID
   */
-  getAccountProfile: (req, res) => {
-    req.checkBody('username', 'Username is required').notEmpty()
-    if (!req.body.username) return res.send('Please require username')
-
+  getAccountProfileById: (req, res) => {
     Account.findOne({
-      username: req.body.username
+      accountId: req.params.accountId
     }, (err, data) => {
-      console.log('getProfile:', data)
+      console.log('getProfileById:', data)
       if (err) res.status(400).json({ 'error': `Error: ${err}` })
-      if (!data) res.status(404).json({ 'message': 'Failed to get account profile by username' })
+      if (!data) res.status(404).json({ 'message': 'Failed to get account profile by ID' })
       res.status(200).json(data)
     })
   }

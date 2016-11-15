@@ -5,12 +5,12 @@ const api = require('../controllers/api.accounts')
 const auth = require('../controllers/api.auth')
 
 // ACCOUNTS
-// router.get('/api/accounts', auth.isAuthenticated, api.getAccounts)
+// Need auth.isAuthenticated
 router.get('/', api.getAccounts)
 router.delete('/', api.deleteAccounts)
 
 // PROFILE
-// router.get('/api/profile', auth.isAuthenticated, api.getProfile)
-router.get('/profile', api.getAccountProfile)
+router.get('/:accountId', api.getAccountProfileById)
+  // router.get('/:accountId', auth.isAuthenticated, api.getAccountProfileById)
 
 module.exports = router

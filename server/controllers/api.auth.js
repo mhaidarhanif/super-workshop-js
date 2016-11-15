@@ -34,7 +34,7 @@ module.exports = {
         passport.authenticate('local', {
           successRedirect: '/',
           successFlash: true,
-          failureRedirect: '/auth/signup',
+          // failureRedirect: '/auth/signup', // TODO for client
           failureFlash: true
         }, (err, user, info) => {
           if (err) return next(err)
@@ -62,7 +62,7 @@ module.exports = {
     passport.authenticate('local', {
       successRedirect: '/',
       successFlash: true,
-      failureRedirect: '/auth/signin',
+      // failureRedirect: '/auth/signin', // TODO for client
       failureFlash: true
     }, (err, user, info) => {
       if (err) return next(err)

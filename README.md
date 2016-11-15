@@ -121,6 +121,8 @@ live-server
 
 ## API
 
+Default Root URL: `http://localhost:3000`
+
 ### Accounts
 
 | API Endpoint       | HTTP | Description
@@ -129,9 +131,9 @@ live-server
 | `auth/sigin`       | POST | Sign in with existed account
 | `api/accounts`     | GET  | Get all accounts
 | `api/accounts`     | DEL  | Delete all accounts
-| `api/accounts/:id` | GET  | Get one account by accountId
-| `api/accounts/:id` | DEL  | Delete one account by accountId
-| `api/accounts/:id` | PUT  | Update one account by accountId
+| `api/accounts/:accountId` | GET  | Get one account profile by accountId
+| `api/accounts/:accountId` | DEL  | Delete one account profile by accountId
+| `api/accounts/:accountId` | PUT  | Update one account profile by accountId
 
 ### Books
 
