@@ -1,36 +1,49 @@
 const express = require('express')
 const router = express.Router()
 const passport = require('passport')
-const jwt = require('jsonwebtoken')
 
 const auth = require('../controllers/api.auth.js')
 
+
 /*
 --------------------------------------------------------------------------------
-Account
+AUTHENTICATION
+/auth
 --------------------------------------------------------------------------------
 */
 
 // SIGN UP
-router.post('/signup', [auth.isAccountExist, auth.isSignedIn], auth.signup)
+// Require name, username, email, passsword
+router.post('/signup', auth.isAccountExist, auth.signup)
 
 // SIGN IN
+// Require username and passsword
 router.post('/signin', auth.signin)
 
 // SIGN OUT
+// Not necessary if using different host/port
 router.get('/signout', auth.signout)
 
+// IS ACCOUNT EXIST?
+// Require 'username'
+router.post('/isAccountExist', auth.isAccountExist, (req, res) => { res.send(true) })
+
+// IS AUTHENTICATED?
+// Require 'Authorization: Bearer JWT'
+router.post('/isAuthenticated', auth.isAuthenticated, (req, res) => { res.send(true) })
+
+
 /*
 --------------------------------------------------------------------------------
-OAuth Third Party
+OAUTH THIRD PARTY
 There's no actual controller here since for each API endoint,
-they're only call authentication through passport.
+they're only calling authentication through Passport.
 --------------------------------------------------------------------------------
 */
 
-/*
-GitHub
-*/
+/**
+ * GitHub
+ */
 
 router.get('/github',
   passport.authenticate('github')
@@ -43,9 +56,9 @@ router.get('/github/callback',
   })
 )
 
-/*
-Facebook
-*/
+/**
+ * Facebook
+ */
 
 router.get('/facebook',
   passport.authenticate('facebook', {
@@ -59,9 +72,9 @@ router.get('/facebook/callback',
   })
 )
 
-/*
-Twitter
-*/
+/**
+ * Twitter
+ */
 
 router.get('/twitter',
   passport.authenticate('twitter')
@@ -74,9 +87,9 @@ router.get('/twitter/callback',
   })
 )
 
-/*
-Google
-*/
+/**
+ * Google
+ */
 
 router.get('/google',
   passport.authenticate('google', {
@@ -88,5 +101,7 @@ router.get('/google/callback',
     successRedirect: '/profile',
     failureRedirect: '/'
   }))
+
+// -----------------------------------------------------------------------------
 
 module.exports = router

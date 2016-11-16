@@ -3,11 +3,11 @@ const jwt = require('jsonwebtoken')
 
 const Account = require('../models/account')
 
-module.exports = {
+const Auth = module.exports = {
 
-  /*
-    Create a new account
-  */
+  /**
+   * Create a new account
+   */
   signup: (req, res, next) => {
     req.checkBody('name', 'Full Name is required').notEmpty()
     req.checkBody('username', 'Username is required').notEmpty()
@@ -24,37 +24,15 @@ module.exports = {
         if (err) res.json({ error: err.message })
         if (!account) res.json({ success: false, message: 'Sign up failed.' })
 
-        // passport.authenticate('local')(req, res, () => {
-        //   req.session.save(function (err, next) {
-        //     if (err) return next(err)
-        //     res.json(user)
-        //   })
-        // })
-
-        passport.authenticate('local', {
-          successRedirect: '/',
-          successFlash: true,
-          // failureRedirect: '/auth/signup', // TODO for client
-          failureFlash: true
-        }, (err, user, info) => {
-          if (err) return next(err)
-          if (!user) return res.status(401).json({ status: 'error', code: 'Sign up succeded but sign in failed.' })
-
-          return res.status(200).json({
-            token: jwt.sign({
-              sub: user._id,
-              id: user.accountId,
-              username: user.username,
-              name: user.name
-            }, process.env.SECRET)
-          })
-        })(req, res, next)
+        // Automatically sign in after successful sign up
+        Auth.signin(req, res, next)
       })
   },
 
-  /*
-    Sign in a signed up account
-  */
+
+  /**
+   * Sign in a signed up account
+   */
   signin: (req, res, next) => {
     req.checkBody('username', 'Username is required').notEmpty()
     req.checkBody('password', 'Password is required').notEmpty()
@@ -66,54 +44,85 @@ module.exports = {
       failureFlash: true
     }, (err, user, info) => {
       if (err) return next(err)
-      if (!user) return res.status(401).json({ status: 'error', code: 'Sign in failed.' })
+      if (!user) return res.status(401).json({ status: 'error', code: 'Sign in failed because user is not found.' })
 
-      return res.status(200).json({
-        token: jwt.sign({
+      const content = {
+        payload: {
           sub: user._id,
           id: user.accountId,
           username: user.username,
           name: user.name
-        }, process.env.SECRET)
+        },
+        secret: process.env.SECRET,
+        options: {
+          issuer: process.env.HOST,
+          expiresIn: '1d'
+        }
+      }
+
+      return res.status(200).json({
+        token: jwt.sign(content.payload, content.secret, content.options)
       })
     })(req, res, next)
   },
 
-  /*
-    Sign out
-  */
+
+  /**
+   * Sign out
+   */
   signout: (req, res) => {
     req.logout()
-      // req.session.destroy()
     res.status(200).json({ message: 'Sign out succeded' })
   },
 
-  /*
-    Check whether the user is authenticated
-  */
-  isAuthenticated: (req, res, next) => {
-    if (req.user) next()
-    else res.send('You are no authenticated')
-  },
 
-  /*
-    Check whether the user is signed in
-  */
-  isSignedIn: (req, res, next) => {
-    if (req.isAuthenticated()) res.send('You are already signed in')
-    else next()
-  },
-
-  /*
-    Check whether the username is already signed up
-  */
+  /**
+   * Check whether the username is already signed up
+   */
   isAccountExist: (req, res, next) => {
     Account.count({
       username: req.body.username
     }, (err, count) => {
       if (count === 0) next()
-      else res.json({ 'message': `Account with username ${req.body.username} is already exist` })
+      else res.json({ 'message': `Account with username ${req.body.username} is already exist.` })
     })
+  },
+
+
+  /**
+   * Check whether the user is authenticated
+   */
+  isAuthenticated: (req, res, next) => {
+    // Check for token from various ways
+    let token = req.body.token || req.query.token || req.headers.authorization.split(' ')[1] || 0
+
+    // There's a token coming in...
+    // console.log('token:', token)
+
+    // Decode token if available
+    if (token !== 0) {
+      // Verifies secret and checks expiration
+      jwt.verify(token, process.env.SECRET, (err, decoded) => {
+        if (err) {
+          return res.json({
+            success: false,
+            message: 'Failed to authenticate token.'
+          })
+        } else {
+          // If everything is good, save to request for use in other routes
+          // req.decoded = decoded
+          next()
+        }
+      })
+    } else {
+      // if there is no token, return an error
+      return res.status(403).send({
+        success: false,
+        message: 'No token provided.'
+      })
+    }
+    // Finish token checker for authentication
   }
 
+  // api.auth.js
 }

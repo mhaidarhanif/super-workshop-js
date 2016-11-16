@@ -19,35 +19,57 @@ const $booksListContentTemplate = $('#books-list-content-template').html()
 // AUTHENTICATION
 // ---------------------------------------------------------------------------
 
+// Global methods for authentication
+
 const Auth = {
+
+  // Store JWT to localStorage after get data from /auth/signup
   authenticateUser: (data) => {
     if (data.status === 'error') console.log('No account:', data)
     Auth.deauthenticateUser()
-    console.log('data:', data)
+      // console.log('data:', data)
     localStorage.setItem('token', data.token)
-    console.log('token:', localStorage.getItem('token'))
+      // console.log('token:', localStorage.getItem('token'))
     window.location = '/'
   },
-  isUserAuthenticated: () => {
-    console.log('token:', localStorage.getItem('token'))
-    return localStorage.getItem('token') !== null
-  },
+
+  // Remove JWT to sign out
   deauthenticateUser: () => {
     // $.ajax(`${api}/auth/signout`)
     // req.session.destroy()
     localStorage.removeItem('token')
   },
+
+  // Check if current visiting user is authenticated
+  isUserAuthenticated: () => {
+    // console.log('token:', Auth.getToken())
+    return Auth.getToken() !== null
+  },
+
+  // Get JWT from localStorage
   getToken: () => {
     return localStorage.getItem('token')
   },
+
+  // Get user data inside JWT from localStorage
   getUser: () => {
     let token = Auth.getToken()
     if (!token) return {}
-    else {
-      return jwt_decode(token)
-    }
+    else return jwt_decode(token)
   }
 }
+
+// jQuery Ajax setup for each request
+// Set header with 'Authorization: Bearer JWT'
+
+$.ajaxSetup({
+  'beforeSend': (xhr) => {
+    if (Auth.getToken()) {
+      xhr.setRequestHeader('Authorization', 'Bearer ' + Auth.getToken())
+    }
+  }
+})
+
 
 // ---------------------------------------------------------------------------
 // VIEW
