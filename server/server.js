@@ -58,16 +58,22 @@ const providers = require('./helpers/providers')
 // -----------------------------------------------------------------------------
 
 // EXPRESS
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(expressValidator())
 app.use(cors())
 
 // MONGODB
+
+// Prevent this:
+// DeprecationWarning: Mongoose: mpromise (mongoose's default promise library) is deprecated,
+// plug in your own promise library instead: http://mongoosejs.com/docs/promises.html
 mongoose.Promise = global.Promise // native Node.js promise
 mongoose.connect(process.env.MONGODB_URI)
 
 // SESSION
+
 app.use(expressSession({
   secret: process.env.SECRET,
   resave: false,

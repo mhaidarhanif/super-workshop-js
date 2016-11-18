@@ -17,10 +17,6 @@ mongoosePaginate.paginate.options = {
 // const textSearch = require('mongoose-text-search')
 
 const BookSchema = new Schema({
-  code: {
-    type: Number,
-    unique: true
-  },
   isbn: {
     type: String,
     unique: true,
