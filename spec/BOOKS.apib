@@ -7,8 +7,6 @@ Books API is a simple API allowing consumers to post, get, update, and delete co
 
 # Books API Root [/]
 
-Resources related to books in the API.
-
 This resource does not have any specific attributes. Instead it offers the initial API affordances in the form of the links in the JSON body.
 
 It is recommend to follow the "url" link values, [Link](https://tools.ietf.org/html/rfc5988) or "Location" headers where applicable to retrieve resources. Instead of constructing your own URLs, to keep your client decoupled from implementation details.
@@ -18,6 +16,8 @@ It is recommend to follow the "url" link values, [Link](https://tools.ietf.org/h
 + Response 200 (application/json)
 
         {
+          "auth_url": "/auth",
+          "accounts_url": "/accounts",
           "books_url": "/books"
         }
 
@@ -25,7 +25,7 @@ It is recommend to follow the "url" link values, [Link](https://tools.ietf.org/h
 
 Resources related to books in the API.
 
-## Books [/books{?page}]
+## Collection [/books{?page}]
 
 + Parameters
   + page: 1 (optional, number) - The page of books to return.
@@ -86,9 +86,9 @@ We may post a new book detail using this action. It takes a JSON object containi
                 "owners": [ 3 ]
               }
 
-## Book [/books/{book_id}]
+## Single [/books/{bookId}]
 
-A Book object has the following attributes:
+A single Book object has the following attributes:
 
 + title - Book title.
 + published - Whether the books has been published or not.
@@ -97,7 +97,7 @@ A Book object has the following attributes:
 + url - Permalink of the book.
 
 + Parameters
-  + book_id: 1 (required, number) - ID of the Book in form of an integer.
+  + bookId: 1 (required, number) - ID of the Book in form of an integer.
 
 ### Get a Book Detail [GET]
 
@@ -110,6 +110,30 @@ A Book object has the following attributes:
           "owners": [ 1 ]
         }
 
+### Update a Book Detail [PUT]
+
++ isbn (number) - ISBN
++ title (string) - Book title
++ owners (array[number]) - List of owners with accountId
+
++ Request (application/json)
+
+        {
+          "isbn": 1000,
+          "title": "One on One Only",
+          "owners": 2
+        }
+
++ Response 200 (application/json)
+
+        {
+          "isbn": 1000,
+          "title": "One on One Only",
+          "price": 11,
+          "owners": [ 1, 2 ]
+        }
+
+
 ### Delete a Book Detail [DELETE]
 
 + Response 200 (application/json)
@@ -118,11 +142,11 @@ A Book object has the following attributes:
           "message": "Book has been deleted."
         }
 
-## Book Owner [/books/{book_id}/owners/{owner_id}]
+## Owner [/books/{bookId}/owners/{accountId}]
 
 + Parameters
-  + book_id: 1 (required, number) - ID of the Book in form of an integer.
-  + owner_id: 1 (required, number) - ID of the Owner/Account in form of an integer.
+  + bookId: 1 (required, number) - ID of the Book in form of an integer.
+  + accountId: 1 (required, number) - ID of the Owner/Account in form of an integer.
 
 ### Get an Owner Detail [GET]
 
@@ -136,7 +160,7 @@ A Book object has the following attributes:
 
 ### Post an Owner Detail [POST]
 
-We may post a new owner/account ID to a specific book.
+We may post a new owner with account ID to a specific book.
 
 + accountId (number) - Account ID
 
