@@ -1,7 +1,7 @@
 {
-  "name": "express-workshop",
+  "name": "super-workshop-js",
   "version": "1.0.0",
-  "description": "Workshop JS",
+  "description": "Super Workshop JS",
   "main": "server.js",
   "scripts": {
     "start": "node server",
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mhaidarh/express-workshop.git"
+    "url": "git+https://github.com/mhaidarh/super-workshop-js.git"
   },
   "keywords": [
     "express",
@@ -25,9 +25,9 @@
   "author": "M Haidar Hanif <npm@mhaidarhanif.com> (https://mhaidarhanif.com)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mhaidarh/express-workshop/issues"
+    "url": "https://github.com/mhaidarh/super-workshop-js/issues"
   },
-  "homepage": "https://github.com/mhaidarh/express-workshop#readme",
+  "homepage": "https://github.com/mhaidarh/super-workshop-js#readme",
   "dependencies": {
     "acho": "3.1.1",
     "body-parser": "1.15.2",
