@@ -1,7 +1,18 @@
 {
+  "ignore": [
+   "**/node_modules/**",
+   "build/**",
+   "coverage/**",
+   "dist/**",
+   "macros/**",
+   "performance/**",
+   "test/**",
+   "gulpfile.js"
+ ],
   "critics": {
     "lint": {"engine": "standard"},
     "wc": { "limit": 300 }
   },
-  "packageJsonLocation": "server/package.json"
+  "packageJsonLocation": "server/package.json",
+  "bowerJsonLocation": "client/bower.json"
 }
