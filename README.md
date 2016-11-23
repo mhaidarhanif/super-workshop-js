@@ -1,4 +1,17 @@
-# Workshop JS :gear: Workshop with JavaScript
+<div align="center">
+<h1>Workshop JS :gear: Workshop with JavaScript</h1>
+</div>
+
+<div align="center">
+[![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+[![Inch CI](https://inch-ci.org/github/mhaidarh/super-workshop-js.svg?branch=master)](https://inch-ci.org/github/mhaidarh/super-workshop-js)
+[![Dependency CI](https://dependencyci.com/github/mhaidarh/super-workshop-js/badge)](https://dependencyci.com/github/mhaidarh/super-workshop-js)
+[![David Dependency](https://img.shields.io/david/mhaidarh/super-workshop-js.svg)](https://david-dm.org/mhaidarh/super-workshop-js)
+[![bitHound Dependency](https://img.shields.io/bithound/dependencies/github/mhaidarh/super-workshop-js.svg)](https://bithound.io/github/mhaidarh/super-workshop-js)
+[![bitHound Code](https://img.shields.io/bithound/code/github/mhaidarh/super-workshop-js.svg)](https://bithound.io/github/mhaidarh/super-workshop-js)
+[![Codacy Grade](https://img.shields.io/codacy/grade/9820a9dd1787489dae6122392e101f53.svg)](https://codacy.com/app/mhaidarh/super-workshop-js?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mhaidarh/super-workshop-js&amp;utm_campaign=Badge_Grade)
+[![License](https://img.shields.io/github/license/mhaidarh/super-workshop-js.svg)](LICENSE)
+</div>
 
 This experimental workshop repo is designed for easy learning curve of practicing and implementing friendly best practice of these technologies:
 
@@ -122,6 +135,8 @@ live-server
 ## API
 
 Default Root URL: `http://localhost:3000`
+
+**Note:** All IDs that required for each endpoints are not using default ID from the database (such as `ObjectId`).
 
 ### Accounts
 
