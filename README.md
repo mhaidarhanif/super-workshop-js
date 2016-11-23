@@ -113,12 +113,12 @@ live-server
 
 ```json
 {
-  "name": String,
-  "username": String,
-  "email": String,
-  "password": String,
-  "createdAt": Date,
-  "updatedAt": Date
+  "name": "String",
+  "username": "String",
+  "email": "String",
+  "password": "String",
+  "createdAt": "Date",
+  "updatedAt": "Date"
 }
 ```
 
@@ -126,11 +126,11 @@ live-server
 
 ```json
 {
-  "isbn": String,
-  "name": String,
-  "price": String,
-  "createdAt": Date,
-  "updatedAt": Date
+  "isbn": "String",
+  "name": "String",
+  "price": "String",
+  "createdAt": "Date",
+  "updatedAt": "Date"
 }
 ```
 
