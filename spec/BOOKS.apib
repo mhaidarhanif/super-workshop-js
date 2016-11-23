@@ -1,9 +1,9 @@
 FORMAT: 1A
-HOST: https://localhost:3000/api
+HOST: https://books.mhaidarhanif.com
 
-# Books
+# Super Books API
 
-Books API is a simple API allowing consumers to post, get, update, and delete collection of books; as well as tagging the owners. You can view this documentation over at [Apiary](http://docs.super-books.apiary.io).
+Super Books API is a simple API allowing consumers to post, get, update, and delete collection of books; as well as tagging the owners. You can view this documentation over at [Apiary](http://docs.superbooks.apiary.io).
 
 # Books API Root [/]
 
@@ -16,10 +16,31 @@ It is recommend to follow the "url" link values, [Link](https://tools.ietf.org/h
 + Response 200 (application/json)
 
         {
-          "auth_url": "/auth",
-          "accounts_url": "/accounts",
-          "books_url": "/books"
+          "name": "Books API",
+          "documentation": "https://github.com/mhaidarh/workshop-js",
+          "bookModel": {
+            "isbn": "Number",
+            "title": "String",
+            "price": "Number",
+            "owners": [ "Number" ],
+            "publishedAt": "Date",
+            "createdAt": "Date",
+            "updatedAt": "Date"
+          },
+          "endpoints": {
+            "auth": "/auth",
+            "accounts": "/accounts",
+            "books": {
+              "GET":    "/books",
+              "GET":    "/books/{isbn}",
+              "POST":   "/books",
+              "PUT":    "/books/{isbn}",
+              "DELETE": "/books/{isbn}"
+              "DELETE": "/books"
+            }
+          }
         }
+
 
 ## Group Book
 
