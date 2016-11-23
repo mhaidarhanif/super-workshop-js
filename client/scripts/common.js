@@ -1,4 +1,4 @@
-/*global $, jQuery, EJS, Handlebars, Router */
+/* global $ */
 
 // ---------------------------------------------------------------------------
 // GLOBAL VARIABLES
@@ -70,7 +70,6 @@ $.ajaxSetup({
   }
 })
 
-
 // ---------------------------------------------------------------------------
 // VIEW
 // ---------------------------------------------------------------------------
@@ -115,11 +114,11 @@ const searchData = () => {
   let $name = $('input#searchByName').val()
     // console.log($searchInput)
   $.ajax({
-      method: 'POST',
-      url: `${api}/books/search`,
-      data: { isbn: $isbn, name: $name },
-      dataType: 'json'
-    })
+    method: 'POST',
+    url: `${api}/books/search`,
+    data: { isbn: $isbn, name: $name },
+    dataType: 'json'
+  })
     .done((data) => {
       compileBooksContent(data)
     })

@@ -1,6 +1,4 @@
-/*global $, jQuery, EJS, Handlebars, Router */
 $(document).ready(function () {
-
   compileMenu()
   compileBooksHeader()
   getDataFromAPI()
@@ -9,6 +7,5 @@ $(document).ready(function () {
 
   setTimeout(function () {
     $('#books-list-table').DataTable()
-  }, 500);
-
+  }, 500)
 })
