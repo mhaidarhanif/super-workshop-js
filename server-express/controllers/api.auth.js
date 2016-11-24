@@ -16,19 +16,18 @@ const Auth = module.exports = {
 
     // passport-local-mongoose
     Account.register(new Account({
-        name: req.body.name,
-        username: req.body.username,
-        email: req.body.email
-      }), req.body.password,
-      (err, account) => {
-        if (err) res.json({ error: err.message })
-        if (!account) res.json({ success: false, message: 'Sign up failed.' })
+      name: req.body.name,
+      username: req.body.username,
+      email: req.body.email
+    }), req.body.password,
+    (err, account) => {
+      if (err) res.json({ error: err.message })
+      if (!account) res.json({ success: false, message: 'Sign up failed.' })
 
-        // Automatically sign in after successful sign up
-        Auth.signin(req, res, next)
-      })
+      // Automatically sign in after successful sign up
+      Auth.signin(req, res, next)
+    })
   },
-
 
   /**
    * Sign in a signed up account
@@ -47,11 +46,13 @@ const Auth = module.exports = {
       if (!user) return res.status(401).json({ status: 'error', code: 'Sign in failed because user is not found.' })
 
       const content = {
-        payload: {
-          sub: user._id,
-          id: user.accountId,
-          username: user.username,
-          name: user.name
+        payload: { // or claims
+          iss: process.env.URL,    // ISSUER: URL of the service
+          sub: user._id,           // SUBJECT: OID/UID of the user in system
+          id: user.accountId,      // ACCOUNTID: Sequential ID of the user
+          scope: 'self, profile',  // SCOPE: Choose specific payload/claims
+          username: user.username, // USERNAME: Lowercased username of the user
+          name: user.name          // NAME: Full name of the user
         },
         secret: process.env.SECRET,
         options: {
@@ -66,7 +67,6 @@ const Auth = module.exports = {
     })(req, res, next)
   },
 
-
   /**
    * Sign out
    */
@@ -75,7 +75,6 @@ const Auth = module.exports = {
     res.status(200).json({ message: 'Sign out succeded' })
   },
 
-
   /**
    * Check whether the username is already signed up
    */
@@ -83,11 +82,11 @@ const Auth = module.exports = {
     Account.count({
       username: req.body.username
     }, (err, count) => {
-      if (count === 0) next()
-      else res.json({ 'message': `Account with username ${req.body.username} is already exist.` })
+      if (err) return res.json({ success: false, message: 'Failed to check Account existency.' })
+      else if (count === 0) next()
+      else return res.json({ 'message': `Account with username ${req.body.username} is already exist.` })
     })
   },
-
 
   /**
    * Check whether the user is authenticated
