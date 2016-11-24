@@ -15,15 +15,15 @@ const expressValidator = require('express-validator')
 const cors = require('cors')
 
 // JSON Web Tokens
-const jwt = require('jsonwebtoken')
-const ejwt = require('express-jwt')
-const guard = require('express-jwt-permissions')()
-const JwtStrategy = require('passport-jwt').Strategy
-const ExtractJwt = require('passport-jwt').ExtractJwt
+// const jwt = require('jsonwebtoken')
+// const ejwt = require('express-jwt')
+// const guard = require('express-jwt-permissions')()
+// const JwtStrategy = require('passport-jwt').Strategy
+// const ExtractJwt = require('passport-jwt').ExtractJwt
 
 // Initiate Express
 const app = express()
-const router = express.Router()
+// Routers are in their respected directories
 
 // Data and modeling
 const mongoose = require('mongoose')
@@ -42,7 +42,7 @@ const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 
 // Models
 const Account = require('./models/account')
-const Book = require('./models/books')
+// const Book = require('./models/books')
 
 // Routes
 const api = require('./routes/api')
@@ -107,40 +107,40 @@ passport.use(new LocalStrategy(Account.authenticate()))
 
 // GitHub
 passport.use(new GitHubStrategy({
-    clientID: process.env.GITHUB_CLIENT_ID,
-    clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: process.env.GITHUB_CALLBACK,
-    passReqToCallback: true
-  },
-  providers.github))
+  clientID: process.env.GITHUB_CLIENT_ID,
+  clientSecret: process.env.GITHUB_CLIENT_SECRET,
+  callbackURL: process.env.GITHUB_CALLBACK,
+  passReqToCallback: true
+},
+providers.github))
 
 // Facebook
 passport.use(new FacebookStrategy({
-    clientID: process.env.FACEBOOK_APP_ID,
-    clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: process.env.FACEBOOK_CALLBACK,
-    profileFields: ['id', 'displayName', 'photos', 'email'],
-    passReqToCallback: true
-  },
-  providers.facebook))
+  clientID: process.env.FACEBOOK_APP_ID,
+  clientSecret: process.env.FACEBOOK_APP_SECRET,
+  callbackURL: process.env.FACEBOOK_CALLBACK,
+  profileFields: ['id', 'displayName', 'photos', 'email'],
+  passReqToCallback: true
+},
+providers.facebook))
 
 // Twitter
 passport.use(new TwitterStrategy({
-    consumerKey: process.env.TWITTER_API_KEY,
-    consumerSecret: process.env.TWITTER_API_SECRET,
-    callbackURL: process.env.TWITTER_CALLBACK,
-    passReqToCallback: true
-  },
-  providers.twitter))
+  consumerKey: process.env.TWITTER_API_KEY,
+  consumerSecret: process.env.TWITTER_API_SECRET,
+  callbackURL: process.env.TWITTER_CALLBACK,
+  passReqToCallback: true
+},
+providers.twitter))
 
 // Google
 passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: process.env.GOOGLE_CALLBACK,
-    passReqToCallback: true
-  },
-  providers.google))
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: process.env.GOOGLE_CALLBACK,
+  passReqToCallback: true
+},
+providers.google))
 
 // Serialization
 passport.serializeUser(Account.serializeUser())
@@ -150,8 +150,8 @@ passport.deserializeUser(Account.deserializeUser())
 // RUN THE APP
 // -----------------------------------------------------------------------------
 
-const host = process.env.HOST || "localhost"
-const port = process.env.PORT || "3000"
+const host = process.env.HOST || 'localhost'
+const port = process.env.PORT || '3000'
 
 app.listen(port, host, (err) => {
   if (err) console.log(err)
