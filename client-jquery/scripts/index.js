@@ -1,3 +1,7 @@
+/*
+global $, compileMenu, compileBooksHeader, getDataFromAPI
+*/
+
 $(document).ready(function () {
   compileMenu()
   compileBooksHeader()

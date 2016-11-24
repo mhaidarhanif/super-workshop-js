@@ -1,3 +1,11 @@
+/*
+global alert, confirm, localStorage
+global $, Handlebars,
+global api, Auth, getDataFromAPI
+global $booksListTable
+global compileMenu, compileBooksHeader, compileBooksContent
+*/
+
 $(document).ready(function () {
   if (Auth.getUser().username !== 'admin') window.location = '/'
 

@@ -1,4 +1,8 @@
-/* global $ */
+/* eslint-disable no-unused-vars */
+
+/*
+global $, localStorage, jwt_decode, Handlebars
+*/
 
 // ---------------------------------------------------------------------------
 // GLOBAL VARIABLES
