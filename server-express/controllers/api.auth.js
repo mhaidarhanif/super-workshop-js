@@ -39,7 +39,7 @@ const Auth = module.exports = {
     passport.authenticate('local', {
       successRedirect: '/',
       successFlash: true,
-      // failureRedirect: '/auth/signin', // TODO for client
+      failureRedirect: '/', // Depends on client
       failureFlash: true
     }, (err, user, info) => {
       if (err) return next(err)
