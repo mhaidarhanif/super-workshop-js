@@ -80,19 +80,19 @@ Continuous X:
 Make sure you have installed the latest Node.js and npm. Afterwards, install the required global dependencies.
 
 ```sh
-npm install -g nodemon live-server bower mocha vue-cli pm2
+npm install -g yarn pnpm nodemon live-server bower mocha vue-cli react-native-cli pm2
 ```
 
 Then open `server-*` and `client-*` directory separately.
 
-### Server Express
+### Server Express (`server-express`)
 
 ```sh
 npm install
 npm run dev
 ```
 
-### Client jQuery
+### Client jQuery (`client-jquery`)
 
 ```sh
 bower install
@@ -104,6 +104,18 @@ live-server
 ## Deployment
 
 **TODO with PM2**
+
+### Last Check
+
+```sh
+pm2 start ecosystem.json
+```
+
+### Deploy to Server
+
+```sh
+pm2 deploy ecosystem.json
+```
 
 --------------------------------------------------------------------------------
 
