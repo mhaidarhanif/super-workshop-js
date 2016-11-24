@@ -13,6 +13,5 @@
     "lint": {"engine": "standard"},
     "wc": { "limit": 300 }
   },
-  "packageJsonLocation": "server/package.json",
-  "bowerJsonLocation": "client/bower.json"
+  "packageJsonLocation": "server/package.json"
 }
