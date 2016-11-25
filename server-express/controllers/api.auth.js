@@ -36,12 +36,7 @@ const Auth = module.exports = {
     req.checkBody('username', 'Username is required').notEmpty()
     req.checkBody('password', 'Password is required').notEmpty()
 
-    passport.authenticate('local', {
-      successRedirect: '/',
-      successFlash: true,
-      failureRedirect: '/', // Depends on client
-      failureFlash: true
-    }, (err, user, info) => {
+    passport.authenticate('local', (err, user, info) => {
       if (err) return next(err)
       if (!user) return res.status(401).json({ status: 'error', code: 'Sign in failed because user is not found.' })
 

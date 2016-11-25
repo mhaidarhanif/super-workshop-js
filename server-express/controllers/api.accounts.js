@@ -1,5 +1,3 @@
-const passport = require('passport')
-
 const Account = require('../models/account')
 
 module.exports = {
@@ -9,14 +7,35 @@ module.exports = {
    */
   seedAccounts: (req, res) => {
     const accounts = require('../data/accounts.json')
-    // console.log({accounts})
-    Account
-      .create(accounts, (err, data) => {
-        // console.log('seedAccounts:', data)
-        if (err) res.status(400).json(err)
-        else if (!data) res.status(304).json({ 'message': 'Failed to seed accounts' })
-        else res.status(200).json(data)
+    console.log({accounts})
+
+    // Remove all accounts first
+    Account.remove({}, (err) => {
+      if (err) res.status(400).json({ 'error': `Error: ${err}` })
+      console.log({ 'message': `All accounts have been removed before seeding.` })
+    })
+
+    // Seed some accounts from data
+    accounts.forEach((account, index) => {
+      Account.register(new Account({
+        name: account.name,
+        username: account.username,
+        email: account.email
+      }),
+      account.password,
+      (err, account) => {
+        if (err) res.status(400).json({ error: err.message })
+        else if (!account) res.status(304).json({ 'message': `Failed to seed account: ${account}` })
       })
+    })
+
+    // Wait until all accounts are registered
+    setTimeout(() => {
+      Account.find({}, (err, data) => {
+        if (err) res.status(400).json({ error: err.message })
+        res.status(200).json(data)
+      })
+    }, 2000)
   },
 
   /*
