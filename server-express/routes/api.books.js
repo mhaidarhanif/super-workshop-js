@@ -4,7 +4,6 @@ const router = express.Router()
 const api = require('../controllers/api.books')
 
 // -----------------------------------------------------------------------------
-// ROUTING
 // api/books
 // -----------------------------------------------------------------------------
 
@@ -12,8 +11,9 @@ const api = require('../controllers/api.books')
 // req.params >>> /data/:id
 // req.query  >>> /data?q={id}
 
-router.get('/seed', api.seedBooks)
-router.get('/seedlot', api.seedBooksLot)
+router.get('/actions/seed', api.seedBooks)
+router.get('/actions/seed-lot', api.seedBooksLot)
+
 router.get('/', api.getBooks)
 router.get('/paginated', api.getBooksPaginated)
 router.delete('/', api.deleteBooks)

@@ -56,7 +56,6 @@ const Auth = module.exports = {
         },
         secret: process.env.SECRET,
         options: {
-          issuer: process.env.HOST,
           expiresIn: '1d'
         }
       }

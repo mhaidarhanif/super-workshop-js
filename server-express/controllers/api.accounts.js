@@ -5,8 +5,23 @@ const Account = require('../models/account')
 module.exports = {
 
   /*
-    Get list of all accounts
-  */
+   * @api {get} Seed some accounts
+   */
+  seedAccounts: (req, res) => {
+    const accounts = require('../data/accounts.json')
+    // console.log({accounts})
+    Account
+      .create(accounts, (err, data) => {
+        // console.log('seedAccounts:', data)
+        if (err) res.status(400).json(err)
+        else if (!data) res.status(304).json({ 'message': 'Failed to seed accounts' })
+        else res.status(200).json(data)
+      })
+  },
+
+  /*
+   * Get list of all accounts
+   */
   getAccounts: (req, res) => {
     Account.find({}, (err, data) => {
       console.log('getAccounts:', data)

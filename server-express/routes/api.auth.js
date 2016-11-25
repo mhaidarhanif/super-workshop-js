@@ -4,7 +4,6 @@ const passport = require('passport')
 
 const auth = require('../controllers/api.auth.js')
 
-
 /*
 --------------------------------------------------------------------------------
 AUTHENTICATION
@@ -31,7 +30,6 @@ router.post('/isAccountExist', auth.isAccountExist, (req, res) => { res.send(tru
 // IS AUTHENTICATED?
 // Require 'Authorization: Bearer JWT'
 router.post('/isAuthenticated', auth.isAuthenticated, (req, res) => { res.send(true) })
-
 
 /*
 --------------------------------------------------------------------------------
