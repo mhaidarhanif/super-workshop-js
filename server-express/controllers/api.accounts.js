@@ -2,6 +2,10 @@ const Account = require('../models/account')
 
 module.exports = {
 
+  // ---------------------------------------------------------------------------
+  // ADMINISTRATIVE
+  // ---------------------------------------------------------------------------
+
   /*
    * @api {get} Seed some accounts
    */
@@ -45,7 +49,7 @@ module.exports = {
     Account.find({}, (err, data) => {
       console.log('getAccounts:', data)
       if (err) res.status(400).json({ 'error': `Error: ${err}` })
-      if (!data) res.status(404).json({ 'message': 'Failed to get list of all accounts' })
+      if (!data) res.status(404).json({ 'message': 'Failed to get list of all accounts.' })
       res.status(200).json(data)
     })
   },
@@ -56,9 +60,13 @@ module.exports = {
   deleteAccounts: (req, res) => {
     Account.remove({}, (err) => {
       if (err) res.status(400).json({ 'error': `Error: ${err}` })
-      res.status(200).json({ 'message': `All accounts have been deleted` })
+      res.status(200).json({ 'message': `All accounts have been removed.` })
     })
   },
+
+  // ---------------------------------------------------------------------------
+  // PUBLIC
+  // ---------------------------------------------------------------------------
 
   /*
     Get profile of an account by ID

@@ -7,8 +7,12 @@ const Book = require('../models/books')
 
 module.exports = {
 
+  // ---------------------------------------------------------------------------
+  // ADMINISTRATIVE
+  // ---------------------------------------------------------------------------
+
   /*
-   * @api {get} /books/seed Seed some books
+   * @api {get} /books/actions/seed Seed some books
    * @apiName seedBooks
    * @apiGroup Books
    */
@@ -24,7 +28,7 @@ module.exports = {
   },
 
   /*
-   * @api {get} /books/seedlot Seed a lot of books
+   * @api {get} /books/actions/seed-lot Seed a lot of books
    * @apiName seedBooksLot
    * @apiGroup Books
    */
@@ -38,6 +42,30 @@ module.exports = {
         else res.status(200).json(data)
       })
   },
+
+  /*
+   * @api {get} /books Delete all books
+   * @apiName deleteBooks
+   * @apiGroup Books
+   *
+   * @apiParam {Number} isbn
+   *
+   * @apiSuccess {JSON} message All books have been removed.
+   */
+  deleteBooks: (req, res) => {
+    Book
+      .remove()
+      .exec((err, data) => {
+        // console.log('deleteBooks:', data)
+        if (err) res.status(400).json({ 'error': `Error: ${err}` })
+        else if (!data) res.status(404).json({ 'message': 'Already empty.' })
+        else res.status(200).json({ 'message': `All books have been removed.` })
+      })
+  },
+
+  // ---------------------------------------------------------------------------
+  // PUBLIC
+  // ---------------------------------------------------------------------------
 
   /*
    * @api {get} /books Get all books
@@ -78,29 +106,10 @@ module.exports = {
       .then((result) => {
         const data = result.docs
         console.log('getBooksPaginated:', data)
+          // err when paginate
           // if (err) res.status(400).json({ 'error': `Error: ${err}` })
           // else if (!data) res.status(404).json({ 'message': 'Failed to get all books' })
         res.status(200).json(data)
-      })
-  },
-
-  /*
-   * @api {get} /books Delete all books
-   * @apiName deleteBooks
-   * @apiGroup Books
-   *
-   * @apiParam {Number} isbn
-   *
-   * @apiSuccess {JSON} message All books have been deleted
-   */
-  deleteBooks: (req, res) => {
-    Book
-      .remove()
-      .exec((err, data) => {
-        // console.log('deleteBooks:', data)
-        if (err) res.status(400).json({ 'error': `Error: ${err}` })
-        else if (!data) res.status(404).json({ 'message': 'Already empty' })
-        else res.status(200).json({ 'message': `All books have been deleted` })
       })
   },
 
@@ -202,7 +211,7 @@ module.exports = {
    *
    * @apiParams {String} isbn   Book id is ISBN
    *
-   * @apiSuccess {JSON} message Book ISBN has been deleted
+   * @apiSuccess {JSON} message Book ISBN has been removed
    */
   deleteBookByISBN: (req, res) => {
     Book.findOneAndRemove({
@@ -211,7 +220,10 @@ module.exports = {
       console.log('deleteBookByISBN:', data)
       if (err) res.status(400).json({ 'error': `Error: ${err}` })
       else if (!data) res.status(404).json({ 'message': 'No book found' })
-      else res.status(200).json({ 'message': `Book ${req.params.isbn} has been deleted` })
+      else res.status(200).json({
+        'message': `Book ${req.params.isbn} has been removed.`,
+        'data': data
+      })
     })
   },
 
