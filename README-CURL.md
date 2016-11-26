@@ -1,4 +1,4 @@
-# Workshop JS :gear: Test with cURL
+# Super Workshop JS :gear: Test with cURL
 
 --------------------------------------------------------------------------------
 
