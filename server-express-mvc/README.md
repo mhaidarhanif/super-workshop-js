@@ -1,6 +1,6 @@
-# Server Express
+# Server Express MVC
 
-Server appplication with Express.
+Legacy server appplication with Express. Please continue with the main `server-express` version.
 
 ## Setup
 
