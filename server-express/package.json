@@ -1,0 +1,60 @@
+{
+  "name": "super-workshop-js",
+  "version": "1.0.0",
+  "description": "Super Workshop JS",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server",
+    "start:pm2": "pm2 start",
+    "dev": "nodemon server",
+    "test": "npm run test:unit",
+    "test:unit": "mocha tests/unit",
+    "test:integration": "mocha tests/integration",
+    "test:api": "mocha tests/api",
+    "test:e2e": "mocha tests/e2e"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mhaidarh/super-workshop-js.git"
+  },
+  "keywords": [
+    "express",
+    "workshop"
+  ],
+  "author": "M Haidar Hanif <npm@mhaidarhanif.com> (https://mhaidarhanif.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mhaidarh/super-workshop-js/issues"
+  },
+  "homepage": "https://github.com/mhaidarh/super-workshop-js#readme",
+  "dependencies": {
+    "acho": "^3.1.1",
+    "body-parser": "^1.15.2",
+    "cors": "^2.8.1",
+    "dotenv": "^2.0.0",
+    "express": "^4.14.0",
+    "express-jwt": "^5.1.0",
+    "express-jwt-permissions": "^0.5.0",
+    "express-session": "^1.14.2",
+    "express-validator": "^2.21.0",
+    "jsonwebtoken": "^7.1.9",
+    "mongoose": "^4.6.8",
+    "mongoose-paginate": "^5.0.3",
+    "mongoose-sequence": "^3.1.0",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
+    "passport-github": "^1.1.0",
+    "passport-google-oauth": "^1.0.0",
+    "passport-jwt": "^2.2.1",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^4.0.0",
+    "passport-twitter": "^1.0.4"
+  },
+  "devDependencies": {
+    "chance-cli": "^1.0.6",
+    "mocha": "^3.1.2",
+    "npm-check-updates": "2.8.6",
+    "pm2": "^2.1.5",
+    "standard": "^8.5.0"
+  }
+}
