@@ -64,7 +64,7 @@ $(document).ready(function () {
 
     $('#book-seed-button').on('click', () => {
       $.ajax({
-        url: `${api}/books/seed`,
+        url: `${api}/books/actions/seed`,
         headers: { 'Authorization': `Bearer ${Auth.getToken()}` }
       })
         .done((data) => {
@@ -80,7 +80,7 @@ $(document).ready(function () {
 
     $('#book-seed-lot-button').on('click', () => {
       $.ajax({
-        url: `${api}/books/seedlot`,
+        url: `${api}/books/actions/seed-lot`,
         headers: { 'Authorization': `Bearer ${Auth.getToken()}` }
       })
         .done((data) => {
@@ -103,8 +103,8 @@ $(document).ready(function () {
         confirmButtonColor: '#DD6B55',
         confirmButtonText: 'Yes, delete them all!',
         cancelButtonText: 'No, let them be!',
-        closeOnConfirm: false,
-        closeOnCancel: false
+        closeOnConfirm: true,
+        closeOnCancel: true
       }, function (isConfirm) {
         if (isConfirm) {
           // Request to DELETE ALL
@@ -152,8 +152,8 @@ $(document).ready(function () {
       confirmButtonColor: '#DD6B55',
       confirmButtonText: 'Yes, delete it!',
       cancelButtonText: 'No, let it be!',
-      closeOnConfirm: false,
-      closeOnCancel: false
+      closeOnConfirm: true,
+      closeOnCancel: true
     }, function (isConfirm) {
       if (isConfirm) {
         // Request to DELETE
