@@ -55,6 +55,11 @@ const Auth = {
     return localStorage.getItem('token')
   },
 
+  // Make the JWT as an auth request header
+  getTokenAsAuthHeader: () => {
+    return { 'Authorization': `Bearer ${Auth.getToken()}` }
+  },
+
   // Get user data inside JWT from localStorage
   getUser: () => {
     let token = Auth.getToken()

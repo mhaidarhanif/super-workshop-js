@@ -65,14 +65,12 @@ $(document).ready(function () {
     $('#book-seed-button').on('click', () => {
       $.ajax({
         url: `${api}/books/actions/seed`,
-        headers: { 'Authorization': `Bearer ${Auth.getToken()}` }
+        headers: Auth.getTokenAsAuthHeader()
       })
-        .done((data) => {
-          getDataFromAPI()
-        })
-        .fail((xhr, textStatus, err) => {
-          sweetAlert('Sorry!', JSON.parse(xhr.responseText).message, 'error')
-        })
+      .done(data => getDataFromAPI())
+      .fail((xhr, textStatus, err) => {
+        sweetAlert('Sorry!', JSON.parse(xhr.responseText).message, 'error')
+      })
     })
 
     // -------------
@@ -81,14 +79,12 @@ $(document).ready(function () {
     $('#book-seed-lot-button').on('click', () => {
       $.ajax({
         url: `${api}/books/actions/seed-lot`,
-        headers: { 'Authorization': `Bearer ${Auth.getToken()}` }
+        headers: Auth.getTokenAsAuthHeader()
       })
-        .done((data) => {
-          getDataFromAPI()
-        })
-        .fail((xhr, textStatus, err) => {
-          sweetAlert('Sorry!', JSON.parse(xhr.responseText).message, 'error')
-        })
+      .done(data => getDataFromAPI())
+      .fail((xhr, textStatus, err) => {
+        sweetAlert('Sorry!', JSON.parse(xhr.responseText).message, 'error')
+      })
     })
 
     // ---------------
@@ -111,7 +107,7 @@ $(document).ready(function () {
           $.ajax({
             method: 'DELETE',
             url: `${api}/books`,
-            headers: { 'Authorization': `Bearer ${Auth.getToken()}` }
+            headers: Auth.getTokenAsAuthHeader()
           })
           .done(data => getDataFromAPI())
           .fail((xhr, textStatus, err) => sweetAlert('Sorry!', JSON.parse(xhr.responseText).message, 'error'))
@@ -133,14 +129,12 @@ $(document).ready(function () {
       method: methodInput,
       url: urlInput,
       data: dataInput,
-      headers: { 'Authorization': `Bearer ${Auth.getToken()}` }
+      headers: Auth.getTokenAsAuthHeader()
     })
-      .done((data) => {
-        getDataFromAPI()
-      })
-      .fail((xhr, textStatus, err) => {
-        sweetAlert('Sorry!', JSON.parse(xhr.responseText).message, 'error')
-      })
+    .done(data => getDataFromAPI())
+    .fail((xhr, textStatus, err) => {
+      sweetAlert('Sorry!', JSON.parse(xhr.responseText).message, 'error')
+    })
   }
 
   function confirmDeleteBook (isbn) {
