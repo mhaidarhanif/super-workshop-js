@@ -1,5 +1,26 @@
 const Book = require('./model')
 
+const books = require('./seed.json')
+const booksLot = require('./seed.lot.json')
+
+// -----------------------------------------------------------------------------
+// HELPERS
+// -----------------------------------------------------------------------------
+
+// Send response when POST
+const sendResponse = (res, err, data, message) => {
+  if (err) res.status(400).json({ 'error': `Error: ${err}` })
+  else if (!data) res.status(304).json({ 'message': message })
+  else res.status(200).json(data)
+}
+
+// Send response when GET/PUT
+const sendResponseNF = (res, err, data, message) => {
+  if (err) res.status(400).json({ 'error': `Error: ${err}` })
+  else if (!data) res.status(404).json({ 'message': message })
+  else res.status(200).json(data)
+}
+
 // -----------------------------------------------------------------------------
 // BOOKS CONTROLLERS
 // -----------------------------------------------------------------------------
@@ -16,13 +37,10 @@ module.exports = {
    * @apiGroup Books
    */
   seedBooks: (req, res) => {
-    const books = require('./seed.json')
     Book
       .create(books, (err, data) => {
         // console.log('seedBooks:', data)
-        if (err) res.status(400).json(err)
-        else if (!data) res.status(304).json({ 'message': 'Failed to seed books' })
-        else res.status(200).json(data)
+        sendResponse(res, err, data, 'Failed to seed a few books.')
       })
   },
 
@@ -32,13 +50,10 @@ module.exports = {
    * @apiGroup Books
    */
   seedBooksLot: (req, res) => {
-    const booksLot = require('./seed.lot.json')
     Book
       .create(booksLot, (err, data) => {
         // console.log('seedBooksLot:', data)
-        if (err) res.status(400).json(err)
-        else if (!data) res.status(304).json({ 'message': 'Failed to seed a lot of books' })
-        else res.status(200).json(data)
+        sendResponse(res, err, data, 'Failed to seed a lot of books.')
       })
   },
 
@@ -80,9 +95,7 @@ module.exports = {
       .find()
       .exec((err, data) => {
         // console.log('getBooks:', data)
-        if (err) res.status(400).json({ 'error': `Error: ${err}` })
-        else if (!data) res.status(404).json({ 'message': 'Failed to get all books' })
-        else res.status(200).json(data)
+        sendResponseNF(res, err, data, 'Failed to get all books.')
       })
   },
 
@@ -104,11 +117,10 @@ module.exports = {
       })
       .then((result) => {
         const data = result.docs
+        const err = 'ERROR: Get all books with pagination'
+
         console.log('getBooksPaginated:', data)
-          // err when paginate
-          // if (err) res.status(400).json({ 'error': `Error: ${err}` })
-          // else if (!data) res.status(404).json({ 'message': 'Failed to get all books' })
-        res.status(200).json(data)
+        sendResponseNF(res, err, data, 'Failed to get all books.')
       })
   },
 
@@ -124,17 +136,14 @@ module.exports = {
    * @apiSuccess {JSON} isbn, name, price
    */
   postBook: (req, res) => {
-    const book = {
-      isbn: req.body.isbn,
-      name: req.body.name,
-      price: req.body.price
-    }
     Book
-      .create(book, (err, data) => {
-        console.log('postBook:', data)
-        if (err) res.status(400).json(err)
-        else if (!data) res.status(304).json({ 'message': 'Failed to post book with that data' })
-        else res.status(200).json(data)
+      .create({
+        isbn: req.body.isbn,
+        name: req.body.name,
+        price: req.body.price
+      }, (err, data) => {
+        // console.log('postBook:', data)
+        sendResponse(res, err, data, 'Failed to post book with that data')
       })
   },
 
@@ -151,10 +160,8 @@ module.exports = {
     console.log('book:', book)
 
     Book.create(book, (err, data) => {
-      console.log('postBookWithOwner:', data)
-      if (err) res.status(400).json(err)
-      else if (!data) res.status(304).json({ 'message': 'Failed to post book with that data and ownership' })
-      else res.status(200).json(data)
+      // console.log('postBookWithOwner:', data)
+      sendResponse(res, err, data, 'Failed to POST book with that data and ownership')
     })
   },
 
@@ -176,7 +183,7 @@ module.exports = {
       console.log('searchBooks:', data)
       if (err) return res.status(500).send(err)
       else if (err) res.status(400).json({ 'error': `Error: ${err}` })
-      else if (!data) res.status(304).json({ 'message': `Failed to search books with params: ${params}` })
+      else if (!data) res.status(304).json({ 'message': `Failed to FIND books with params: ${params}` })
       else res.json(data)
     })
   },
@@ -197,9 +204,7 @@ module.exports = {
       isbn: req.params.isbn
     }, (err, data) => {
       console.log('getBookByISBN:', data)
-      if (err) res.status(400).json({ 'error': `Error: ${err}` })
-      else if (!data) res.status(404).json({ 'message': 'Failed to get book by ISBN' })
-      else res.status(200).json(data)
+      sendResponseNF(res, err, data, 'Failed to GET book by ISBN.')
     })
   },
 
@@ -218,11 +223,13 @@ module.exports = {
     }, (err, data) => {
       console.log('deleteBookByISBN:', data)
       if (err) res.status(400).json({ 'error': `Error: ${err}` })
-      else if (!data) res.status(404).json({ 'message': 'No book found' })
-      else res.status(200).json({
-        'message': `Book ${req.params.isbn} has been removed.`,
-        'data': data
-      })
+      else if (!data) res.status(404).json({ 'message': `No book found with ISBN: ${req.params.isbn}.` })
+      else {
+        res.status(200).json({
+          'message': `Book ${req.params.isbn} has been removed.`,
+          'data': data
+        })
+      }
     })
   },
 
@@ -249,9 +256,7 @@ module.exports = {
       upsert: true
     }, (err, data) => {
       console.log('updateBookByISBN:', data)
-      if (err) res.status(400).json({ 'error': `Error: ${err}` })
-      else if (!data) res.status(404).json({ 'message': 'Failed to update book by ISBN' })
-      else res.status(200).json(data)
+      sendResponseNF(res, err, data, 'Failed to UPDATE book by ISBN.')
     })
   },
 
@@ -271,9 +276,7 @@ module.exports = {
       upsert: false
     }, (err, data) => {
       console.log('updateBookByISBNAndOwner:', data)
-      if (err) res.status(400).json({ 'error': `Error: ${err}` })
-      else if (!data) res.status(404).json({ 'message': 'Failed to update book by ISBN and push owner accountId' })
-      else res.status(200).json(data)
+      sendResponseNF(res, err, data, 'Failed to UPDATE book by ISBN and PUSH owner accountId.')
     })
   }
 
