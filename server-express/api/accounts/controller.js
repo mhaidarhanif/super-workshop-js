@@ -1,5 +1,7 @@
 const Account = require('./model')
 
+const accounts = require('./seed.json')
+
 module.exports = {
 
   // ---------------------------------------------------------------------------
@@ -10,7 +12,7 @@ module.exports = {
    * @api {get} Seed some accounts
    */
   seedAccounts: (req, res) => {
-    const accounts = require('./seed.json')
+    // List of accounts from seed
     console.log({accounts})
 
     // Remove all accounts first
