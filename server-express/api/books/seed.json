@@ -1,0 +1,5 @@
+[
+{ "isbn": "000", "name": "Zero Hero", "price": 10, "owners": [1, 3] },
+{ "isbn": "001", "name": "One Only", "price": 11, "owners": [1, 3] },
+{ "isbn": "002", "name": "Two Times", "price": 12, "owners": [2, 3] }
+]
