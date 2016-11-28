@@ -1,6 +1,3 @@
-// const passport = require('passport')
-// const Account = require('../models/account')
-
 module.exports = {
 
   /*

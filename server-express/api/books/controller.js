@@ -9,21 +9,23 @@ const booksLot = require('./seed.lot.json')
 
 // Send response when POST
 const sendResponse = (res, err, data, message) => {
-  if (err) res.status(400).json({
-    'error': `Error: ${err}`,
-    'message': 'Probably a duplicated data issue. Please delete the potential data which will be the same before.'
-  })
-  else if (!data) res.status(304).json({ 'message': message })
+  if (err) {
+    res.status(400).json({
+      'error': `Error: ${err}`,
+      'message': 'Probably a duplicated data issue. Please delete the potential data which will be the same before.'
+    })
+  } else if (!data) res.status(304).json({ 'message': message })
   else res.status(200).json(data)
 }
 
 // Send response when GET/PUT
 const sendResponseNF = (res, err, data, message) => {
-  if (err) res.status(400).json({
-    'error': `Error: ${err}`,
-    'message': 'Something wrong, try again.'
-  })
-  else if (!data) res.status(404).json({ 'message': message })
+  if (err) {
+    res.status(400).json({
+      'error': `Error: ${err}`,
+      'message': 'Something wrong, try again.'
+    })
+  } else if (!data) res.status(404).json({ 'message': message })
   else res.status(200).json(data)
 }
 

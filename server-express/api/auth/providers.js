@@ -1,9 +1,5 @@
 const Account = require('../accounts/model')
 
-/*
-TODO: Combine together account info that has the same email and provider id
-*/
-
 const github = function (req, accessToken, refreshToken, profile, done) {
   if (profile) {
     Account.findOneAndUpdate({
@@ -55,7 +51,6 @@ const facebook = function (req, accessToken, refreshToken, profile, done) {
 // BE AWARE, AVOID: (req, accessToken, refreshToken, profile, done)
 // You cannot just assign email deliberately
 // need to contain this format: profile.emails[0].value
-// TODO: use passport-twitter-email
 const twitter = function (req, token, tokenSecret, profile, done) {
   if (profile) {
     Account.findOneAndUpdate({
