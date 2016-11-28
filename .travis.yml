@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - v6
+beforeScript:
+  - npm install -g yarn
+  - cd server-express
+  - yarn
+  - cd ..
+script:
+  - npm test
+addons:
+  code_climate:
+    repo_token: 212c607f23a9eee424108f3171bfee6d2eb3292091e3f1f8ff35360d075ca9a0
