@@ -31,6 +31,7 @@
     "vuex": "^2.0.0",
     "axios": "^0.15.2",
     "jwt-decode": "^2.1.0",
-    "datatables": "^1.10.12"
+    "datatables": "^1.10.12",
+    "sweetalert": "^1.1.3"
   }
 }

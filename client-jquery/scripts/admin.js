@@ -71,7 +71,7 @@ $(document).ready(function () {
           getDataFromAPI()
         })
         .fail((xhr, textStatus, err) => {
-          alert(JSON.parse(xhr.responseText).message)
+          sweetAlert('Sorry!', JSON.parse(xhr.responseText).message, 'error')
         })
     })
 
@@ -87,7 +87,7 @@ $(document).ready(function () {
           getDataFromAPI()
         })
         .fail((xhr, textStatus, err) => {
-          alert(JSON.parse(xhr.responseText).message)
+          sweetAlert('Sorry!', JSON.parse(xhr.responseText).message, 'error')
         })
     })
 
@@ -95,17 +95,31 @@ $(document).ready(function () {
     // Book Delete All
 
     $('#book-delete-all-button').on('click', () => {
-      $.ajax({
-        method: 'DELETE',
-        url: `${api}/books`,
-        headers: { 'Authorization': `Bearer ${Auth.getToken()}` }
+      swal({
+        title: `Sure to delete all books?`,
+        text: 'You will not be able to recover this!',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#DD6B55',
+        confirmButtonText: 'Yes, delete them all!',
+        cancelButtonText: 'No, let them be!',
+        closeOnConfirm: false,
+        closeOnCancel: false
+      }, function (isConfirm) {
+        if (isConfirm) {
+          // Request to DELETE ALL
+          $.ajax({
+            method: 'DELETE',
+            url: `${api}/books`,
+            headers: { 'Authorization': `Bearer ${Auth.getToken()}` }
+          })
+          .done(data => getDataFromAPI())
+          .fail((xhr, textStatus, err) => sweetAlert('Sorry!', JSON.parse(xhr.responseText).message, 'error'))
+        } else {
+          // Cancel DELETE all
+          swal('Cancelled', `All books are safe. :)`, 'error')
+        }
       })
-        .done((data) => {
-          getDataFromAPI()
-        })
-        .fail((xhr, textStatus, err) => {
-          alert(JSON.parse(xhr.responseText).message)
-        })
     })
   }
 
@@ -125,8 +139,38 @@ $(document).ready(function () {
         getDataFromAPI()
       })
       .fail((xhr, textStatus, err) => {
-        alert(JSON.parse(xhr.responseText).message)
+        sweetAlert('Sorry!', JSON.parse(xhr.responseText).message, 'error')
       })
+  }
+
+  function confirmDeleteBook (isbn) {
+    swal({
+      title: `Sure to delete book with ISBN ${isbn}?`,
+      text: 'You will not be able to recover this!',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#DD6B55',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, let it be!',
+      closeOnConfirm: false,
+      closeOnCancel: false
+    }, function (isConfirm) {
+      if (isConfirm) {
+        // Request to DELETE
+        $.ajax({
+          method: 'DELETE',
+          url: `${api}/books/${isbn}`,
+          headers: { 'Authorization': localStorage.getItem('token') }
+        })
+        .done(data => compileBooksContent(getDataFromAPI()))
+        .fail(err => console.log('Error', err))
+        // Successfully deleted
+        swal('Deleted!', `Book with ISBN ${isbn} has been deleted.`, 'success')
+      } else {
+        // Cancel DELETE
+        swal('Cancelled', `Book with ISBN ${isbn} is safe. :)`, 'error')
+      }
+    })
   }
 
   // Update book by ISBN, only fill the input by its value
@@ -145,19 +189,7 @@ $(document).ready(function () {
   $booksListTable.on('click', 'td.remove', function () {
     $('#book-editor').hide()
     let isbn = $(this).attr('data-remove')
-    if (confirm(`Sure to delete book with ISBN ${isbn}?`)) {
-      $.ajax({
-        method: 'DELETE',
-        url: `${api}/books/${isbn}`,
-        headers: { 'Authorization': localStorage.getItem('token') }
-      })
-        .done((data) => {
-          compileBooksContent(getDataFromAPI())
-        })
-        .fail((err) => {
-          console.log('Error', err)
-        })
-    }
+    confirmDeleteBook(isbn)
   })
 
   // ---------------------------------------------------------------------------

@@ -1,15 +1,19 @@
-.ui.container {
-  margin: 50px;
-}
+ html {
+   overflow-y: scroll;
+ }
 
-.ui.account.container {
-  width: 500px;
-}
+ .ui.container {
+   margin: 50px;
+ }
 
-.ui.selection.dropdown {
-  min-width: 80px;
-}
+ .ui.account.container {
+   width: 500px;
+ }
 
-.selectable {
-  cursor: pointer;
-}
+ .ui.selection.dropdown {
+   min-width: 80px;
+ }
+
+ .selectable {
+   cursor: pointer;
+ }
