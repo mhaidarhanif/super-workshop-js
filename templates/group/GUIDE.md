@@ -23,7 +23,7 @@ By following these objectives. That's how.
 - Differentiating branches or even repos when separating our tasks. Forking the repo is even better approach.
 - Architecting the app based on analysis that has been concluded by team.
 - Creating a more-than-just-CRUD app, utilizing web api that connects server and client apps.
-- Features: Documentation, Server and Client, RESTful Web API, SQL or NoSQL Database, Authentication + JWT
+- Features: Documentation, Server and Client, HTTP + RESTful Web API, SQL or NoSQL Database, Auth with Session
 - Tools: Git, Markdown, Atom, GitHub, ZenHub, cURL/Postman, Postico/Robomongo
 
 **Second Project**
@@ -33,7 +33,7 @@ By following these objectives. That's how.
 - Covering the app functionalities within isolated environment of test.
 - Improving code quality with code review and analysis service. Improve your grade by following the suggestions.
 - Bringing the app design to various device dimensions.
-- Features: Modular, AJAX, File Upload, CSS Preprocessor, Responsive + Grid, Unit + API Testing
+- Features: Modular, AJAX, File Upload, CSS Preprocessor, Responsive + Grid, Unit + API Testing, Auth with JWT
 - Tools: jQuery, Mocha, Chai + chai-http, Axios/SuperAgent, Web Storage, Less/Stylus
 
 **Third Project**
@@ -61,4 +61,3 @@ By following these objectives. That's how.
 ## References
 
 - https://github.com/mhaidarh/super-workshop-js
-- https://github.com/gunadarma-academy/asde-michi
