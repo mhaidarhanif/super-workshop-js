@@ -13,8 +13,17 @@
 | Dependency CI  | [![Dependency CI](https://dependencyci.com/github/mhaidarh/super-workshop-js/badge)](https://dependencyci.com/github/mhaidarh/super-workshop-js)
 | bitHound       | [![bitHound Overall Score](https://www.bithound.io/github/mhaidarh/super-workshop-js/badges/score.svg)](https://www.bithound.io/github/mhaidarh/super-workshop-js) [![bitHound Dependency](https://img.shields.io/bithound/dependencies/github/mhaidarh/super-workshop-js.svg)](https://bithound.io/github/mhaidarh/super-workshop-js) [![bitHound Code](https://img.shields.io/bithound/code/github/mhaidarh/super-workshop-js.svg)](https://bithound.io/github/mhaidarh/super-workshop-js)
 | Codacy Grade   | [![Codacy Grade](https://img.shields.io/codacy/grade/9820a9dd1787489dae6122392e101f53.svg)](https://codacy.com/app/mhaidarh/super-workshop-js?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mhaidarh/super-workshop-js&amp;utm_campaign=Badge_Grade)
-| Code Climate   | [![Code Climate](https://codeclimate.com/github/mhaidarh/super-workshop-js/badges/gpa.svg)](https://codeclimate.com/github/mhaidarh/super-workshop-js) [![Issue Count](https://codeclimate.com/github/mhaidarh/super-workshop-js/badges/issue_count.svg)](https://codeclimate.com/github/mhaidarh/super-workshop-js/issues) [![Test Coverage](https://codeclimate.com/github/mhaidarh/super-workshop-js/badges/coverage.svg)](https://codeclimate.com/github/mhaidarh/super-workshop-js/coverage)
+| Code Climate   | [![GPA](https://codeclimate.com/github/mhaidarh/super-workshop-js/badges/gpa.svg)](https://codeclimate.com/github/mhaidarh/super-workshop-js) [![Issue Count](https://codeclimate.com/github/mhaidarh/super-workshop-js/badges/issue_count.svg)](https://codeclimate.com/github/mhaidarh/super-workshop-js/issues) [![Test Coverage](https://codeclimate.com/github/mhaidarh/super-workshop-js/badges/coverage.svg)](https://codeclimate.com/github/mhaidarh/super-workshop-js/coverage)
+| Travis CI      | [![Build Status](https://travis-ci.org/mhaidarh/super-workshop-js.svg?branch=master)](https://travis-ci.org/mhaidarh/super-workshop-js)
+| Snap CI        | ... |
+| Codeship       | ... |
 | Inch CI Docs   | [![Inch CI](https://inch-ci.org/github/mhaidarh/super-workshop-js.svg?branch=master)](https://inch-ci.org/github/mhaidarh/super-workshop-js)
+
+## Requirements
+
+- Understanding of JavaScript and Node.js essentials
+- Client & Server Side concepts
+- Database & Deployment technologies
 
 ## Ingredients
 
