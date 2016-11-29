@@ -1,0 +1,56 @@
+{
+  /**
+   * Application configuration section
+   * http://pm2.keymetrics.io/docs/usage/application-declaration/
+   */
+  apps : [
+    // First application
+    {
+      name      : "server-express",
+      script    : "server-express/server.js",
+      env: {
+        COMMON_VARIABLE: "true"
+      },
+      env_production : {
+        NODE_ENV: "production"
+      }
+    },
+    // Second application
+    {
+      name      : "server-express-services",
+      script    : "server-express-services/server.js",
+      env: {
+        COMMON_VARIABLE: "true"
+      },
+      env_production : {
+        NODE_ENV: "production"
+      }
+    }
+  ],
+
+  /**
+   * Deployment section
+   * http://pm2.keymetrics.io/docs/usage/deployment/
+   */
+  deploy : {
+    production : {
+      user : "node",
+      host : "0.0.0.0",
+      ref  : "origin/master",
+      repo : "git@github.com:mhaidarh/super-workshop-js.git",
+      path : "~/www",
+      "post-deploy" : "npm i -g yarn && yarn && pm2 startOrRestart ecosystem.json --env production"
+    },
+    dev : {
+      user : "node",
+      host : "0.0.0.0",
+      ref  : "origin/master",
+      repo : "git@github.com:mhaidarh/super-workshop-js.git",
+      path : "~/www",
+      "post-deploy" : "npm i -g yarn && yarn && pm2 startOrRestart ecosystem.json --env dev",
+      env  : {
+        NODE_ENV: "dev"
+      }
+    }
+  }
+}

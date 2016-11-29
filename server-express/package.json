@@ -1,17 +1,12 @@
 {
   "name": "super-workshop-js",
   "version": "1.0.0",
-  "description": "Super Workshop JS",
+  "description": "Super Workshop JS - Server Express",
   "main": "server.js",
   "scripts": {
     "start": "node server",
-    "start:pm2": "pm2 start",
-    "dev": "nodemon server",
-    "test": "npm run test:unit",
-    "test:unit": "mocha tests/unit",
-    "test:integration": "mocha tests/integration",
-    "test:api": "mocha tests/api",
-    "test:e2e": "mocha tests/e2e"
+    "start:pm2": "pm2 startOrRestart ecosystem.json --env dev",
+    "dev": "nodemon server"
   },
   "repository": {
     "type": "git",
