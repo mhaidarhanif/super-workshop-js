@@ -1,6 +1,6 @@
 /*
-global alert, confirm, localStorage
-global $, Handlebars,
+global swal, localStorage
+global $, Handlebars
 global api, Auth, getDataFromAPI
 global $booksListTable
 global compileMenu, compileBooksHeader, compileBooksContent
@@ -69,7 +69,7 @@ $(document).ready(function () {
       })
       .done(data => getDataFromAPI())
       .fail((xhr, textStatus, err) => {
-        sweetAlert('Sorry!', JSON.parse(xhr.responseText).message, 'error')
+        swal('Sorry!', JSON.parse(xhr.responseText).message, 'error')
       })
     })
 
@@ -83,7 +83,7 @@ $(document).ready(function () {
       })
       .done(data => getDataFromAPI())
       .fail((xhr, textStatus, err) => {
-        sweetAlert('Sorry!', JSON.parse(xhr.responseText).message, 'error')
+        swal('Sorry!', JSON.parse(xhr.responseText).message, 'error')
       })
     })
 
@@ -110,7 +110,7 @@ $(document).ready(function () {
             headers: Auth.getTokenAsAuthHeader()
           })
           .done(data => getDataFromAPI())
-          .fail((xhr, textStatus, err) => sweetAlert('Sorry!', JSON.parse(xhr.responseText).message, 'error'))
+          .fail((xhr, textStatus, err) => swal('Sorry!', JSON.parse(xhr.responseText).message, 'error'))
         } else {
           // Cancel DELETE all
           swal('Cancelled', `All books are safe. :)`, 'error')
@@ -133,7 +133,7 @@ $(document).ready(function () {
     })
     .done(data => getDataFromAPI())
     .fail((xhr, textStatus, err) => {
-      sweetAlert('Sorry!', JSON.parse(xhr.responseText).message, 'error')
+      swal('Sorry!', JSON.parse(xhr.responseText).message, 'error')
     })
   }
 
