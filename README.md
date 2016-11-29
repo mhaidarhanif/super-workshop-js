@@ -91,7 +91,7 @@ Make sure you have installed the latest Node.js and npm. Afterwards, install the
 npm install -g yarn pnpm nodemon live-server bower mocha vue-cli react-native-cli pm2
 ```
 
-Then open `server-*` and `client-*` directory separately.
+Then open `server/server-*` and `clients/client-*` directory separately.
 
 ### Server Express (`server-express`)
 
@@ -111,16 +111,18 @@ live-server
 
 ## Deployment
 
+(Later, define usage with Codeship or Snap CI)
+
 ### Last Check
 
 ```sh
-pm2 start ecosystem.json
+npm run start:pm2
 ```
 
 ### Deploy to Server
 
 ```sh
-pm2 deploy ecosystem.json
+npm run deploy:pm2
 ```
 
 --------------------------------------------------------------------------------

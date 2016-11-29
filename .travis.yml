@@ -3,10 +3,12 @@ node_js:
   - v6
 beforeScript:
   - npm install -g yarn
-  - cd server-express
+  - cd servers/server-express
   - yarn
-  - cd ..
+  - npm run start:test
+  - cd ../..
 script:
+  - cd tests
   - npm test
 addons:
   code_climate:

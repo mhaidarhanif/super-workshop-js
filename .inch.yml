@@ -1,9 +1,9 @@
 files:
   # define files included in the analysis (defaults to ["{app,lib}/**/*.rb"])
   included:
-    - client-jquery/**/*.js
-    - server-express/**/*.js
+    - clients/client-jquery/**/*.js
+    - servers/server-express/**/*.js
   # define files excluded from the analysis (defaults to [])
   excluded:
-    - plugins/vendor/**/*.js
+    - **/plugins/vendor/**/*.js
     - !regexp:/vendor/

@@ -19,6 +19,7 @@ ratings:
   - "**.jsx"
   - "**.module"
 exclude_paths:
-- "server-express-mvc/"
-- "spec/"
-- "test-mocha/"
+- "servers/server-express-mvc/"
+- "specs/"
+- "templates/"
+- "tests/"

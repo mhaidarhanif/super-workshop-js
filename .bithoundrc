@@ -13,5 +13,5 @@
     "lint": {"engine": "standard"},
     "wc": { "limit": 300 }
   },
-  "packageJsonLocation": "server-express/package.json"
+  "packageJsonLocation": "servers/server-express/package.json"
 }
