@@ -1,0 +1,11 @@
+#%RAML 1.0 DataType
+properties:
+  id: integer
+  name: string
+  gender?: !include gender.raml
+example:
+  {
+    "id": 42,
+    "name": "John Doe",
+    "gender": "male"
+  }

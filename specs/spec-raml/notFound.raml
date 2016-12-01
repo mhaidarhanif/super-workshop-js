@@ -1,0 +1,7 @@
+#%RAML 1.0 ResourceType
+put:
+  responses:
+    404:
+      description: Unkown <<resourcePathName>>.
+      body:
+        application/json: !include types/error.raml

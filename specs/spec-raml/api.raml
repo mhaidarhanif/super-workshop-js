@@ -1,0 +1,57 @@
+#%RAML 1.0
+title: Example API
+protocols: HTTPS
+version: v1
+baseUri: https://example.com/api/{version}
+mediaType: application/json
+securitySchemes:
+  oauth1:
+    type: OAuth 1.0
+    settings:
+      requestTokenUri: https://example.com/oauth1/request_token
+      authorizationUri: https://example.com/oauth1/authorize
+      tokenCredentialsUri: https://example.com/oauth1/access_token
+
+types:
+  Error: !include types/error.raml
+  Gender: !include types/gender.raml
+  UserBase: !include types/userBase.raml
+  User: !include types/user.raml
+  Users: User[]
+
+traits:
+  BadRequest: !include ./badRequest.raml
+
+resourceTypes:
+  NotFound: !include ./notFound.raml
+
+/users:
+  securedBy: oauth1
+  get:
+    description: Get all users.
+    responses:
+      200:
+        body:
+          type: Users
+  post:
+    description: Create new Kicker player.
+    is: BadRequest
+    body:
+      type: UserBase
+    responses:
+      201:
+        description: New user created successful.
+  /{userId}:
+    type: NotFound
+    uriParameters:
+      userId: integer
+    put:
+      description: Update user.
+      is: BadRequest
+      body:
+        type: UserBase
+      responses:
+        200:
+          description: User updated successful.
+          body:
+            type: User

@@ -1,0 +1,6 @@
+#%RAML 1.0 Trait
+responses:
+  400:
+    description: Required properties missing or validation issues.
+    body:
+      application/json: !include types/error.raml
