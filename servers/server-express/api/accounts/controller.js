@@ -55,7 +55,12 @@ module.exports = {
    * Get list of all accounts
    */
   getAccounts: (req, res) => {
-    Account.find({}, (err, data) => {
+    Account.find({}, {
+      '_id': 0,
+      'accountId': 1,
+      'name': 1,
+      'username': 1
+    }, (err, data) => {
       console.log('getAccounts:', data)
       if (err) res.status(400).json({ e: `Error: ${err}` })
       if (!data) res.status(404).json({ m: 'Failed to get list of all accounts.' })
@@ -83,11 +88,16 @@ module.exports = {
   getAccountProfileById: (req, res) => {
     Account.findOne({
       accountId: req.params.accountId
+    }, {
+      '_id': 0,
+      'accountId': 1,
+      'name': 1,
+      'username': 1
     }, (err, data) => {
       console.log('getProfileById:', data)
       if (err) res.status(400).json({ e: `Error: ${err}` })
-      if (!data) res.status(404).json({ m: 'Failed to get account profile by ID.' })
-      res.status(200).json(data)
+      else if (!data) res.status(404).json({ m: 'Failed to get account profile by ID.' })
+      else res.status(200).json(data)
     })
   }
 
