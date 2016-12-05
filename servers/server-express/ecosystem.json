@@ -3,27 +3,30 @@
    * Application configuration section
    * http://pm2.keymetrics.io/docs/usage/application-declaration/
    */
-  apps : [
-    // First application
+  "apps": [
     {
-      name      : "server-express",
-      script    : "server-express/server.js",
-      env: {
-        COMMON_VARIABLE: "true"
+      "name": "server:express",
+      "script": "server.js",
+      "node_args": "--harmony",
+      "watch": ["api"],
+      "ignore_watch": ["node_modules"],
+      "watch_options": {
+        "followSymlinks": false
       },
-      env_production : {
-        NODE_ENV: "production"
-      }
-    },
-    // Second application
-    {
-      name      : "server-express-services",
-      script    : "server-express-services/server.js",
-      env: {
-        COMMON_VARIABLE: "true"
+      "env": {
+        "COMMON_VARIABLE": "true"
       },
-      env_production : {
-        NODE_ENV: "production"
+      "env_dev": {
+        "NODE_ENV": "dev",
+        "NEDB_PATH": "./data"
+      },
+      "env_staging": {
+        "NODE_ENV": "staging",
+        "NEDB_PATH": "./data"
+      },
+      "env_production": {
+        "NODE_ENV": "production",
+        "NEDB_PATH": "./data"
       }
     }
   ],
@@ -32,24 +35,38 @@
    * Deployment section
    * http://pm2.keymetrics.io/docs/usage/deployment/
    */
-  deploy : {
-    production : {
-      user : "node",
-      host : "0.0.0.0",
-      ref  : "origin/master",
-      repo : "git@github.com:mhaidarh/super-workshop-js.git",
-      path : "~/www",
-      "post-deploy" : "npm i -g yarn && yarn && pm2 startOrRestart ecosystem.json --env production"
+  "deploy": {
+    "dev": {
+      "user": "node",
+      "host": "0.0.0.0",
+      "ref": "origin/master",
+      "repo": "git@github.com:mhaidarh/super-workshop-js.git",
+      "path": "~/www/super-workshop-js/dev",
+      "post-deploy" : "cd servers/server-express && npm install && pm2 startOrRestart ecosystem.json --env dev",
+      "env": {
+        "NODE_ENV": "dev"
+      }
     },
-    dev : {
-      user : "node",
-      host : "0.0.0.0",
-      ref  : "origin/master",
-      repo : "git@github.com:mhaidarh/super-workshop-js.git",
-      path : "~/www",
-      "post-deploy" : "npm i -g yarn && yarn && pm2 startOrRestart ecosystem.json --env dev",
-      env  : {
-        NODE_ENV: "dev"
+    "staging": {
+      "user": "node",
+      "host": "0.0.0.0",
+      "ref": "origin/master",
+      "repo": "git@github.com:mhaidarh/super-workshop-js.git",
+      "path": "~/www/super-workshop-js/staging",
+      "post-deploy" : "cd servers/server-express && npm install && pm2 startOrRestart ecosystem.json --env staging",
+      "env": {
+        "NODE_ENV": "dev"
+      }
+    },
+    "production": {
+      "user": "node",
+      "host": "0.0.0.0",
+      "ref": "origin/master",
+      "repo": "git@github.com:mhaidarh/super-workshop-js.git",
+      "path": "~/www/super-workshop-js/production",
+      "post-deploy" : "cd servers/server-express && npm install && pm2 startOrRestart ecosystem.json --env production",
+      "env": {
+        "NODE_ENV": "production"
       }
     }
   }

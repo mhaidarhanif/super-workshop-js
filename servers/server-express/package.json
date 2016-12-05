@@ -4,9 +4,22 @@
   "description": "Super Workshop JS - Server Express",
   "main": "server.js",
   "scripts": {
-    "start": "node server",
-    "start:pm2": "pm2 startOrRestart ecosystem.json --env dev",
-    "dev": "nodemon server"
+    "start:dev"     : "pm2 startOrGracefulReload ecosystem.json --env dev",
+    "start:staging" : "pm2 startOrGracefulReload ecosystem.json --env staging",
+    "start"         : "pm2 startOrGracefulReload ecosystem.json --env production",
+    "debug"  : "nodemon server.js",
+    "stop"   : "pm2 stop all",
+    "delete" : "pm2 delete all",
+    "push"   : "git push origin && git push origin --tags",
+    "release:major" : "npm version major && npm run push",
+    "release:minor" : "npm version minor && npm run push",
+    "release:patch" : "npm version patch && npm run push",
+    "deploy:dev:setup"     : "NODE_ENV=dev pm2 deploy ecosystem.json dev setup",
+    "deploy:dev"           : "NODE_ENV=dev pm2 deploy ecosystem.json dev",
+    "deploy:staging:setup" : "NODE_ENV=staging pm2 deploy ecosystem.json staging setup",
+    "deploy:staging"       : "NODE_ENV=staging pm2 deploy ecosystem.json staging",
+    "deploy:setup"         : "NODE_ENV=production pm2 deploy ecosystem.json production setup",
+    "deploy"               : "NODE_ENV=production pm2 deploy ecosystem.json production"
   },
   "repository": {
     "type": "git",

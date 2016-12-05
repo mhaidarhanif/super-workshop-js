@@ -35,3 +35,5 @@ npm run start:pm2
 ```
 
 Then see the [SPECIFICATION](../spec) for more details.
+
+**NOTE:** Do not use Yarn for now, there's an issue with PM2.
