@@ -186,10 +186,11 @@ const BookController = module.exports = {
    */
   searchBooks: (req, res) => {
     let params = {}
-    if (req.body.isbn) params.isbn = req.body.isbn
-    if (req.body.name) params.name = req.body.name
-
+    if (req.body.isbn) params.isbn = new RegExp(req.body.isbn, 'i')
+    if (req.body.name) params.name = new RegExp(req.body.name, 'i')
+    if (req.body.price) params.price = Number(req.body.price)
     console.log(params)
+
     if (params) {
       Book.find(params, (err, data) => {
         // console.log('searchBooks:', data)
