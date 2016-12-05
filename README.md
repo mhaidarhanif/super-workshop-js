@@ -6,18 +6,34 @@
 
 ## Hall of Badges
 
+### General
+
 | Category | Badge |
 |----------|-------|
+| Management     | [![ZenHub](https://raw.githubusercontent.com/ZenHubIO/support/master/zenhub-badge.png)](https://zenhub.com) [![Waffle.io](https://img.shields.io/waffle/label/mhaidarh/super-workshop-js/ready.svg)](https://waffle.io/mhaidarh/super-workshop-js)
 | License        | [![License](https://img.shields.io/github/license/mhaidarh/super-workshop-js.svg)](LICENSE)
-| Standard Style | [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+| Style Guide    | [![Standard](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com) [![Good Parts](https://img.shields.io/badge/code%20style-goodparts-brightgreen.svg)](https://github.com/dwyl/goodparts "JavaScript The Good Parts")
 | Dependency CI  | [![Dependency CI](https://dependencyci.com/github/mhaidarh/super-workshop-js/badge)](https://dependencyci.com/github/mhaidarh/super-workshop-js)
-| bitHound       | [![bitHound Overall Score](https://www.bithound.io/github/mhaidarh/super-workshop-js/badges/score.svg)](https://www.bithound.io/github/mhaidarh/super-workshop-js) [![bitHound Dependency](https://img.shields.io/bithound/dependencies/github/mhaidarh/super-workshop-js.svg)](https://bithound.io/github/mhaidarh/super-workshop-js) [![bitHound Code](https://img.shields.io/bithound/code/github/mhaidarh/super-workshop-js.svg)](https://bithound.io/github/mhaidarh/super-workshop-js)
+| bitHound       | [![bitHound Overall Score](https://bithound.io/github/mhaidarh/super-workshop-js/badges/score.svg)](https://bithound.io/github/mhaidarh/super-workshop-js) [![bitHound Code](https://www.bithound.io/github/mhaidarh/super-workshop-js/badges/code.svg)](https://www.bithound.io/github/mhaidarh/super-workshop-js)
+| bitHound Dep   | [![bitHound Dependencies](https://www.bithound.io/github/mhaidarh/super-workshop-js/badges/dependencies.svg)](https://www.bithound.io/github/mhaidarh/super-workshop-js/master/dependencies/npm) [![bitHound Dev Dependencies](https://www.bithound.io/github/mhaidarh/super-workshop-js/badges/devDependencies.svg)](https://www.bithound.io/github/mhaidarh/super-workshop-js/master/dependencies/npm)
 | Codacy Grade   | [![Codacy Grade](https://img.shields.io/codacy/grade/9820a9dd1787489dae6122392e101f53.svg)](https://codacy.com/app/mhaidarh/super-workshop-js?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mhaidarh/super-workshop-js&amp;utm_campaign=Badge_Grade)
 | Code Climate   | [![GPA](https://codeclimate.com/github/mhaidarh/super-workshop-js/badges/gpa.svg)](https://codeclimate.com/github/mhaidarh/super-workshop-js) [![Issue Count](https://codeclimate.com/github/mhaidarh/super-workshop-js/badges/issue_count.svg)](https://codeclimate.com/github/mhaidarh/super-workshop-js/issues) [![Test Coverage](https://codeclimate.com/github/mhaidarh/super-workshop-js/badges/coverage.svg)](https://codeclimate.com/github/mhaidarh/super-workshop-js/coverage)
 | Travis CI      | [![Build Status](https://travis-ci.org/mhaidarh/super-workshop-js.svg?branch=master)](https://travis-ci.org/mhaidarh/super-workshop-js)
-| Snap CI        | ... |
-| Codeship       | ... |
+| Snap CI        | ...
+| Codeship       | ...
 | Inch CI Docs   | [![Inch CI](https://inch-ci.org/github/mhaidarh/super-workshop-js.svg?branch=master)](https://inch-ci.org/github/mhaidarh/super-workshop-js)
+
+### Server with Node.js and Express
+
+| Category | Badge |
+|----------|-------|
+| Node.js        | [![Node.js Version](https://img.shields.io/node/v/super-server-express.svg "Node.js 7, the latest supported")](http://nodejs.org/download)
+| npm            | [![npm package version](https://img.shields.io/npm/v/super-server-express.svg)](https://npmjs.com/package/super-server-express)
+| Dependency     | [![Dependency Status](https://david-dm.org/mhaidarh/super-server-express.svg "Dependencies Checked & Updated Regularly (Security is Important!)")](https://david-dm.org/mhaidarh/super-server-express)
+| Dev Dependency | [![devDependencies Status](https://david-dm.org/mhaidarh/super-server-express/dev-status.svg)](https://david-dm.org/mhaidarh/super-server-express?type=dev)
+| Express        | [![Express 4](http://img.shields.io/badge/express-^4.14.0-brightgreen.svg "Latest Express.js")](https://expressjs.com)
+| Coverage       | [![Coveralls](https://coveralls.io/repos/github/mhaidarh/super-workshop-js/badge.svg?branch=master)](https://coveralls.io/github/mhaidarh/super-workshop-js?branch=master)
+| Security       | [![NSP Status](https://nodesecurity.io/orgs/mhaidarh/projects/f52244a3-8070-4e73-817d-729065fad38e/badge)](https://nodesecurity.io/orgs/mhaidarh/projects/f52244a3-8070-4e73-817d-729065fad38e)
 
 ## Requirements
 
@@ -187,8 +203,13 @@ Default Root URL: `http://localhost:3000`
 
 --------------------------------------------------------------------------------
 
+## References and Resources
+
+- [Cloud9 Workspace](https://ide.c9.io/mhaidarh/super-workshop-js)
+
+--------------------------------------------------------------------------------
+
 ## [MIT License](https://mhaidarh.mit-license.org)
 
 Copyright (c) 2016
 [M Haidar Hanif, https://mhaidarhanif.com](https://mhaidarhanif.com)
-
