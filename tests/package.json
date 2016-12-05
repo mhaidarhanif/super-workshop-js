@@ -5,10 +5,11 @@
   "main": "test.js",
   "scripts": {
     "test": "npm run test:unit",
-    "test:unit": "mocha chai/unit",
-    "test:integration": "mocha chai/integration",
-    "test:api": "mocha chai/api",
-    "test:e2e": "mocha nightmare/e2e"
+    "test:unit": "mocha chai/unit/. --recursive",
+    "test:unit:watch": "mocha chai/unit/. --recursive --watch",
+    "test:integration": "mocha chai/integration/. --recursive",
+    "test:api": "mocha chai/api/. --recursive",
+    "test:e2e": "mocha nightmare/e2e/. --recursive"
   },
   "repository": {
     "type": "git",
