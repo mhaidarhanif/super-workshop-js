@@ -11,19 +11,19 @@ const booksLot = require('./seed.lot.json')
 const sendResponse = (res, err, data, message) => {
   if (err) {
     res.status(400).json({
-      'error': `Error: ${err}`,
-      'message': 'Probably a duplicated data issue. Please delete the potential data which will be the same before.'
+      e: `Error: ${err}`,
+      m: 'Probably a duplicated data issue. Please delete the potential data which will be the same before.'
     })
   } else if (!data) res.status(304).json({ 'message': message })
-  else res.status(200).json(data)
+  else res.status(201).json(data)
 }
 
 // Send response when GET/PUT
 const sendResponseNF = (res, err, data, message) => {
   if (err) {
     res.status(400).json({
-      'error': `Error: ${err}`,
-      'message': 'Something wrong, try again.'
+      e: `Error: ${err}`,
+      m: 'Something wrong, try again.'
     })
   } else if (!data) res.status(404).json({ 'message': message })
   else res.status(200).json(data)
@@ -79,9 +79,9 @@ module.exports = {
       .remove()
       .exec((err, data) => {
         // console.log('deleteBooks:', data)
-        if (err) res.status(400).json({ 'error': `Error: ${err}` })
-        else if (!data) res.status(404).json({ 'message': 'Already empty.' })
-        else res.status(200).json({ 'message': `All books have been removed.` })
+        if (err) res.status(400).json({ e: `Error: ${err}` })
+        else if (!data) res.status(404).json({ m: 'Data already empty.' })
+        else res.status(200).json({ m: `All books have been removed.` })
       })
   },
 
@@ -165,7 +165,7 @@ module.exports = {
       price: req.body.price,
       owners: req.body.owner // accountId
     }
-    console.log('book:', book)
+    console.log({book})
 
     Book.create(book, (err, data) => {
       // console.log('postBookWithOwner:', data)
@@ -189,10 +189,9 @@ module.exports = {
 
     Book.find(params, (err, data) => {
       console.log('searchBooks:', data)
-      if (err) return res.status(500).send(err)
-      else if (err) res.status(400).json({ 'error': `Error: ${err}` })
-      else if (!data) res.status(304).json({ 'message': `Failed to FIND books with params: ${params}` })
-      else res.json(data)
+      if (err) return res.status(500).json({ e: `Error: ${err}` })
+      else if (!data) res.status(304).json({ m: `Failed to find books with params: ${params}` })
+      else res.status(200).json(data)
     })
   },
 
