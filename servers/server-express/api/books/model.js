@@ -34,7 +34,13 @@ const BookSchema = new Schema({
       foreignField: 'accountId',
       ref: 'Account'
     }
-  ]
+  ],
+  createdBy: {
+    type: Number
+  },
+  updatedBy: {
+    type: Number
+  }
 }, {
   timestamps: true
 })

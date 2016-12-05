@@ -12,9 +12,9 @@ const sendResponse = (res, err, data, message) => {
   if (err) {
     res.status(400).json({
       e: `Error: ${err}`,
-      m: 'Probably a duplicated data issue. Please delete the potential data which will be the same before.'
+      m: 'Probably a duplicated data issue. Please check the potential book data which probably the same.'
     })
-  } else if (!data) res.status(304).json({ 'message': message })
+  } else if (!data) res.status(304).json({ m: message })
   else res.status(201).json(data)
 }
 
@@ -25,15 +25,15 @@ const sendResponseNF = (res, err, data, message) => {
       e: `Error: ${err}`,
       m: 'Something wrong, try again.'
     })
-  } else if (!data) res.status(404).json({ 'message': message })
+  } else if (!data) res.status(404).json({ m: message })
   else res.status(200).json(data)
 }
 
 // -----------------------------------------------------------------------------
-// BOOKS CONTROLLERS
+// BOOK CONTROLLER
 // -----------------------------------------------------------------------------
 
-module.exports = {
+const BookController = module.exports = {
 
   // ---------------------------------------------------------------------------
   // ADMINISTRATIVE
@@ -45,6 +45,7 @@ module.exports = {
    * @apiGroup Books
    */
   seedBooks: (req, res) => {
+    BookController.deleteBooks()
     Book
       .create(books, (err, data) => {
         // console.log('seedBooks:', data)
@@ -58,6 +59,7 @@ module.exports = {
    * @apiGroup Books
    */
   seedBooksLot: (req, res) => {
+    BookController.deleteBooks()
     Book
       .create(booksLot, (err, data) => {
         // console.log('seedBooksLot:', data)
@@ -100,7 +102,7 @@ module.exports = {
    */
   getBooks: (req, res) => {
     Book
-      .find()
+      .find({})
       .exec((err, data) => {
         // console.log('getBooks:', data)
         sendResponseNF(res, err, data, 'Failed to get all books.')
@@ -119,16 +121,13 @@ module.exports = {
   getBooksPaginated: (req, res) => {
     Book
       .paginate({}, {
-        select: 'isbn name price owners',
-        page: req.query.page || 1,
-        limit: req.query.limit || 10
+        page: Number(req.query.page) || 1,
+        limit: Number(req.query.limit) || 10
       })
       .then((result) => {
-        const data = result.docs
-        const err = 'ERROR: Get all books with pagination'
-
-        console.log('getBooksPaginated:', data)
-        sendResponseNF(res, err, data, 'Failed to get all books.')
+        let err = false
+        // console.log('getBooksPaginated:', result.docs)
+        sendResponseNF(res, err, result.docs, 'Failed to get all books with pagination.')
       })
   },
 
@@ -148,10 +147,12 @@ module.exports = {
       .create({
         isbn: req.body.isbn,
         name: req.body.name,
-        price: req.body.price
+        price: req.body.price,
+        createdBy: req.decoded.id
       }, (err, data) => {
-        // console.log('postBook:', data)
-        sendResponse(res, err, data, 'Failed to post book with that data')
+        if (err) console.log(err)
+        console.log('postBook:', data)
+        sendResponse(res, err, data, `Book with ISBN ${req.body.isbn} is probably already exist.`)
       })
   },
 
@@ -168,8 +169,9 @@ module.exports = {
     console.log({book})
 
     Book.create(book, (err, data) => {
-      // console.log('postBookWithOwner:', data)
-      sendResponse(res, err, data, 'Failed to POST book with that data and ownership')
+      if (err) console.log(err)
+      console.log('postBookWithOwner:', data)
+      sendResponse(res, err, data, `Book with ISBN ${req.body.isbn} is probably already exist.`)
     })
   },
 
@@ -183,16 +185,21 @@ module.exports = {
    * @apiSuccess {JSON} isbn, name, price
    */
   searchBooks: (req, res) => {
-    const params = {}
+    let params = {}
     if (req.body.isbn) params.isbn = req.body.isbn
     if (req.body.name) params.name = req.body.name
 
-    Book.find(params, (err, data) => {
-      console.log('searchBooks:', data)
-      if (err) return res.status(500).json({ e: `Error: ${err}` })
-      else if (!data) res.status(304).json({ m: `Failed to find books with params: ${params}` })
-      else res.status(200).json(data)
-    })
+    console.log(params)
+    if (params) {
+      Book.find(params, (err, data) => {
+        // console.log('searchBooks:', data)
+        if (err) res.status(500).json({ e: `Error: ${err}` })
+        else if (!data) res.status(304).json({ m: `Failed to search books with parameters: ${params}` })
+        else res.status(200).json(data)
+      })
+    } else {
+      res.status(422).json({ m: `Failed to search books with no parameters.` })
+    }
   },
 
   /*
@@ -209,6 +216,8 @@ module.exports = {
   getBookByISBN: (req, res) => {
     Book.findOne({
       isbn: req.params.isbn
+    }, {
+      '_id': 0
     }, (err, data) => {
       console.log('getBookByISBN:', data)
       sendResponseNF(res, err, data, 'Failed to GET book by ISBN.')
@@ -257,7 +266,8 @@ module.exports = {
     }, {
       isbn: req.body.isbn,
       name: req.body.name,
-      price: req.body.price
+      price: req.body.price,
+      updatedBy: req.decoded.id
     }, {
       new: true,
       upsert: true

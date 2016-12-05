@@ -13,13 +13,12 @@ const auth = require('../auth/controller')
 // req.query  >>> /data?q={id}
 
 // ADMINISTRATIVE ACCOUNT
-router.get('/actions/seed', auth.isAdmin, api.seedBooks)
-router.get('/actions/seed-lot', auth.isAdmin, api.seedBooksLot)
+router.post('/actions/seed', auth.isAdmin, api.seedBooks)
+router.post('/actions/seed-lot', auth.isAdmin, api.seedBooksLot)
 router.delete('/actions/delete', auth.isAdmin, api.deleteBooks)
 
 // AUTHENTICATED ACCOUNT
 router.post('/', auth.isAuthenticated, api.postBook)
-router.post('/owner', auth.isAuthenticated, api.postBookAndOwner)
 router.post('/search', auth.isAuthenticated, api.searchBooks)
 router.put('/:isbn', auth.isAuthenticated, api.updateBookByISBN)
 router.put('/:isbn/owner', auth.isAuthenticated, api.updateBookByISBNAndOwner)
