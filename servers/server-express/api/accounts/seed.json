@@ -1,5 +1,11 @@
 [
   {
+    "name": "Super Administrator",
+    "username": "super",
+    "email": "super@super.com",
+    "password": "super"
+  },
+  {
     "name": "Administrator",
     "username": "admin",
     "email": "admin@admin.com",
@@ -22,6 +28,12 @@
     "username": "ops",
     "email": "ops@ops.com",
     "password": "ops"
+  },
+  {
+    "name": "Viewer",
+    "username": "view",
+    "email": "view@view.com",
+    "password": "view"
   },
   {
     "name": "User",
