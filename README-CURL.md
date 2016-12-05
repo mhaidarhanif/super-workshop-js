@@ -7,11 +7,19 @@
 **Request:**
 
 ```sh
-# admin
-curl localhost:3000/auth/signup -X POST -d "email=admin@admin.com&name=administrator&username=admin&password=admin"
+# Sign up via x-www-form-urlencoded
+curl localhost:3000/auth/signup -X POST -d "email=apollo@apollo.com&name=Apollo&username=apollo&password=apollo"
 
-# test
-curl localhost:3000/auth/signup -X POST -d "name=Tester&username=test&password=test&email=test@test.com"
+# Sign up via JSON
+curl localhost:3000/auth/signup \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "apollo@apollo.com",
+    "name": "Apollo",
+    "username": "apollo",
+    "password": "apollo"
+  }'
 ```
 
 **Response:**
@@ -27,11 +35,8 @@ curl localhost:3000/auth/signup -X POST -d "name=Tester&username=test&password=t
 **Request:**
 
 ```sh
-# admin
-curl localhost:3000/auth/signin -X POST -d "username=admin&password=admin"
-
-# test
-curl localhost:3000/auth/signin -X POST -d "username=test&password=test"
+# apollo
+curl localhost:3000/auth/signin -X POST -d "username=apollo&password=apollo"
 ```
 
 **Response:**
@@ -46,21 +51,21 @@ curl localhost:3000/auth/signin -X POST -d "username=test&password=test"
 
 **Request:**
 
-1. `req.body`: `/auth/isAuthenticated -d "token=JWT_TOKEN"`
-2. `req.query`: `/auth/isAuthenticated?token=JWT_TOKEN`
+1. `req.body`: `/auth/is-authenticated -d "token=JWT_TOKEN"`
+2. `req.query`: `/auth/is-authenticated?token=JWT_TOKEN`
 3. `req.headers`: `Authorization: Bearer JWT_TOKEN`
 
 ```sh
 export TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ODI4NjlmM2Q1OWZmY2ZkYjVmYzJmYTUiLCJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsIm5hbWUiOiJhZG1pbmlzdHJhdG9yIiwiaWF0IjoxNDc5Mjk2OTI5fQ.kn5kFk4fpDaPSkwJAeftPZDZ5C5Z2UDl1i6OX8cTRgE
 
 # Body
-curl http://localhost:3000/auth/isAuthenticated -d "token=$TOKEN" -X POST
+curl http://localhost:3000/auth/is-authenticated -d "token=$TOKEN" -X POST
 
 # Query
-curl "http://localhost:3000/auth/isAuthenticated?token=$TOKEN" -X POST
+curl "http://localhost:3000/auth/is-authenticated?token=$TOKEN" -X POST
 
 # Header
-curl localhost:3000/auth/isAuthenticated -X POST -H "Authorization: Bearer $TOKEN" -X POST
+curl localhost:3000/auth/is-authenticated -X POST -H "Authorization: Bearer $TOKEN" -X POST
 ```
 
 **Response:**
@@ -78,7 +83,14 @@ _NOTE_: Use this only for checking.
 **Request:**
 
 ```sh
-curl localhost:3000/api/books -X POST -d "isbn=121212&name=Twelve&price=12"
+curl localhost:3000/api/books \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "isbn": "121212",
+    "name": "Twelve",
+    "price": "12"
+  }'
 ```
 
 **Response:**
