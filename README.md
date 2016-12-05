@@ -113,7 +113,7 @@ Then open `server/server-*` and `clients/client-*` directory separately.
 
 ```sh
 npm install
-npm run dev
+npm run start:dev
 ```
 
 ### Client jQuery (`client-jquery`)
@@ -132,13 +132,14 @@ live-server
 ### Last Check
 
 ```sh
-npm run start:pm2
+npm run start:dev
 ```
 
 ### Deploy to Server
 
 ```sh
-npm run deploy:pm2
+npm run deploy:dev:setup
+npm run deploy:dev
 ```
 
 --------------------------------------------------------------------------------
