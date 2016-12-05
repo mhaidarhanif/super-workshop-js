@@ -21,14 +21,14 @@ module.exports = {
       email: req.body.email
     }), req.body.password,
     (err, account) => {
-      if (err) res.status(422).json({ e: err.message })
-      if (!account) res.status(422).json({ m: 'Sign up failed.' })
+      if (err) res.status(422).json({ id: 'signup_failed', e: err.message })
+      if (!account) res.status(422).json({ id: 'signup_failed', m: 'Sign up failed.' })
 
       // Automatic sign in after successful sign up
       // Auth.signin(req, res, next)
 
       // Successfully signed up
-      else return res.status(201).json({ m: `Successfully signed up an account with username '${req.body.username}.'` })
+      else return res.status(201).json({ id: 'signup', m: `Successfully signed up an account with username '${req.body.username}.'` })
     })
   },
 
@@ -40,19 +40,19 @@ module.exports = {
     req.checkBody('password', 'Password is required').notEmpty()
 
     // Authenticate method by Passport
-    passport.authenticate('local', (err, user, info) => {
-      if (err) res.status(422).json({ e: err.message })
-      if (!user) return res.status(401).json({ s: 'error', m: `Sign in failed because account with username '${req.body.username}' is not found.` })
+    passport.authenticate('local', (err, account, info) => {
+      if (err) res.status(422).json({ id: 'signin_failed', e: err.message })
+      if (!account) return res.status(401).json({ s: false, id: 'signin_not_found', m: `Sign in failed because account with username '${req.body.username}' is not found.` })
 
       // Create token content and config
       let content = {
         payload: { // or claims
-          iss: process.env.URL,    // ISSUER: URL of the service
-          sub: user._id,           // SUBJECT: OID/UID of the user in system
-          id: user.accountId,      // ACCOUNTID: Sequential ID of the user
-          scope: 'self, profile',  // SCOPE: Choose specific payload/claims
-          username: user.username, // USERNAME: Lowercased username of the user
-          name: user.name          // NAME: Full name of the user
+          iss: process.env.URL,       // ISSUER: URL of the service
+          sub: account._id,           // SUBJECT: OID/UID of the account
+          id: account.accountId,      // ACCOUNTID: Sequential ID of the account
+          username: account.username, // USERNAME: Username of the account
+          name: account.name,         // NAME: Full name of the account
+          scope: 'self, profile'      // SCOPE: Choose specific payload/claims
         },
         secret: process.env.SECRET,
         options: {
@@ -61,7 +61,7 @@ module.exports = {
       }
 
       // Assign admin flag
-      if (user.username === 'super' || 'admin') {
+      if (account.username === 'super' || 'admin') {
         content.payload.admin = true
       }
 
@@ -77,7 +77,7 @@ module.exports = {
    */
   signout: (req, res) => {
     // req.logout()
-    res.status(200).json({ m: 'Sign out succeded.' })
+    res.status(200).json({ id: 'signout', m: 'Sign out succeded.' })
   },
 
   /**
@@ -89,7 +89,7 @@ module.exports = {
     Account.count({
       username: req.body.username
     }, (err, count) => {
-      if (err) return res.status(422).json({ s: false, m: 'Failed to check account existency.' })
+      if (err) return res.status(422).json({ s: false, id: 'account_exist', m: 'Failed to check account existency.' })
       else if (count === 0) return next()
       else return res.json({ m: `Account with username '${req.body.username}' is already exist.` })
     })
@@ -114,14 +114,14 @@ module.exports = {
       // Verifies JWT token with provided secret and checks expiration
       jwt.verify(token, process.env.SECRET, (err, decoded) => {
         // If there is an error when verifying the token...
-        if (err) return res.status(401).json({ s: false, m: 'Failed to authenticate token.', e: err })
+        if (err) return res.status(401).json({ s: false, id: 'auth_failed', m: 'Failed to authenticate token.', e: err })
         // If everything is good, save to request for use in other routes
         else req.decoded = decoded
         // Find the account based on the token subject
         Account.findById(decoded.sub, (err, account) => {
           // If there is no associated acccount...
           if (err || !account) {
-            return res.status(401).send({ s: false, m: 'No account is associated with that token.', e: err })
+            return res.status(401).send({ s: false, id: 'auth_not_found', m: 'No account is associated with that token.', e: err })
           }
           // There's the account! Finally sure that actual account is authenticated with valid token
           console.log({account})
@@ -130,7 +130,7 @@ module.exports = {
       })
     } else {
       // When there's no token
-      return res.status(403).send({ s: false, m: 'Sorry, no access without token.' })
+      return res.status(403).send({ s: false, id: 'auth_no_token', m: 'Sorry, no access without token.' })
     }
     // Finish token checker for authentication
   },
@@ -148,12 +148,12 @@ module.exports = {
 
     if (token !== 0) {
       jwt.verify(token, process.env.SECRET, (err, decoded) => {
-        if (err) return res.status(401).json({ s: false, m: 'Failed to authenticate token.', e: err })
+        if (err) return res.status(401).json({ s: false, id: 'auth_failed', m: 'Failed to authenticate token.', e: err })
         else if (decoded.admin === true) {
           console.log({decoded})
           return next()
         } else {
-          return res.status(403).send({ s: false, m: `Account '${decoded.name}' is not an admin.`, e: err })
+          return res.status(403).send({ s: false, id: 'auth_not_admin', m: `Account '${decoded.name}' is not an admin.`, e: err })
         }
       })
     } else {
