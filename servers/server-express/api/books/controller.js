@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 const Book = require('./model')
 
 const books = require('./seed.json')
@@ -11,7 +13,7 @@ const booksLot = require('./seed.lot.json')
 const sendResponse = (res, err, data, message) => {
   if (err) {
     res.status(400).json({
-      e: `Error: ${err}`,
+      e: `${err}`,
       m: 'Probably a duplicated data issue. Please check the potential book data which probably the same.'
     })
   } else if (!data) res.status(304).json({ m: message })
@@ -22,7 +24,7 @@ const sendResponse = (res, err, data, message) => {
 const sendResponseNF = (res, err, data, message) => {
   if (err) {
     res.status(400).json({
-      e: `Error: ${err}`,
+      e: `${err}`,
       m: 'Something wrong, try again.'
     })
   } else if (!data) res.status(404).json({ m: message })
@@ -148,7 +150,8 @@ const BookController = module.exports = {
         isbn: req.body.isbn,
         name: req.body.name,
         price: req.body.price,
-        createdBy: req.decoded.id
+        createdBy: req.decoded.id,
+        updatedBy: req.decoded.id
       }, (err, data) => {
         if (err) console.log(err)
         console.log('postBook:', data)
@@ -168,11 +171,12 @@ const BookController = module.exports = {
     }
     console.log({book})
 
-    Book.create(book, (err, data) => {
-      if (err) console.log(err)
-      console.log('postBookWithOwner:', data)
-      sendResponse(res, err, data, `Book with ISBN ${req.body.isbn} is probably already exist.`)
-    })
+    Book
+      .create(book, (err, data) => {
+        if (err) console.log(err)
+        console.log('postBookWithOwner:', data)
+        sendResponse(res, err, data, `Book with ISBN ${req.body.isbn} is probably already exist.`)
+      })
   },
 
   /*
@@ -185,21 +189,21 @@ const BookController = module.exports = {
    * @apiSuccess {JSON} isbn, name, price
    */
   searchBooks: (req, res) => {
-    let params = {}
-    if (req.body.isbn) params.isbn = new RegExp(req.body.isbn, 'i')
-    if (req.body.name) params.name = new RegExp(req.body.name, 'i')
-    if (req.body.price) params.price = Number(req.body.price)
-    console.log(params)
+    let book = {}
+    if (req.body.isbn) book.isbn = new RegExp(req.body.isbn, 'i')
+    if (req.body.name) book.name = new RegExp(req.body.name, 'i')
+    if (req.body.price) book.price = Number(req.body.price)
+    console.log({book})
 
-    if (params) {
-      Book.find(params, (err, data) => {
+    if (!R.isEmpty(book)) {
+      Book.find(book, (err, data) => {
         // console.log('searchBooks:', data)
         if (err) res.status(500).json({ e: `Error: ${err}` })
-        else if (!data) res.status(304).json({ m: `Failed to search books with parameters: ${params}` })
+        else if (!data) res.status(304).json({ m: `Failed to search books with data: ${book}` })
         else res.status(200).json(data)
       })
     } else {
-      res.status(422).json({ m: `Failed to search books with no parameters.` })
+      res.status(422).json({ m: `Failed to search books with no data.` })
     }
   },
 
@@ -262,20 +266,32 @@ const BookController = module.exports = {
    * @apiSuccess {JSON} isbn, name, price
    */
   updateBookByISBN: (req, res) => {
-    Book.findOneAndUpdate({
-      isbn: req.params.isbn
-    }, {
-      isbn: req.body.isbn,
-      name: req.body.name,
-      price: req.body.price,
-      updatedBy: req.decoded.id
-    }, {
-      new: true,
-      upsert: true
-    }, (err, data) => {
-      console.log('updateBookByISBN:', data)
-      sendResponseNF(res, err, data, 'Failed to UPDATE book by ISBN.')
-    })
+    let book = {}
+    if (req.body.isbn) book.isbn = req.body.isbn
+    if (req.body.name) book.name = req.body.name
+    if (req.body.price) book.price = req.body.price
+
+    console.log({book})
+    console.log(req.body)
+
+    if (!R.isEmpty(book)) {
+      Book.findOneAndUpdate({
+        isbn: req.params.isbn
+      }, {
+        $set: book,
+        $addToSet: { // only add if not exist
+          'updatedBy': req.decoded.id
+        }
+      }, {
+        new: true,    // return the modified document
+        upsert: false // create new doc if not exist
+      }, (err, data) => {
+        console.log('updateBookByISBN:', data)
+        sendResponseNF(res, err, data, `Failed to update book with ISBN '${req.params.isbn}'. Might not exist yet.`)
+      })
+    } else {
+      res.status(422).json({ m: `Failed to put owners with no data.` })
+    }
   },
 
   /*
@@ -285,17 +301,31 @@ const BookController = module.exports = {
    */
 
   updateBookByISBNAndOwner: (req, res) => {
-    Book.findOneAndUpdate({
-      isbn: req.params.isbn
-    }, {
-      $push: { 'owners': req.body.owner }
-    }, {
-      new: true,
-      upsert: false
-    }, (err, data) => {
-      console.log('updateBookByISBNAndOwner:', data)
-      sendResponseNF(res, err, data, 'Failed to UPDATE book by ISBN and PUSH owner accountId.')
-    })
+    let book = {}
+    if (req.decoded.id) {
+      book.owner = req.decoded.id
+      book.updatedBy = req.decoded.id
+    }
+    console.log({book})
+
+    if (!R.isEmpty(book)) {
+      Book.findOneAndUpdate({
+        isbn: req.params.isbn
+      }, {
+        $addToSet: {
+          'updatedBy': book.updatedBy,
+          'owners': book.owner
+        }
+      }, {
+        new: true,
+        upsert: false
+      }, (err, data) => {
+        console.log('updateBookByISBNAndOwner:', data)
+        sendResponseNF(res, err, data, `Failed to update book with ISBN '${req.params.isbn}' and assign owner accountId '${req.decoded.id}'. Might not exist yet.`)
+      })
+    } else {
+      res.status(422).json({ m: `Failed to put owners with no account.` })
+    }
   }
 
 }

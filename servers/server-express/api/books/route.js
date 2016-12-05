@@ -21,7 +21,7 @@ router.delete('/actions/delete', auth.isAdmin, api.deleteBooks)
 router.post('/', auth.isAuthenticated, api.postBook)
 router.post('/search', auth.isAuthenticated, api.searchBooks)
 router.put('/:isbn', auth.isAuthenticated, api.updateBookByISBN)
-router.put('/:isbn/owner', auth.isAuthenticated, api.updateBookByISBNAndOwner)
+router.put('/:isbn/owners', auth.isAuthenticated, api.updateBookByISBNAndOwner)
 router.delete('/:isbn', auth.isAuthenticated, api.deleteBookByISBN)
 
 // PUBLIC USER

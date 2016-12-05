@@ -4,22 +4,22 @@
   "description": "Super Workshop JS - Server Express",
   "main": "server.js",
   "scripts": {
-    "start:dev"     : "pm2 startOrGracefulReload ecosystem.json --env dev",
-    "start:staging" : "pm2 startOrGracefulReload ecosystem.json --env staging",
-    "start"         : "pm2 startOrGracefulReload ecosystem.json --env production",
-    "debug"  : "nodemon server.js",
-    "stop"   : "pm2 stop all",
-    "delete" : "pm2 delete all",
-    "push"   : "git push origin && git push origin --tags",
-    "release:major" : "npm version major && npm run push",
-    "release:minor" : "npm version minor && npm run push",
-    "release:patch" : "npm version patch && npm run push",
-    "deploy:dev:setup"     : "NODE_ENV=dev pm2 deploy ecosystem.json dev setup",
-    "deploy:dev"           : "NODE_ENV=dev pm2 deploy ecosystem.json dev",
-    "deploy:staging:setup" : "NODE_ENV=staging pm2 deploy ecosystem.json staging setup",
-    "deploy:staging"       : "NODE_ENV=staging pm2 deploy ecosystem.json staging",
-    "deploy:setup"         : "NODE_ENV=production pm2 deploy ecosystem.json production setup",
-    "deploy"               : "NODE_ENV=production pm2 deploy ecosystem.json production"
+    "start:dev": "pm2 startOrGracefulReload ecosystem.json --env dev",
+    "start:staging": "pm2 startOrGracefulReload ecosystem.json --env staging",
+    "start": "pm2 startOrGracefulReload ecosystem.json --env production",
+    "debug": "nodemon server.js",
+    "stop": "pm2 stop all",
+    "delete": "pm2 delete all",
+    "push": "git push origin && git push origin --tags",
+    "release:major": "npm version major && npm run push",
+    "release:minor": "npm version minor && npm run push",
+    "release:patch": "npm version patch && npm run push",
+    "deploy:dev:setup": "NODE_ENV=dev pm2 deploy ecosystem.json dev setup",
+    "deploy:dev": "NODE_ENV=dev pm2 deploy ecosystem.json dev",
+    "deploy:staging:setup": "NODE_ENV=staging pm2 deploy ecosystem.json staging setup",
+    "deploy:staging": "NODE_ENV=staging pm2 deploy ecosystem.json staging",
+    "deploy:setup": "NODE_ENV=production pm2 deploy ecosystem.json production setup",
+    "deploy": "NODE_ENV=production pm2 deploy ecosystem.json production"
   },
   "repository": {
     "type": "git",
@@ -56,7 +56,8 @@
     "passport-jwt": "^2.2.1",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^4.0.0",
-    "passport-twitter": "^1.0.4"
+    "passport-twitter": "^1.0.4",
+    "ramda": "0.22.1"
   },
   "devDependencies": {
     "chance-cli": "^1.0.6",
