@@ -42,7 +42,7 @@ module.exports = {
     // Authenticate method by Passport
     passport.authenticate('local', (err, user, info) => {
       if (err) res.status(422).json({ e: err.message })
-      if (!user) return res.status(401).json({ s: 'error', m: `Sign in failed because account with username '${user.username}' is not found.` })
+      if (!user) return res.status(401).json({ s: 'error', m: `Sign in failed because account with username '${req.body.username}' is not found.` })
 
       // Create token content and config
       let content = {
@@ -61,7 +61,7 @@ module.exports = {
       }
 
       // Assign admin flag
-      if (user.username === 'admin') {
+      if (user.username === 'super' || 'admin') {
         content.payload.admin = true
       }
 
@@ -139,7 +139,12 @@ module.exports = {
    * Check whether the account is an admin
    */
   isAdmin: (req, res, next) => {
-    let token = req.body.token || req.query.token || req.headers.authorization.split(' ')[1] || 0
+    // Check for token from various ways
+    let token
+    if (req.body.token) token = req.body.token
+    else if (req.query.token) token = req.query.token
+    else if (req.headers.authorization) token = req.headers.authorization.split(' ')[1]
+    else token = 0
 
     if (token !== 0) {
       jwt.verify(token, process.env.SECRET, (err, decoded) => {

@@ -1,5 +1,6 @@
-const Account = require('./model')
+const mongoose = require('mongoose')
 
+const Account = require('./model')
 const accounts = require('./seed.json')
 
 module.exports = {
@@ -15,13 +16,19 @@ module.exports = {
     // List of accounts from seed
     console.log({accounts})
 
-    // Remove all accounts first
-    Account.remove({}, (err) => {
-      if (err) res.status(400).json({ 'error': `Error: ${err}` })
-      console.log({ 'message': `All accounts have been removed before seeding.` })
+    // Drop counters collection
+    mongoose.connection.db.dropCollection('counters', (err, result) => {
+      if (err) res.status(400).json({ e: `Error: ${err}` })
+      console.log({ m: `Collection 'counters' have been removed before seeding.` })
     })
 
-    // Seed some accounts from data
+    // Remove all accounts first
+    Account.remove({}, (err) => {
+      if (err) res.status(400).json({ e: `Error: ${err}` })
+      console.log({ m: `All accounts have been removed before seeding.` })
+    })
+
+    // Seed some accounts from prepared data
     accounts.forEach((account, index) => {
       Account.register(new Account({
         name: account.name,
@@ -30,15 +37,15 @@ module.exports = {
       }),
       account.password,
       (err, account) => {
-        if (err) res.status(400).json({ error: err.message })
-        else if (!account) res.status(304).json({ 'message': `Failed to seed account: ${account}` })
+        if (err) res.status(400).json({ e: err.message })
+        else if (!account) res.status(304).json({ m: `Failed to seed account: ${account}` })
       })
     })
 
     // Wait until all accounts are registered
     setTimeout(() => {
       Account.find({}, (err, data) => {
-        if (err) res.status(400).json({ error: err.message })
+        if (err) res.status(400).json({ e: err.message })
         res.status(200).json(data)
       })
     }, 2000)
@@ -50,8 +57,8 @@ module.exports = {
   getAccounts: (req, res) => {
     Account.find({}, (err, data) => {
       console.log('getAccounts:', data)
-      if (err) res.status(400).json({ 'error': `Error: ${err}` })
-      if (!data) res.status(404).json({ 'message': 'Failed to get list of all accounts.' })
+      if (err) res.status(400).json({ e: `Error: ${err}` })
+      if (!data) res.status(404).json({ m: 'Failed to get list of all accounts.' })
       res.status(200).json(data)
     })
   },
@@ -61,8 +68,8 @@ module.exports = {
   */
   deleteAccounts: (req, res) => {
     Account.remove({}, (err) => {
-      if (err) res.status(400).json({ 'error': `Error: ${err}` })
-      res.status(200).json({ 'message': `All accounts have been removed.` })
+      if (err) res.status(400).json({ e: `Error: ${err}` })
+      res.status(200).json({ m: `All accounts have been removed.` })
     })
   },
 
@@ -78,8 +85,8 @@ module.exports = {
       accountId: req.params.accountId
     }, (err, data) => {
       console.log('getProfileById:', data)
-      if (err) res.status(400).json({ 'error': `Error: ${err}` })
-      if (!data) res.status(404).json({ 'message': 'Failed to get account profile by ID' })
+      if (err) res.status(400).json({ e: `Error: ${err}` })
+      if (!data) res.status(404).json({ m: 'Failed to get account profile by ID.' })
       res.status(200).json(data)
     })
   }

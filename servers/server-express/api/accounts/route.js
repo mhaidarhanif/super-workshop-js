@@ -8,14 +8,12 @@ const auth = require('../auth/controller')
 // api/accounts
 // -----------------------------------------------------------------------------
 
-router.get('/actions/seed', auth.isAdmin, api.seedAccounts)
+// ADMINISTRATIVE
+router.get('/', auth.isAdmin, api.getAccounts)
+router.post('/actions/seed', auth.isAdmin, api.seedAccounts)
+router.delete('/actions/delete', auth.isAdmin, api.deleteAccounts)
 
-// Need auth.isAuthenticated
-router.get('/', api.getAccounts)
-router.delete('/', api.deleteAccounts)
-
-// PROFILE
-// router.get('/:accountId', api.getAccountProfileById)
+// PUBLIC
 router.get('/:accountId', auth.isAuthenticated, api.getAccountProfileById)
 
 module.exports = router
