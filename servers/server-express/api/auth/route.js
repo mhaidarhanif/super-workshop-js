@@ -21,15 +21,20 @@ router.post('/signin', auth.signin)
 
 // SIGN OUT
 // Not necessary if using different host/port
-router.get('/signout', auth.signout)
+router.get('/signout', auth.isAuthenticated, auth.signout)
+router.post('/signout', auth.isAuthenticated, auth.signout)
 
 // IS ACCOUNT EXIST?
 // Require 'username'
-router.post('/isAccountExist', auth.isAccountExist, (req, res) => { res.send(true) })
+router.post('/is-account-exist', auth.isAccountExist, (req, res) => { res.json({m: `Account with username '${req.body.username}' is available.`}) })
 
 // IS AUTHENTICATED?
 // Require 'Authorization: Bearer JWT'
-router.post('/isAuthenticated', auth.isAuthenticated, (req, res) => { res.send(true) })
+router.post('/is-authenticated', auth.isAuthenticated, (req, res) => { res.json({m: `Account with that token is authenticated.`}) })
+
+// IS ADMIN?
+// Require 'Authorization: Bearer JWT' with Admin role
+router.post('/is-admin', auth.isAdmin, (req, res) => { res.json({m: `Account with that token is an admin.`}) })
 
 /*
 --------------------------------------------------------------------------------

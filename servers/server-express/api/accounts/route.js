@@ -8,7 +8,7 @@ const auth = require('../auth/controller')
 // api/accounts
 // -----------------------------------------------------------------------------
 
-router.get('/actions/seed', api.seedAccounts)
+router.get('/actions/seed', auth.isAdmin, api.seedAccounts)
 
 // Need auth.isAuthenticated
 router.get('/', api.getAccounts)
