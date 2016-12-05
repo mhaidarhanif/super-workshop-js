@@ -9,3 +9,7 @@
 5. How can someone integrate your API?
 6. What is the extent of your API?
 7. Where does someone ask for help?
+
+## References
+
+- [HTTP API Design Guide](https://geemus.gitbooks.io/http-api-design/content/en)
