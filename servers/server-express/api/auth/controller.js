@@ -130,7 +130,7 @@ module.exports = {
       })
     } else {
       // When there's no token
-      return res.status(403).send({ s: false, id: 'auth_no_token', m: 'Sorry, no access without token.' })
+      return res.status(403).send({ s: false, id: 'auth_no_token', m: 'Sorry, no access without an active access token that must be used to query information.' })
     }
     // Finish token checker for authentication
   },

@@ -5,19 +5,19 @@ const Account = require('./model')
 const superAccounts = require('./seed.super.json')
 const accounts = require('./seed.json')
 
-const Auth = module.exports = {
+module.exports = {
 
   // ---------------------------------------------------------------------------
   // ADMINISTRATIVE
   // ---------------------------------------------------------------------------
 
-  /*
+  /* ---------------------------------------------------------------------------
    * @api {get} Seed super accounts
    */
   seedSuperAccounts: (req, res) => {
     // Drop counters collection
     mongoose.connection.db.dropCollection('counters', (err, result) => {
-      if (err) res.status(400).json({ id: 'counter_drop_error', e: `Error: ${err}` })
+      if (err) res.status(400).json({ id: 'counter_drop_error', e: `${err}` })
       console.log({ id: 'counter_dropped', m: `Collection 'counters' have been removed before seeding.` })
     })
 
@@ -44,7 +44,7 @@ const Auth = module.exports = {
     }, 2000)
   },
 
-  /*
+  /* ---------------------------------------------------------------------------
    * @api {get} Seed some accounts
    */
   seedAccounts: (req, res) => {
@@ -74,7 +74,7 @@ const Auth = module.exports = {
     }, 2000)
   },
 
-  /*
+  /* ---------------------------------------------------------------------------
    * Get list of all accounts
    */
   getAccounts: (req, res) => {
@@ -85,19 +85,41 @@ const Auth = module.exports = {
       'username': 1
     }, (err, data) => {
       console.log('getAccounts:', data)
-      if (err) res.status(400).json({ id: 'account_get_error', e: `Error: ${err}` })
+      if (err) res.status(400).json({ id: 'account_get_error', e: `${err}` })
       if (!data) res.status(404).json({ id: 'account_get_failed', m: 'Failed to get list of all accounts.' })
       res.status(200).json(data)
     })
   },
 
-  /*
-    Delete all accounts
-  */
+  /* ---------------------------------------------------------------------------
+   * Delete all accounts
+   */
   deleteAccounts: (req, res) => {
     Account.remove({}, (err) => {
-      if (err) res.status(400).json({ id: 'account_remove_error', e: `Error: ${err}` })
+      if (err) res.status(400).json({ id: 'account_remove_error', e: `${err}` })
       res.status(200).json({ id: 'account_removed', m: 'All accounts have been removed.' })
+    })
+  },
+
+  // ---------------------------------------------------------------------------
+  // AUTHENTICATED
+  // ---------------------------------------------------------------------------
+
+  /* ---------------------------------------------------------------------------
+   * Get account profile from authenticated user
+   */
+  getProfile: (req, res) => {
+    Account.findOne({
+      accountId: req.decoded.id
+    }, {
+      'name': 1,
+      'username': 1
+    }, (err, data) => {
+      console.log('getProfile:', data)
+
+      if (err) res.status(400).json({ id: 'account_profile_error', e: `${err}` })
+      else if (!data) res.status(404).json({ id: 'account_profile_failed', m: 'Failed to get account profile with that token.' })
+      else res.status(200).json(data)
     })
   },
 
@@ -105,9 +127,9 @@ const Auth = module.exports = {
   // PUBLIC
   // ---------------------------------------------------------------------------
 
-  /*
-    Get profile of an account by ID
-  */
+  /* ---------------------------------------------------------------------------
+   * Get account profile by account ID
+   */
   getAccountProfileById: (req, res) => {
     Account.findOne({
       accountId: req.params.accountId
@@ -118,7 +140,7 @@ const Auth = module.exports = {
       'username': 1
     }, (err, data) => {
       console.log('getProfileById:', data)
-      if (err) res.status(400).json({ id: 'account_profile_error', e: `Error: ${err}` })
+      if (err) res.status(400).json({ id: 'account_profile_error', e: `${err}` })
       else if (!data) res.status(404).json({ id: 'account_profile_failed', m: 'Failed to get account profile by ID.' })
       else res.status(200).json(data)
     })
