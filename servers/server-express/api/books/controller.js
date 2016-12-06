@@ -1,9 +1,10 @@
 const R = require('ramda')
 
 const Book = require('./model')
-
 const books = require('./seed.json')
 const booksLot = require('./seed.lot.json')
+
+const Account = require('../accounts/model')
 
 // -----------------------------------------------------------------------------
 // HELPERS
@@ -13,10 +14,11 @@ const booksLot = require('./seed.lot.json')
 const sendResponse = (res, err, data, message) => {
   if (err) {
     res.status(400).json({
+      id: 'book_error',
       e: `${err}`,
       m: 'Probably a duplicated data issue. Please check the potential book data which probably the same.'
     })
-  } else if (!data) res.status(304).json({ id: 'data_duplicate', m: message })
+  } else if (!data) res.status(304).json({ id: 'book_data_duplicate', m: message })
   else res.status(201).json(data)
 }
 
@@ -24,10 +26,11 @@ const sendResponse = (res, err, data, message) => {
 const sendResponseNF = (res, err, data, message) => {
   if (err) {
     res.status(400).json({
+      id: 'book_error',
       e: `${err}`,
       m: 'Something wrong. Try again.'
     })
-  } else if (!data) res.status(404).json({ id: 'data_not_found', m: message })
+  } else if (!data) res.status(404).json({ id: 'book_data_failed', m: message })
   else res.status(200).json(data)
 }
 
@@ -35,17 +38,16 @@ const sendResponseNF = (res, err, data, message) => {
 // BOOK CONTROLLER
 // -----------------------------------------------------------------------------
 
-const BookController = module.exports = {
+module.exports = {
 
   // ---------------------------------------------------------------------------
   // ADMINISTRATIVE
   // ---------------------------------------------------------------------------
 
-  /*
+  /* ---------------------------------------------------------------------------
    * @api {get} /books/actions/seed Seed some books
    */
   seedBooks: (req, res) => {
-    BookController.deleteBooks()
     Book
       .create(books, (err, data) => {
         // console.log('seedBooks:', data)
@@ -53,11 +55,10 @@ const BookController = module.exports = {
       })
   },
 
-  /*
+  /* ---------------------------------------------------------------------------
    * @api {get} /books/actions/seed-lot Seed a lot of books
    */
   seedBooksLot: (req, res) => {
-    BookController.deleteBooks()
     Book
       .create(booksLot, (err, data) => {
         // console.log('seedBooksLot:', data)
@@ -65,7 +66,7 @@ const BookController = module.exports = {
       })
   },
 
-  /*
+  /* ---------------------------------------------------------------------------
    * @api {get} /books Delete all books
    */
   deleteBooks: (req, res) => {
@@ -83,7 +84,7 @@ const BookController = module.exports = {
   // PUBLIC
   // ---------------------------------------------------------------------------
 
-  /*
+  /* ---------------------------------------------------------------------------
    * @api {get} /books?page=1 Get all books with pagination
    */
   getBooks: (req, res) => {
@@ -99,7 +100,7 @@ const BookController = module.exports = {
       })
   },
 
-  /*
+  /* ---------------------------------------------------------------------------
    * @api {get} /books/all Get all books without pagination
    */
   getBooksAll: (req, res) => {
@@ -111,7 +112,7 @@ const BookController = module.exports = {
       })
   },
 
-  /*
+  /* ---------------------------------------------------------------------------
    * @api {post} /books Post a new book
    */
   postBook: (req, res) => {
@@ -128,15 +129,14 @@ const BookController = module.exports = {
       })
   },
 
-  /*
-   * @api {post} /books Post a new book with owner data
+  /* ---------------------------------------------------------------------------
+   * @api {post} /books Post a new book with data
    */
   postBookAndOwner: (req, res) => {
     const book = {
       isbn: req.body.isbn,
       title: req.body.title,
-      price: req.body.price,
-      owners: req.body.owner // accountId
+      price: req.body.price
     }
     console.log({book})
 
@@ -147,7 +147,7 @@ const BookController = module.exports = {
       })
   },
 
-  /*
+  /* ---------------------------------------------------------------------------
    * @api {post} /books/search Search some books
    */
   searchBooks: (req, res) => {
@@ -167,7 +167,7 @@ const BookController = module.exports = {
     }
   },
 
-  /*
+  /* ---------------------------------------------------------------------------
    * @api {get} /books/:isbn Get book by ISBN
    */
   getBookByISBN: (req, res) => {
@@ -181,10 +181,16 @@ const BookController = module.exports = {
     })
   },
 
-  /*
+  /* ---------------------------------------------------------------------------
    * @api {delete} /books/:isbn Delete book by ISBN
    */
   deleteBookByISBN: (req, res) => {
+    let updated = {
+      book: null,
+      account: null
+    }
+
+    // Remove book from database
     Book.findOneAndRemove({
       isbn: req.params.isbn
     }, (err, data) => {
@@ -198,60 +204,105 @@ const BookController = module.exports = {
         })
       }
     })
+
+    // Remove book from account data
   },
 
-  /*
+  /* ---------------------------------------------------------------------------
    * @api {put} /books/:isbn Update book by ISBN
    */
   updateBookByISBN: (req, res) => {
+    // Prepare required data
     let book = {}
     if (req.body.isbn) book.isbn = req.body.isbn
     if (req.body.title) book.title = req.body.title
     if (req.body.price) book.price = req.body.price
     console.log({book})
 
+    // Check if the required data are exist
     if (!R.isEmpty(book)) {
-      Book.findOneAndUpdate({
-        isbn: req.params.isbn
-      }, {
-        $set: book,
-        $addToSet: { // only add if not exist
-          'updatedBy': req.decoded.id
-        }
-      }, {
-        new: true,    // return the modified document
-        upsert: false // create new doc if not exist
-      }, (err, data) => {
-        // console.log('updateBookByISBN:', data)
-        sendResponseNF(res, err, data, `Failed to update book with ISBN '${req.params.isbn}'. Might not exist yet.`)
-      })
-    } else {
-      res.status(422).json({ id: 'book_update_no_data', m: `Failed to put owners with no data.` })
+      res.status(422).json({ id: 'book_update_no_data', m: `Failed to update book with no data.` })
     }
+
+    // Update existing book data with new book data
+    Book.findOneAndUpdate({
+      isbn: req.params.isbn
+    }, {
+      $set: book,
+      $addToSet: { // only add if not exist
+        'updatedBy': req.decoded.id
+      }
+    }, {
+      new: true,    // return the modified document
+      upsert: false // create new doc if not exist
+    }, (err, data) => {
+        // console.log('updateBookByISBN:', data)
+      sendResponseNF(res, err, data, `Failed to update book with ISBN '${req.params.isbn}'.`)
+    })
   },
 
-  /*
+  /* ---------------------------------------------------------------------------
    * @api {put} /books/:isbn/owner Update book by ISBN to put with owner
    */
   updateBookByISBNAndOwner: (req, res) => {
-    if (req.decoded.id) {
-      Book.findOneAndUpdate({
-        isbn: req.params.isbn
-      }, {
-        $addToSet: {
-          'updatedBy': req.decoded.id,
-          'owners': req.decoded.id
-        }
-      }, {
-        new: true,
-        upsert: false
-      }, (err, data) => {
-        // console.log('updateBookByISBNAndOwner:', data)
-        sendResponseNF(res, err, data, `Failed to update book with ISBN '${req.params.isbn}' and assign owner accountId '${req.decoded.id}'. Might not exist yet.`)
-      })
-    } else {
-      res.status(422).json({ id: 'book_update_no_account', m: `Failed to put owners with no account.` })
+    // Prepare response data
+    let updated = {
+      s: true,
+      m: 'Successfully updated book by ISBN to put with owner account ID.',
+      book: null,
+      account: null
     }
+
+    // Assign accountId to book's owners
+    Book.findOneAndUpdate({
+      isbn: req.params.isbn
+    }, {
+      $addToSet: { 'updatedBy': req.decoded.id, 'owners': req.decoded.id }
+    }, {
+      new: true,
+      upsert: false
+    }, (err, data) => {
+      if (err) {
+        res.status(400).json({
+          id: 'book_error', e: `${err}`, m: 'Something wrong. Try again.'
+        })
+      } else if (!data) {
+        res.status(404).json({
+          id: 'book_data_failed',
+          m: `Failed to update book with ISBN '${req.params.isbn}' and assign owner accountId '${req.decoded.id}'.`
+        })
+      } else {
+        updated.book = data
+      }
+    })
+
+    // Assign book ISBN to account's books
+    Account.findOneAndUpdate({
+      accountId: req.decoded.id
+    }, {
+      $addToSet: { 'updatedBy': req.decoded.id, 'books': req.params.isbn }
+    }, {
+      new: true,
+      upsert: false
+    }, (err, data) => {
+      if (err) {
+        res.status(400).json({
+          id: 'book_error', e: `${err}`, m: 'Something wrong. Try again.'
+        })
+      } else if (!data) {
+        res.status(404).json({
+          id: 'book_data_failed',
+          m: `Failed to update account with ID '${req.decoded.id}' and assign book with ISBN '${req.params.isbn}'. Might not exist yet.`
+        })
+      } else {
+        updated.account = data
+      }
+    })
+
+    // Wait until all data have been updated
+    // Finally send the updated book and account data
+    // console.log(updated)
+    setTimeout(() => { res.status(201).json(updated) }, 1000)
   }
 
 // BookController
