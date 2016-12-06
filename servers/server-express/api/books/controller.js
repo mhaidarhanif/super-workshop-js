@@ -43,8 +43,6 @@ const BookController = module.exports = {
 
   /*
    * @api {get} /books/actions/seed Seed some books
-   * @apiName seedBooks
-   * @apiGroup Books
    */
   seedBooks: (req, res) => {
     BookController.deleteBooks()
@@ -57,8 +55,6 @@ const BookController = module.exports = {
 
   /*
    * @api {get} /books/actions/seed-lot Seed a lot of books
-   * @apiName seedBooksLot
-   * @apiGroup Books
    */
   seedBooksLot: (req, res) => {
     BookController.deleteBooks()
@@ -71,12 +67,6 @@ const BookController = module.exports = {
 
   /*
    * @api {get} /books Delete all books
-   * @apiName deleteBooks
-   * @apiGroup Books
-   *
-   * @apiParam {Number} isbn
-   *
-   * @apiSuccess {JSON} message All books have been removed.
    */
   deleteBooks: (req, res) => {
     Book
@@ -94,33 +84,9 @@ const BookController = module.exports = {
   // ---------------------------------------------------------------------------
 
   /*
-   * @api {get} /books Get all books
-   * @apiName getBooks
-   * @apiGroup Books
-   *
-   * @apiSuccess {Number} isbn  Book ISBN (international standard book number)
-   * @apiSuccess {String} title Book title
-   * @apiSuccess {Number} price Book retail price
+   * @api {get} /books?page=1 Get all books with pagination
    */
   getBooks: (req, res) => {
-    Book
-      .find({})
-      .exec((err, data) => {
-        // console.log('getBooks:', data)
-        sendResponseNF(res, err, data, 'Failed to get all books.')
-      })
-  },
-
-  /*
-   * @api {get} /books?page=20 Get all books with pagination
-   * @apiName getBooksPaginated
-   * @apiGroup Books
-   *
-   * @apiSuccess {Number} isbn  Book ISBN (international standard book number)
-   * @apiSuccess {String} title Book title
-   * @apiSuccess {Number} price Book retail price
-   */
-  getBooksPaginated: (req, res) => {
     Book
       .paginate({}, {
         page: Number(req.query.page) || 1,
@@ -134,15 +100,19 @@ const BookController = module.exports = {
   },
 
   /*
+   * @api {get} /books/all Get all books without pagination
+   */
+  getBooksAll: (req, res) => {
+    Book
+      .find({})
+      .exec((err, data) => {
+        // console.log('getBooks:', data)
+        sendResponseNF(res, err, data, 'Failed to get all books.')
+      })
+  },
+
+  /*
    * @api {post} /books Post a new book
-   * @apiName postBooks
-   * @apiGroup Books
-   *
-   * @apiParams {Number} isbn  Book ISBN
-   * @apiParams {String} title Book title
-   * @apiParams {Number} price Book retail price
-   *
-   * @apiSuccess {JSON} isbn, title, price
    */
   postBook: (req, res) => {
     Book
@@ -179,12 +149,6 @@ const BookController = module.exports = {
 
   /*
    * @api {post} /books/search Search some books
-   * @apiName searchBooks
-   * @apiGroup Books
-   *
-   * @apiParams {Number} isbn  Book ISBN
-   *
-   * @apiSuccess {JSON} isbn, title, price
    */
   searchBooks: (req, res) => {
     let book = {}
@@ -205,14 +169,6 @@ const BookController = module.exports = {
 
   /*
    * @api {get} /books/:isbn Get book by ISBN
-   * @apiName getBookByISBN
-   * @apiGroup Books
-   *
-   * @apiParams {String} isbn   Book id is ISBN
-   *
-   * @apiSuccess {Number} isbn  Book ISBN
-   * @apiSuccess {String} title  Book title
-   * @apiSuccess {Number} price Book retail price
    */
   getBookByISBN: (req, res) => {
     Book.findOne({
@@ -227,12 +183,6 @@ const BookController = module.exports = {
 
   /*
    * @api {delete} /books/:isbn Delete book by ISBN
-   * @apiName deleteBookByISBN
-   * @apiGroup Books
-   *
-   * @apiParams {String} isbn   Book id is ISBN
-   *
-   * @apiSuccess {JSON} message Book ISBN has been removed
    */
   deleteBookByISBN: (req, res) => {
     Book.findOneAndRemove({
@@ -252,14 +202,6 @@ const BookController = module.exports = {
 
   /*
    * @api {put} /books/:isbn Update book by ISBN
-   * @apiName updateBookByISBN
-   * @apiGroup Books
-   *
-   * @apiParams {Number} isbn  Book ISBN
-   * @apiParams {String} title Book title
-   * @apiParams {Number} price Book retail price
-   *
-   * @apiSuccess {JSON} isbn, title, price
    */
   updateBookByISBN: (req, res) => {
     let book = {}
@@ -289,9 +231,7 @@ const BookController = module.exports = {
   },
 
   /*
-   * @api {put} /books/:isbn/owner Update book by ISBN to put with owner accountId
-   * @apiName updateBookByISBNAndOwner
-   * @apiGroup Books
+   * @api {put} /books/:isbn/owner Update book by ISBN to put with owner
    */
   updateBookByISBNAndOwner: (req, res) => {
     if (req.decoded.id) {
@@ -314,4 +254,5 @@ const BookController = module.exports = {
     }
   }
 
+// BookController
 }

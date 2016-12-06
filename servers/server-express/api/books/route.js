@@ -38,10 +38,10 @@ router.delete('/:isbn', auth.isAuthenticated, api.deleteBookByISBN)
 // PUBLIC USER
 // -----------------------------------------------------------------------------
 
-// Get all books
+// Get all books with pagination
 router.get('/', api.getBooks)
-// Get all books paginated
-router.get('/paginated', api.getBooksPaginated)
+// Get all books without pagination
+router.get('/all', api.getBooksAll)
 // Get a book by ISBN
 router.get('/:isbn', api.getBookByISBN)
 
