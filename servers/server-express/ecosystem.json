@@ -14,7 +14,8 @@
         "followSymlinks": false
       },
       "env": {
-        "COMMON_VARIABLE": "true"
+        "COMMON_VARIABLE": "true",
+        "NAME": "server-express"
       },
       "env_dev": {
         "NODE_ENV": "dev",

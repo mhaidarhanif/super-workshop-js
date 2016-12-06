@@ -57,7 +57,8 @@
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^4.0.0",
     "passport-twitter": "^1.0.4",
-    "ramda": "0.22.1"
+    "ramda": "0.22.1",
+    "request-ip": "1.2.3"
   },
   "devDependencies": {
     "chance-cli": "^1.0.6",
