@@ -78,7 +78,7 @@ _NOTE_: Use this only for checking.
 
 --------------------------------------------------------------------------------
 
-## Create a new book
+## Post a new book
 
 **Request:**
 
@@ -89,7 +89,7 @@ curl localhost:3000/api/books \
   -d '{
     "isbn": "121212",
     "name": "Twelve",
-    "price": "12"
+    "price": 12
   }'
 ```
 

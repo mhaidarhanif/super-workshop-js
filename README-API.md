@@ -10,6 +10,13 @@
 6. What is the extent of your API?
 7. Where does someone ask for help?
 
+## [How to Determine API Resources](https://zapier.com/learn/apis/chapter-6-api-design)
+
+1. Decide what resource(s) need to be available.
+2. Assign URLs to those resources.
+3. Decide what actions the client should be allowed to perform on those resources.
+4. Figure out what pieces of data are required for each action and what format they should be in.
+
 ## References
 
 - [An Introduction to APIs, by Zapier](https://zapier.com/learn/apis)
