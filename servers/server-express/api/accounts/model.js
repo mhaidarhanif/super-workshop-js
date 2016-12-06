@@ -24,9 +24,26 @@ const AccountSchema = new Schema({
   },
   books: [
     {
-      type: Number,
+      type: String,
       foreignField: 'isbn',
       ref: 'Book'
+    }
+  ],
+  url: {
+    type: String
+  },
+  createdBy: [
+    {
+      type: Number,
+      foreignField: 'accountId',
+      ref: 'Account'
+    }
+  ],
+  updatedBy: [
+    {
+      type: Number,
+      foreignField: 'accountId',
+      ref: 'Account'
     }
   ]
 }, {

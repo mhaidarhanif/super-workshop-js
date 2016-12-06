@@ -186,8 +186,9 @@ module.exports = {
    */
   deleteBookByISBN: (req, res) => {
     let updated = {
+      m: `Book with ISBN '${req.params.isbn}' has been removed.`,
       book: null,
-      account: null
+      i: null
     }
 
     // Remove book from database
@@ -198,14 +199,38 @@ module.exports = {
       if (err) res.status(400).json({ id: 'book_delete_error', e: `Error: ${err}` })
       else if (!data) res.status(404).json({ id: 'book_delete_not_found', m: `No book found with ISBN '${req.params.isbn}'.` })
       else {
-        res.status(200).json({
-          m: `Book with ISBN '${req.params.isbn}' has been removed.`,
-          d: data
-        })
+        updated.book = data
       }
     })
 
-    // Remove book from account data
+    // Remove book ISBN from multi accounts data
+    Account.update({
+      books: { '$in': [req.params.isbn] }
+    }, {
+      $pull: { 'books': req.params.isbn },
+      $addToSet: { 'updatedBy': req.decoded.id }
+    }, {
+      multi: true,
+      new: true,
+      upsert: true
+    }, (err, info) => {
+      if (err) {
+        res.status(400).json({
+          id: 'account_book_error', e: `${err}`, m: 'Something wrong. Try again.'
+        })
+      } else if (!info) {
+        res.status(404).json({
+          id: 'account_book_data_failed',
+          m: `Failed to update account with ID '${req.decoded.id}' and remove their books with ISBN '${req.params.isbn}'. Might not exist yet.`
+        })
+      }
+      updated.i = info
+    })
+
+    // Wait until all data have been removed and updated
+    // Finally send the deleted book and updated account data
+    // console.log(updated)
+    setTimeout(() => { res.status(201).json(updated) }, 1000)
   },
 
   /* ---------------------------------------------------------------------------
@@ -280,7 +305,10 @@ module.exports = {
     Account.findOneAndUpdate({
       accountId: req.decoded.id
     }, {
-      $addToSet: { 'updatedBy': req.decoded.id, 'books': req.params.isbn }
+      $addToSet: {
+        'updatedBy': req.decoded.id,
+        'books': String(req.params.isbn)
+      }
     }, {
       new: true,
       upsert: false
