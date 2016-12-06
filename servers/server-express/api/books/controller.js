@@ -99,7 +99,7 @@ const BookController = module.exports = {
    * @apiGroup Books
    *
    * @apiSuccess {Number} isbn  Book ISBN (international standard book number)
-   * @apiSuccess {String} name  Book title
+   * @apiSuccess {String} title Book title
    * @apiSuccess {Number} price Book retail price
    */
   getBooks: (req, res) => {
@@ -117,7 +117,7 @@ const BookController = module.exports = {
    * @apiGroup Books
    *
    * @apiSuccess {Number} isbn  Book ISBN (international standard book number)
-   * @apiSuccess {String} name  Book title
+   * @apiSuccess {String} title Book title
    * @apiSuccess {Number} price Book retail price
    */
   getBooksPaginated: (req, res) => {
@@ -139,16 +139,16 @@ const BookController = module.exports = {
    * @apiGroup Books
    *
    * @apiParams {Number} isbn  Book ISBN
-   * @apiParams {String} name  Book title
+   * @apiParams {String} title Book title
    * @apiParams {Number} price Book retail price
    *
-   * @apiSuccess {JSON} isbn, name, price
+   * @apiSuccess {JSON} isbn, title, price
    */
   postBook: (req, res) => {
     Book
       .create({
         isbn: req.body.isbn,
-        name: req.body.name,
+        title: req.body.title,
         price: req.body.price,
         createdBy: req.decoded.id,
         updatedBy: req.decoded.id
@@ -164,7 +164,7 @@ const BookController = module.exports = {
   postBookAndOwner: (req, res) => {
     const book = {
       isbn: req.body.isbn,
-      name: req.body.name,
+      title: req.body.title,
       price: req.body.price,
       owners: req.body.owner // accountId
     }
@@ -184,12 +184,12 @@ const BookController = module.exports = {
    *
    * @apiParams {Number} isbn  Book ISBN
    *
-   * @apiSuccess {JSON} isbn, name, price
+   * @apiSuccess {JSON} isbn, title, price
    */
   searchBooks: (req, res) => {
     let book = {}
     if (req.body.isbn) book.isbn = new RegExp(req.body.isbn, 'i')
-    if (req.body.name) book.name = new RegExp(req.body.name, 'i')
+    if (req.body.title) book.title = new RegExp(req.body.title, 'i')
     if (req.body.price) book.price = Number(req.body.price)
     console.log({book})
 
@@ -211,7 +211,7 @@ const BookController = module.exports = {
    * @apiParams {String} isbn   Book id is ISBN
    *
    * @apiSuccess {Number} isbn  Book ISBN
-   * @apiSuccess {String} name  Book title
+   * @apiSuccess {String} title  Book title
    * @apiSuccess {Number} price Book retail price
    */
   getBookByISBN: (req, res) => {
@@ -256,15 +256,15 @@ const BookController = module.exports = {
    * @apiGroup Books
    *
    * @apiParams {Number} isbn  Book ISBN
-   * @apiParams {String} name  Book title
+   * @apiParams {String} title Book title
    * @apiParams {Number} price Book retail price
    *
-   * @apiSuccess {JSON} isbn, name, price
+   * @apiSuccess {JSON} isbn, title, price
    */
   updateBookByISBN: (req, res) => {
     let book = {}
     if (req.body.isbn) book.isbn = req.body.isbn
-    if (req.body.name) book.name = req.body.name
+    if (req.body.title) book.title = req.body.title
     if (req.body.price) book.price = req.body.price
     console.log({book})
 

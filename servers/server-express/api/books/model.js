@@ -6,6 +6,7 @@ const Schema = mongoose.Schema
 
 // Paginate list of all data
 const mongoosePaginate = require('mongoose-paginate')
+
 mongoosePaginate.paginate.options = {
   // lean: true,
   // leanWithId: false,
@@ -20,7 +21,7 @@ const BookSchema = new Schema({
     unique: true,
     required: true
   },
-  name: {
+  title: {
     type: String,
     required: true
   },
@@ -35,6 +36,9 @@ const BookSchema = new Schema({
       ref: 'Account'
     }
   ],
+  url: {
+    type: String
+  },
   createdBy: [
     {
       type: Number,
@@ -55,7 +59,7 @@ const BookSchema = new Schema({
 
 // BookSchema.virtual('lenders', {
 //   ref: 'Account',
-//   localField: 'username', // Find account where `localField`
+//   localField: 'accountId', // Find account where `localField`
 //   foreignField: 'isbn'    // is equal to `foreignField`
 // })
 
