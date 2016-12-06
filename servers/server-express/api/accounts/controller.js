@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 
 const Account = require('./model')
+
+const superAccounts = require('./seed.super.json')
 const accounts = require('./seed.json')
 
 const Auth = module.exports = {
@@ -10,27 +12,51 @@ const Auth = module.exports = {
   // ---------------------------------------------------------------------------
 
   /*
-   * @api {get} Seed some accounts
+   * @api {get} Seed super accounts
    */
-  seedAccounts: (req, res) => {
-    // List of accounts from seed
-    console.log({accounts})
-
+  seedSuperAccounts: (req, res) => {
     // Drop counters collection
     mongoose.connection.db.dropCollection('counters', (err, result) => {
       if (err) res.status(400).json({ id: 'counter_drop_error', e: `Error: ${err}` })
       console.log({ id: 'counter_dropped', m: `Collection 'counters' have been removed before seeding.` })
     })
 
-    // Remove all accounts first
-    Auth.deleteAccounts()
+    // Seed some accounts from prepared data
+    superAccounts.forEach((account, index) => {
+      Account.register(new Account({
+        email: account.email,
+        name: account.name,
+        username: account.username
+      }),
+      account.password,
+      (err, account) => {
+        if (err) res.status(400).json({ id: 'account_super_seed_error', e: err.message })
+        else if (!account) res.status(304).json({ id: 'account_super_seed_failed', m: `Failed to seed super accounts.` })
+      })
+    })
+
+    // Wait until all accounts are registered
+    setTimeout(() => {
+      Account.find({}, (err, data) => {
+        if (err) res.status(400).json({ id: 'account_find_error', e: err.message })
+        res.status(200).json(data)
+      })
+    }, 2000)
+  },
+
+  /*
+   * @api {get} Seed some accounts
+   */
+  seedAccounts: (req, res) => {
+    // List of accounts from seed
+    console.log({accounts})
 
     // Seed some accounts from prepared data
     accounts.forEach((account, index) => {
       Account.register(new Account({
+        email: account.email,
         name: account.name,
-        username: account.username,
-        email: account.email
+        username: account.username
       }),
       account.password,
       (err, account) => {
