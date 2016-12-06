@@ -12,4 +12,7 @@
 
 ## References
 
+- [An Introduction to APIs, by Zapier](https://zapier.com/learn/apis)
+- [HTTP API Development Tools](https://github.com/yosriady/api-development-tools)
+- [`Kikobeats/awesome-api`](https://github.com/Kikobeats/awesome-api)
 - [HTTP API Design Guide](https://geemus.gitbooks.io/http-api-design/content/en)
