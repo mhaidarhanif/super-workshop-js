@@ -49,7 +49,7 @@ module.exports = {
    */
   seedAccounts: (req, res) => {
     // List of accounts from seed
-    console.log({accounts})
+    // console.log({accounts})
 
     // Seed some accounts from prepared data
     accounts.forEach((account, index) => {
@@ -84,7 +84,7 @@ module.exports = {
       'name': 1,
       'username': 1
     }, (err, data) => {
-      console.log('getAccounts:', data)
+      // console.log('getAccounts:', data)
       if (err) res.status(400).json({ id: 'account_get_error', e: `${err}` })
       if (!data) res.status(404).json({ id: 'account_get_failed', m: 'Failed to get list of all accounts.' })
       res.status(200).json(data)
@@ -109,14 +109,16 @@ module.exports = {
    * Get account profile from authenticated user
    */
   getProfile: (req, res) => {
+    // TODO: use fields query
+    // ?fields=id,name,username,email,about,birthday,avatar,cover,
+
     Account.findOne({
       accountId: req.decoded.id
     }, {
       'name': 1,
       'username': 1
     }, (err, data) => {
-      console.log('getProfile:', data)
-
+      // console.log('getProfile:', data)
       if (err) res.status(400).json({ id: 'account_profile_error', e: `${err}` })
       else if (!data) res.status(404).json({ id: 'account_profile_failed', m: 'Failed to get account profile with that token.' })
       else res.status(200).json(data)
@@ -139,7 +141,7 @@ module.exports = {
       'name': 1,
       'username': 1
     }, (err, data) => {
-      console.log('getProfileById:', data)
+      // console.log('getProfileById:', data)
       if (err) res.status(400).json({ id: 'account_profile_error', e: `${err}` })
       else if (!data) res.status(404).json({ id: 'account_profile_failed', m: 'Failed to get account profile by ID.' })
       else res.status(200).json(data)
