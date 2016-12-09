@@ -60,11 +60,12 @@ Web Development:
 * CSS, PostCSS, and Stylus
 * npm, Yarn, and Bower
 * Express and Feathers
-* jQuery
-* Angular
+* Axios or SuperAgent
+* jQuery or Zepto
+* Angular 1 or Angular 2
 * Vue
 * React
-* Webpack
+* Webpack or Gulp
 * PM2
 
 Web Application:
@@ -75,26 +76,32 @@ Web Application:
 
 Database:
 
-* MongoDB
-* Mongoose ODM
+* NeDB
+* MongoDB with Mongoose ODM
+* PostgreSQL with Sequelize
 
 Authentication:
 
 * Local Password
 * OAuth
+  * GitHub
+  * Facebook
+  * Twitter
+  * Google
 * Passport
 
 Testing:
 
-* Mocha
-* Chai
-* PhantomJS
-* Nightmare
+* Mocha or Karma
+* Jasmine
+* Chai and Chai HTTP
+* PhantomJS, Electron, and Nightmare
 
 Continuous X:
 
-* Travis
+* Travis CI
 * Snap CI
+* GitLab CI
 * Codeship
 
 --------------------------------------------------------------------------------
@@ -104,10 +111,10 @@ Continuous X:
 Make sure you have installed the latest Node.js and npm. Afterwards, install the required global dependencies.
 
 ```sh
-npm install -g yarn pnpm nodemon live-server bower mocha vue-cli react-native-cli pm2
+npm install -g yarn pnpm pm2 nodemon mocha karma-cli live-server bower vue-cli react-native-cli
 ```
 
-Then open `server/server-*` and `clients/client-*` directory separately.
+Then open `servers/server-*` and `clients/client-*` directory separately.
 
 ### Server Express (`server-express`)
 
@@ -132,7 +139,7 @@ live-server
 ### Last Check
 
 ```sh
-npm run start:dev
+npm start
 ```
 
 ### Deploy to Server
