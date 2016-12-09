@@ -9,6 +9,7 @@ module.exports = {
    * Create a new account
    */
   signup: (req, res, next) => {
+    // Check payload via express-validator
     req.checkBody('name', 'Full Name is required').notEmpty()
     req.checkBody('username', 'Username is required').notEmpty()
     req.checkBody('email', 'Email is required').notEmpty()
@@ -21,14 +22,12 @@ module.exports = {
       email: req.body.email
     }), req.body.password,
     (err, account) => {
-      if (err) res.status(422).json({ id: 'signup_failed', e: err.message })
-      if (!account) res.status(422).json({ id: 'signup_failed', m: 'Sign up failed.' })
-
-      // Automatic sign in after successful sign up
-      // Auth.signin(req, res, next)
-
-      // Successfully signed up
-      else return res.status(201).json({ id: 'signup', m: `Successfully signed up an account with username '${req.body.username}.'` })
+      // Send an error message
+      if (err) res.status(422).json({ id: 'signup_error', e: err.message })
+      // Send an failed message
+      if (!account) res.status(404).json({ id: 'signup_failed', m: 'Sign up failed. Created account might not found or has a conflict.' })
+      // Send a success sign up message
+      else res.status(201).json({ id: 'signup', m: `Successfully signed up an account with username '${account.username}'.` })
     })
   },
 
@@ -42,7 +41,7 @@ module.exports = {
     // Authenticate method by Passport
     passport.authenticate('local', (err, account, info) => {
       if (err) res.status(422).json({ id: 'signin_failed', e: err.message })
-      if (!account) return res.status(401).json({ s: false, id: 'signin_not_found', m: `Sign in failed because account with username '${req.body.username}' is not found.` })
+      if (!account) res.status(401).json({ s: false, id: 'signin_not_found', m: `Sign in failed because account with username '${req.body.username}' is not found.` })
 
       // Create token content and config
       let content = {
@@ -66,7 +65,7 @@ module.exports = {
       }
 
       // Generate a token
-      return res.status(200).json({
+      res.status(200).json({
         token: jwt.sign(content.payload, content.secret, content.options)
       })
     })(req, res, next)
@@ -89,9 +88,9 @@ module.exports = {
     Account.count({
       username: req.body.username
     }, (err, count) => {
-      if (err) return res.status(422).json({ s: false, id: 'account_exist', m: 'Failed to check account existency.' })
-      else if (count === 0) return next()
-      else return res.json({ m: `Account with username '${req.body.username}' is already exist.` })
+      if (err) res.status(422).json({ s: false, id: 'account_exist', m: 'Failed to check account existency.' })
+      else if (count === 0) next()
+      else res.json({ m: `Account with username '${req.body.username}' is already exist.` })
     })
   },
 
@@ -114,23 +113,23 @@ module.exports = {
       // Verifies JWT token with provided secret and checks expiration
       jwt.verify(token, process.env.SECRET, (err, decoded) => {
         // If there is an error when verifying the token...
-        if (err) return res.status(401).json({ s: false, id: 'auth_failed', m: 'Failed to authenticate token.', e: err })
+        if (err) res.status(401).json({ s: false, id: 'auth_failed', m: 'Failed to authenticate token.', e: err })
         // If everything is good, save to request for use in other routes
         else req.decoded = decoded
         // Find the account based on the token subject
         Account.findById(decoded.sub, (err, account) => {
           // If there is no associated acccount...
           if (err || !account) {
-            return res.status(401).send({ s: false, id: 'auth_not_found', m: 'No account is associated with that token.', e: err })
+            res.status(401).send({ s: false, id: 'auth_not_found', m: 'No account is associated with that token.', e: err })
           }
           // There's the account! Finally sure that actual account is authenticated with valid token
           console.log({account})
-          return next()
+          next()
         })
       })
     } else {
       // When there's no token
-      return res.status(403).send({ s: false, id: 'auth_no_token', m: 'Sorry, no access without an active access token that must be used to query information.' })
+      res.status(403).send({ s: false, id: 'auth_no_token', m: 'Sorry, no access without an active access token that must be used to query information.' })
     }
     // Finish token checker for authentication
   },
@@ -148,17 +147,17 @@ module.exports = {
 
     if (token !== 0) {
       jwt.verify(token, process.env.SECRET, (err, decoded) => {
-        if (err) return res.status(401).json({ s: false, id: 'auth_failed', m: 'Failed to authenticate token.', e: err })
+        if (err) res.status(401).json({ s: false, id: 'auth_failed', m: 'Failed to authenticate token.', e: err })
         else if (decoded.admin === true) {
           console.log({decoded})
-          return next()
+          next()
         } else {
-          return res.status(403).send({ s: false, id: 'auth_not_admin', m: `Account '${decoded.name}' is not an admin.`, e: err })
+          res.status(403).send({ s: false, id: 'auth_not_admin', m: `Account '${decoded.name}' is not an admin.`, e: err })
         }
       })
     } else {
       // When there's no token
-      return res.status(403).send({ s: false, m: 'Sorry, no access without token.' })
+      res.status(403).send({ s: false, m: 'Sorry, no access without token.' })
     }
     // Finish token checker for admin
   }

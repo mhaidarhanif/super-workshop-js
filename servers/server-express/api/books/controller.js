@@ -18,7 +18,7 @@ const sendResponse = (res, err, data, message) => {
       e: `${err}`,
       m: 'Probably a duplicated data issue. Please check the potential book data which probably the same.'
     })
-  } else if (!data) res.status(304).json({ id: 'book_data_duplicate', m: message })
+  } else if (!data) res.status(304).json({ id: 'book_data_failed', m: message })
   else res.status(201).json(data)
 }
 
@@ -143,7 +143,7 @@ module.exports = {
     Book
       .create(book, (err, data) => {
         // console.log('postBookWithOwner:', data)
-        sendResponse(res, err, data, `Book with ISBN ${req.body.isbn} is probably already exist.`)
+        sendResponse(res, err, data, `Failed to post book with ISBN ${req.body.isbn}.`)
       })
   },
 
