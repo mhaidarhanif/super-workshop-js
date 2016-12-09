@@ -2,24 +2,24 @@
   "name": "super-workshop-js",
   "version": "1.0.0",
   "description": "Super Workshop JS - Server Express",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "start:dev": "pm2 startOrGracefulReload ecosystem.json --env dev",
-    "start:staging": "pm2 startOrGracefulReload ecosystem.json --env staging",
-    "start": "pm2 startOrGracefulReload ecosystem.json --env production",
-    "debug": "nodemon server.js",
+    "start:dev": "pm2 startOrGracefulReload ecosystem.config.js --env dev",
+    "start:staging": "pm2 startOrGracefulReload ecosystem.config.js --env staging",
+    "start": "pm2 startOrGracefulReload ecosystem.config.js --env production",
+    "debug": "nodemon index.js",
     "stop": "pm2 stop all",
     "delete": "pm2 delete all",
     "push": "git push origin && git push origin --tags",
     "release:major": "npm version major && npm run push",
     "release:minor": "npm version minor && npm run push",
     "release:patch": "npm version patch && npm run push",
-    "deploy:dev:setup": "NODE_ENV=dev pm2 deploy ecosystem.json dev setup",
-    "deploy:dev": "NODE_ENV=dev pm2 deploy ecosystem.json dev",
-    "deploy:staging:setup": "NODE_ENV=staging pm2 deploy ecosystem.json staging setup",
-    "deploy:staging": "NODE_ENV=staging pm2 deploy ecosystem.json staging",
-    "deploy:setup": "NODE_ENV=production pm2 deploy ecosystem.json production setup",
-    "deploy": "NODE_ENV=production pm2 deploy ecosystem.json production"
+    "deploy:dev:setup": "NODE_ENV=dev pm2 deploy ecosystem.config.js dev setup",
+    "deploy:dev": "NODE_ENV=dev pm2 deploy ecosystem.config.js dev",
+    "deploy:staging:setup": "NODE_ENV=staging pm2 deploy ecosystem.config.js staging setup",
+    "deploy:staging": "NODE_ENV=staging pm2 deploy ecosystem.config.js staging",
+    "deploy:setup": "NODE_ENV=production pm2 deploy ecosystem.config.js production setup",
+    "deploy": "NODE_ENV=production pm2 deploy ecosystem.config.js production"
   },
   "repository": {
     "type": "git",
@@ -39,7 +39,6 @@
     "acho": "^3.1.1",
     "body-parser": "^1.15.2",
     "cors": "^2.8.1",
-    "dotenv": "^2.0.0",
     "express": "^4.14.0",
     "express-jwt": "^5.1.0",
     "express-jwt-permissions": "^0.5.0",
@@ -58,7 +57,8 @@
     "passport-local-mongoose": "^4.0.0",
     "passport-twitter": "^1.0.4",
     "ramda": "0.22.1",
-    "request-ip": "1.2.3"
+    "request-ip": "1.2.3",
+    "supertest": "2.0.1"
   },
   "devDependencies": {
     "chance-cli": "^1.0.6",

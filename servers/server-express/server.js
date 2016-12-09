@@ -65,8 +65,7 @@ app.use(cors())
  * http://mongoosejs.com/docs/promises.html
  */
 mongoose.Promise = global.Promise // native Node.js promise
-// mongoose.connect(process.env.MONGODB_URI)
-mongoose.connect('mongodb://localhost/workshop-js')
+mongoose.connect(process.env.MONGODB_URI)
 
 // EXPRESS SESSION
 app.use(expressSession({

@@ -3,6 +3,9 @@ const jwt = require('jsonwebtoken')
 
 const Account = require('../accounts/model')
 
+const url = process.env.URL
+const jwt_secret = process.env.JWT_SECRET
+
 module.exports = {
 
   /**
@@ -46,14 +49,14 @@ module.exports = {
       // Create token content and config
       let content = {
         payload: { // or claims
-          iss: process.env.URL,       // ISSUER: URL of the service
+          iss: url,                   // ISSUER: URL of the service
           sub: account._id,           // SUBJECT: OID/UID of the account
           id: account.accountId,      // ACCOUNTID: Sequential ID of the account
           username: account.username, // USERNAME: Username of the account
           name: account.name,         // NAME: Full name of the account
           scope: 'self, profile'      // SCOPE: Choose specific payload/claims
         },
-        secret: process.env.SECRET,
+        secret: jwt_secret,
         options: {
           expiresIn: '1d'
         }
@@ -111,7 +114,7 @@ module.exports = {
     // Decode the token if it's available
     if (token !== 0) {
       // Verifies JWT token with provided secret and checks expiration
-      jwt.verify(token, process.env.SECRET, (err, decoded) => {
+      jwt.verify(token, jwt_secret, (err, decoded) => {
         // If there is an error when verifying the token...
         if (err) res.status(401).json({ s: false, id: 'auth_failed', m: 'Failed to authenticate token.', e: err })
         // If everything is good, save to request for use in other routes
@@ -146,7 +149,7 @@ module.exports = {
     else token = 0
 
     if (token !== 0) {
-      jwt.verify(token, process.env.SECRET, (err, decoded) => {
+      jwt.verify(token, jwt_secret, (err, decoded) => {
         if (err) res.status(401).json({ s: false, id: 'auth_failed', m: 'Failed to authenticate token.', e: err })
         else if (decoded.admin === true) {
           console.log({decoded})
