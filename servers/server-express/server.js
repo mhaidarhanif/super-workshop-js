@@ -4,9 +4,6 @@
 // REQUIRE NODE MODULES
 // -----------------------------------------------------------------------------
 
-// CONFIG
-require('dotenv').config()
-
 // EXPRESS
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -68,11 +65,12 @@ app.use(cors())
  * http://mongoosejs.com/docs/promises.html
  */
 mongoose.Promise = global.Promise // native Node.js promise
-mongoose.connect(process.env.MONGODB_URI)
+// mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect('mongodb://localhost/workshop-js')
 
 // EXPRESS SESSION
 app.use(expressSession({
-  secret: process.env.SECRET,
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false
 }))
@@ -140,13 +138,7 @@ passport.serializeUser(Account.serializeUser())
 passport.deserializeUser(Account.deserializeUser())
 
 // -----------------------------------------------------------------------------
-// RUN THE APP
+// EXPORT THE APP
 // -----------------------------------------------------------------------------
 
-const host = process.env.HOST || 'localhost'
-const port = process.env.PORT || '3000'
-
-app.listen(port, host, (err) => {
-  if (err) console.log(err)
-  console.log(`server-express is running on ${host}:${port}`)
-})
+module.exports = app
