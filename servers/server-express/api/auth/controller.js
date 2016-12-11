@@ -142,7 +142,7 @@ module.exports = {
     }, (err, count) => {
       if (err) res.status(422).json({ s: false, id: 'account_exist', m: 'Failed to check account existency.' })
       else if (count === 0) next()
-      else res.json({ m: `Account with username '${req.body.username}' is already exist.` })
+      else res.json({ id: 'account_info_exist', m: `Account with username '${req.body.username}' is already exist.` })
     })
   },
 
