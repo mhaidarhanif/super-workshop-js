@@ -35,9 +35,9 @@ module.exports = {
       description: `Welcome to the API that run with ${app_name}! This a quick help for you to consume the API.`,
       documentation: 'https://github.com/mhaidarh/super-workshop-js#readme',
       endpoints: {
-        auth: '/auth',
-        accounts: '/api/accounts',
-        books: '/api/books'
+        '/auth': 'Authentication',
+        '/api/accounts': 'Accounts collection',
+        '/api/books': 'Books collection'
       },
       codes: {
         d: 'd indicates previous data that might already removed.',
