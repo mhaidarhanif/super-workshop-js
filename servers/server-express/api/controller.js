@@ -54,10 +54,9 @@ module.exports = {
    * Ping
    */
   ping: (req, res) => {
-    console.log(`ping from ${reqip.getClientIp(req)}`)
     res.json({
       id: 'ping_pong',
-      m: `ping from ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`
+      m: `ping from ${reqip.getClientIp(req)}`
     })
   }
 
