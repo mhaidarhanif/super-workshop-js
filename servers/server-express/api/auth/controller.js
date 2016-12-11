@@ -21,6 +21,7 @@ module.exports = {
         '/signup': 'Sign up a new account.',
         '/signin': 'Sign in an existing account.',
         '/signout': 'Sign out authenticated account.',
+        '/is-with-token': 'Check if user pass a token.',
         '/is-account-exist': 'Check if account exist.',
         '/is-authenticated': 'Check if user is authenticated.',
         '/is-admin': 'Check if authenticated account is an admin.'
