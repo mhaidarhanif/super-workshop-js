@@ -158,7 +158,7 @@ module.exports = {
     else token = 0
 
     // There's a token coming in!
-    console.log({token})
+    // console.log({token})
 
     // Decode the token if it's available
     if (token !== 0) {
@@ -175,7 +175,7 @@ module.exports = {
             res.status(401).send({ s: false, id: 'auth_not_found', m: 'No account is associated with that token.', e: err })
           }
           // There's the account! Finally sure that actual account is authenticated with valid token
-          console.log({account})
+          // console.log({account})
           next()
         })
       })
@@ -201,7 +201,7 @@ module.exports = {
       jwt.verify(token, jwt_secret, (err, decoded) => {
         if (err) res.status(401).json({ s: false, id: 'auth_failed', m: 'Failed to authenticate token.', e: err })
         else if (decoded.admin === true) {
-          console.log({decoded})
+          // console.log({decoded})
           next()
         } else {
           res.status(403).send({ s: false, id: 'auth_not_admin', m: `Account '${decoded.name}' is not an admin.`, e: err })
