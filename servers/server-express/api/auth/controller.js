@@ -9,6 +9,54 @@ const jwt_secret = process.env.JWT_SECRET
 module.exports = {
 
   /**
+   * Info about this route
+   */
+  getInfo: (req, res) => {
+    res.json({
+      id: 'auth',
+      m: 'Check the endpoints',
+      i: req.info,
+      token: req.decoded,
+      endpoints: {
+        '/signup': 'Sign up a new account.',
+        '/signin': 'Sign in an existing account.',
+        '/signout': 'Sign out authenticated account.',
+        '/is-account-exist': 'Check if account exist.',
+        '/is-authenticated': 'Check if user is authenticated.',
+        '/is-admin': 'Check if authenticated account is an admin.'
+      }
+    })
+  },
+
+  /**
+   * Check if there is a passed token
+   */
+  isWithToken: (req, res, next) => {
+    let token
+    if (req.body.token) token = req.body.token
+    else if (req.query.token) token = req.query.token
+    else if (req.headers.authorization) token = req.headers.authorization.split(' ')[1]
+    else token = 0
+
+    if (token !== 0) {
+      jwt.verify(token, jwt_secret, (err, decoded) => {
+        if (err) req.info = { s: false, id: 'user_with_token_error', m: 'Failed to verify token.', e: err }
+        else req.decoded = decoded
+        Account.findById(decoded.sub, (err, account) => {
+          if (err || !account) {
+            req.info = { s: false, id: 'user_with_token_account_not_found', m: 'No account is associated with that token.', e: err }
+          }
+          req.info = { id: 'user_with_token', m: 'You have a valid token.' }
+          next()
+        })
+      })
+    } else {
+      req.info = { id: 'user_no_token', m: 'You did not pass a token.' }
+      next()
+    }
+  },
+
+  /**
    * Create a new account
    */
   signup: (req, res, next) => {

@@ -8,6 +8,9 @@ const auth = require('./controller')
 // AUTHENTICATION
 // -----------------------------------------------------------------------------
 
+// Get all accounts
+router.get('/', auth.isWithToken, auth.getInfo)
+
 // SIGN UP
 // Require email, name, username, passsword
 router.post('/signup', auth.isAccountExist, auth.signup)
@@ -20,6 +23,11 @@ router.post('/signin', auth.signin)
 // Not necessary if using different host/port
 router.get('/signout', auth.isAuthenticated, auth.signout)
 router.post('/signout', auth.isAuthenticated, auth.signout)
+
+// IS WITH TOKEN?
+// Require 'Authorization: Bearer JWT' (Optional)
+router.get('/is-with-token', auth.isWithToken, (req, res) => { res.json(req.info) })
+router.post('/is-with-token', auth.isWithToken, (req, res) => { res.json(req.info) })
 
 // IS ACCOUNT EXIST?
 // Require 'username'
