@@ -63,24 +63,31 @@ module.exports = {
   signup: (req, res, next) => {
     // Check payload via express-validator
     req.checkBody('name', 'Full Name is required').notEmpty()
-    req.checkBody('username', 'Username is required').notEmpty()
     req.checkBody('email', 'Email is required').notEmpty()
+    req.checkBody('username', 'Username is required').notEmpty()
     req.checkBody('password', 'Password is required').notEmpty()
 
+    // Send info if no complete req.body
+    if (!req.body.name || !req.body.email || !req.body.username || !req.body.password) {
+      res.status(400).json({id: 'signup_failed', m: 'Please provide complete sign up data: name, email, username, password'})
+    }
+
     // Register method by passport-local-mongoose
-    Account.register(new Account({
-      name: req.body.name,
-      username: req.body.username,
-      email: req.body.email
-    }), req.body.password,
-    (err, account) => {
-      // Send an error message
-      if (err) res.status(422).json({ id: 'signup_error', e: err.message })
-      // Send an failed message
-      if (!account) res.status(404).json({ id: 'signup_failed', m: 'Sign up failed. Created account might not found or has a conflict.' })
-      // Send a success sign up message
-      else res.status(201).json({ id: 'signup', m: `Successfully signed up an account with username '${account.username}'.` })
-    })
+    if (req.body.name && req.body.email && req.body.username && !req.body.password) {
+      Account.register(new Account({
+        name: req.body.name,
+        email: req.body.email,
+        username: req.body.username
+      }), req.body.password,
+      (err, account) => {
+        // Send an error message
+        if (err) res.status(422).json({ id: 'signup_error', e: err.message })
+        // Send an failed message
+        if (!account) res.status(404).json({ id: 'signup_failed', m: 'Sign up failed. Created account might not found or has a conflict.' })
+        // Send a success sign up message
+        else res.status(201).json({ id: 'signup', m: `Successfully signed up an account with username '${account.username}'.` })
+      })
+    }
   },
 
   /**
