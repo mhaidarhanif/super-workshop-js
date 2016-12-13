@@ -5,9 +5,16 @@ ecmaFeatures:
 env:
   amd: true
   browser: true
+  commonjs: true
   es6: true
+  jasmine: true
   jquery: true
+  mocha: true
+  mongo: true
   node: true
+  serviceworker: true
+  shared-node-browser: true
+  worker: true
 
 # http://eslint.org/docs/rules/
 rules:
