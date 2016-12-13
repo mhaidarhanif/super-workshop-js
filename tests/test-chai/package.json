@@ -1,0 +1,41 @@
+{
+  "name": "super-workshop-js-test-chai",
+  "version": "1.0.0",
+  "description": "Super Workshop JS - Test with Chai",
+  "keywords": [
+    "super", "workshop", "js", "test", "suite", "mocha", "chai"
+  ],
+  "author": "M Haidar Hanif <npm@mhaidarhanif.com> (https://mhaidarhanif.com)",
+  "homepage": "https://github.com/mhaidarh/super-workshop-js#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/mhaidarh/super-workshop-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mhaidarh/super-workshop-js/issues"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">= 0.6.0"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run mocha:api",
+    "mocha:watch": "npm run mocha:api:watch",
+    "mocha:api": "mocha api",
+    "mocha:api:watch": "mocha api --watch",
+    "mocha:unit": "mocha unit",
+    "mocha:unit:watch": "mocha unit --watch",
+    "mocha:integration": "mocha integration",
+    "mocha:integration:watch": "mocha integration --watch"
+  },
+  "devDependencies": {
+    "mocha": "3.2.0"
+  },
+  "dependencies": {
+    "axios": "0.15.3",
+    "chai": "3.5.0",
+    "chai-http": "3.0.0",
+    "dotenv-extended": "1.0.4"
+  }
+}
