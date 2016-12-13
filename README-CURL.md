@@ -56,7 +56,7 @@ curl localhost:3000/auth/signin -X POST -d "username=apollo&password=apollo"
 3. `req.headers`: `Authorization: Bearer JWT_TOKEN`
 
 ```sh
-export TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ODI4NjlmM2Q1OWZmY2ZkYjVmYzJmYTUiLCJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsIm5hbWUiOiJhZG1pbmlzdHJhdG9yIiwiaWF0IjoxNDc5Mjk2OTI5fQ.kn5kFk4fpDaPSkwJAeftPZDZ5C5Z2UDl1i6OX8cTRgE
+export TOKEN=ey123456789.eyABCDEFGHIJKLMNOPQRSTUVWXYZ.ABC-XYZ
 
 # Body
 curl http://localhost:3000/auth/is-authenticated -d "token=$TOKEN" -X POST
@@ -85,7 +85,8 @@ _NOTE_: Use this only for checking.
 ```sh
 curl localhost:3000/api/books \
   -X POST \
-  -H "Content-Type: application/json" \
+  -H 'Authorization: Bearer ey123456789.eyABCDEFGHIJKLMNOPQRSTUVWXYZ.ABC-XYZ' \
+  -H 'Content-Type: application/json' \
   -d '{
     "isbn": "121212",
     "name": "Twelve",
