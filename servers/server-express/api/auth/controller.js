@@ -73,19 +73,39 @@ module.exports = {
     }
 
     // Register method by passport-local-mongoose
-    if (req.body.name && req.body.email && req.body.username && !req.body.password) {
+    if (req.body) {
+      // // Create account data
+      // const accountData = new Account({
+      //   name: req.body.name,
+      //   email: req.body.email,
+      //   username: req.body.username,
+      //   hash: req.body.password
+      // })
+      // // Insert account data into database
+      // Account.create(accountData, (err, account) => {
+      //   console.log('>>>', err)
+      //   console.log('>>>', account)
+      //   // Send an error message
+      //   if (err) res.status(422).json({ id: 'signup_error', e: err.message })
+      //   // Send a failed message
+      //   if (!account) res.status(404).json({ id: 'signup_failed', m: 'Sign up failed. Created account might not found or has a conflict.' })
+      //   // Send a success sign up message
+      //   else res.status(201).json({ id: 'signup_success', m: `Successfully signed up an account.`, username: account.username })
+      // })
+
       Account.register(new Account({
         name: req.body.name,
         email: req.body.email,
         username: req.body.username
-      }), req.body.password,
-      (err, account) => {
+      }), req.body.password, (err, account) => {
+        console.log('>>>', err)
+        console.log('>>>', account)
         // Send an error message
         if (err) res.status(422).json({ id: 'signup_error', e: err.message })
-        // Send an failed message
+        // Send a failed message
         if (!account) res.status(404).json({ id: 'signup_failed', m: 'Sign up failed. Created account might not found or has a conflict.' })
         // Send a success sign up message
-        else res.status(201).json({ id: 'signup', m: `Successfully signed up an account with username '${account.username}'.` })
+        else res.status(201).json({ id: 'signup_success', m: `Successfully signed up an account with username '${account.username}'.` })
       })
     }
   },
@@ -219,7 +239,35 @@ module.exports = {
       res.status(403).send({ s: false, m: 'Sorry, no access without token.' })
     }
     // Finish token checker for admin
+  },
+
+  /**
+   * Check the API Key in header
+   */
+  isWithAPIKey: (req, res, next) => {
+    // Check for X-API-Key from various ways
+    req.apikey = req.body['x-api-key'] || req.query['x-api-key'] || req.headers['x-api-key'] || null
+    // console.log('X-API-Key:', req.apikey)
+
+    if (req.apikey !== null) {
+      next()
+    } else {
+      res.status(401).send({ s: false, m: 'Sorry, no access without API key.' })
+    }
+  },
+
+  /**
+   * Check whether the environment is a test via API Key
+   */
+  isTest: (req, res, next) => {
+    // Check for passed API Key
+    if (req.apikey === process.env.API_KEY_TEST) {
+      next()
+    } else if (req.apikey !== process.env.API_KEY_TEST) {
+      res.status(403).send({ s: false, m: 'Sorry, test mode need valid key.' })
+    } else {
+      res.status(401).send({ s: false, m: 'Sorry, test mode need a key.' })
+    }
   }
 
-  // api.auth.js
 }

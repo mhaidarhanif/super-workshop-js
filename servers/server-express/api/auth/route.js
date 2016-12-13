@@ -14,6 +14,7 @@ router.get('/', auth.isWithToken, auth.getInfo)
 // SIGN UP
 // Require email, name, username, passsword
 router.post('/signup', auth.isAccountExist, auth.signup)
+// router.post('/signup', auth.signup)
 
 // SIGN IN
 // Require username and passsword
@@ -40,6 +41,14 @@ router.post('/is-authenticated', auth.isAuthenticated, (req, res) => { res.json(
 // IS ADMIN?
 // Require 'Authorization: Bearer JWT' with Admin role
 router.post('/is-admin', auth.isAdmin, (req, res) => { res.json({m: `Account with that token is an admin.`}) })
+
+// IS WITH API KEY?
+// Require 'X-API-Key: String'
+router.post('/is-with-api-key', auth.isWithAPIKey, (req, res) => { res.json({m: `Accepted API Key: ${req.apikey}`}) })
+
+// IS TEST?
+// Require 'X-API-Key: String' with test environment
+router.post('/is-test', [auth.isWithAPIKey, auth.isTest], (req, res) => { res.json({m: `Accepted as a test environment.`}) })
 
 // -----------------------------------------------------------------------------
 // OAUTH THIRD PARTY
