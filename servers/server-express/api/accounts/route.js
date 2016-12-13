@@ -14,6 +14,7 @@ router.post('/actions/setup', api.seedSuperAccounts)
 router.post('/actions/seed', auth.isAdmin, api.seedAccounts)
 // Delete all accounts
 router.delete('/actions/delete', auth.isAdmin, api.deleteAccounts)
+router.delete('/actions/empty', [auth.isWithAPIKey, auth.isTest], api.deleteAccounts)
 // Get all accounts
 router.get('/', auth.isAdmin, api.getAccounts)
 
