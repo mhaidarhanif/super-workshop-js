@@ -1,4 +1,4 @@
 # ignore user configuration
 *.js
 # include default configuration
-!*.sample.js
+!*.schema.js

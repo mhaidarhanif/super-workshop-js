@@ -6,6 +6,13 @@ const SECRET = {
   SESSION: ''
 }
 
+const API_KEY = {
+  DEV: '',
+  TEST: '',
+  STAGING: '',
+  PRODUCTION: ''
+}
+
 const GITHUB = {
   CLIENT_ID: '',
   CLIENT_SECRET: '',
@@ -32,6 +39,7 @@ const GOOGLE = {
 
 module.exports = {
   SECRET,
+  API_KEY,
   GITHUB,
   FACEBOOK,
   TWITTER,
