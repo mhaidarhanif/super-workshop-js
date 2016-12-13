@@ -111,15 +111,24 @@ Continuous X:
 Make sure you have installed the latest Node.js and npm. Afterwards, install the required global dependencies.
 
 ```sh
+# node modules
 npm install -g yarn pnpm pm2 nodemon mocha karma-cli live-server bower vue-cli react-native-cli
+# ruby gems
+sudo gem install travis
 ```
 
-Then open `servers/server-*` and `clients/client-*` directory separately.
+Then open these directories separately, based on your own preference:
+
+- `servers/server-*`
+- `clients/client-*`
+- `tests/test-*`
 
 ### Server Express (`server-express`)
 
 ```sh
 npm install
+# copy config/*.schema.js to their own config/*.js
+# edit each config/*.js
 npm run start:dev
 ```
 
@@ -128,6 +137,15 @@ npm run start:dev
 ```sh
 bower install
 live-server
+```
+
+### Test Chai (`test-chai`)
+
+```sh
+yarn
+# edit .env
+npm test
+travis login --auto
 ```
 
 --------------------------------------------------------------------------------
