@@ -1,3 +1,9 @@
+/*
+Account is a Person
+A person is either alive, dead, undead, or fictional.
+http://schema.org/Person
+*/
+
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
@@ -7,7 +13,19 @@ const sequence = require('mongoose-sequence')
 const AccountSchema = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    first: {
+      type: String,
+      required: false
+    },
+    middle: {
+      type: String,
+      required: false
+    },
+    last: {
+      type: String,
+      required: false
+    }
   },
   username: {
     type: String,
@@ -20,21 +38,53 @@ const AccountSchema = new Schema({
     unique: true
   },
   password: {
-    type: String
+    type: String,
+    required: false
+  },
+  verified: {
+    type: Boolean,
+    required: false
+  },
+  image: {
+    type: String,
+    required: false
+  },
+  gender: {
+    type: Number,
+    required: false
+  },
+  birthDate: {
+    type: Date,
+    required: false
+  },
+  age: {
+    type: Number,
+    required: false
+  },
+  telephone: {
+    type: String,
+    required: false
+  },
+  affiliation: {
+    type: String,
+    required: false
+  },
+  url: {
+    type: String,
+    required: false
   },
   books: [
     {
       type: String,
+      required: false,
       foreignField: 'isbn',
       ref: 'Book'
     }
   ],
-  url: {
-    type: String
-  },
   createdBy: [
     {
       type: Number,
+      required: false,
       foreignField: 'accountId',
       ref: 'Account'
     }
@@ -42,6 +92,7 @@ const AccountSchema = new Schema({
   updatedBy: [
     {
       type: Number,
+      required: false,
       foreignField: 'accountId',
       ref: 'Account'
     }

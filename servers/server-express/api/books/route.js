@@ -4,10 +4,6 @@ const router = express.Router()
 const api = require('./controller')
 const auth = require('../auth/controller')
 
-// req.body   >>> /data + { id: 0 }
-// req.params >>> /data/:id
-// req.query  >>> /data?q={id}
-
 // -----------------------------------------------------------------------------
 // ADMINISTRATIVE ACCOUNT
 // -----------------------------------------------------------------------------

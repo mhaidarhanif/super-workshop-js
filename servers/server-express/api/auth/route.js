@@ -14,7 +14,6 @@ router.get('/', auth.isWithToken, auth.getInfo)
 // SIGN UP
 // Require email, name, username, passsword
 router.post('/signup', auth.isAccountExist, auth.signup)
-// router.post('/signup', auth.signup)
 
 // SIGN IN
 // Require username and passsword

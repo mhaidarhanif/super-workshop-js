@@ -3,9 +3,6 @@ const jwt = require('jsonwebtoken')
 
 const Account = require('../accounts/model')
 
-const url = process.env.URL
-const jwt_secret = process.env.JWT_SECRET
-
 module.exports = {
 
   /**
@@ -40,7 +37,7 @@ module.exports = {
     else token = 0
 
     if (token !== 0) {
-      jwt.verify(token, jwt_secret, (err, decoded) => {
+      jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) req.info = { s: false, id: 'user_with_token_error', m: 'Failed to verify token.', e: err }
         else req.decoded = decoded
         Account.findById(decoded.sub, (err, account) => {
@@ -62,50 +59,48 @@ module.exports = {
    */
   signup: (req, res, next) => {
     // Check payload via express-validator
-    req.checkBody('name', 'Full Name is required').notEmpty()
-    req.checkBody('email', 'Email is required').notEmpty()
-    req.checkBody('username', 'Username is required').notEmpty()
-    req.checkBody('password', 'Password is required').notEmpty()
+    // req.checkBody('name', 'Full Name is required').notEmpty()
+    // req.checkBody('email', 'Email is required').notEmpty()
+    // req.checkBody('username', 'Username is required').notEmpty()
+    // req.checkBody('password', 'Password is required').notEmpty()
 
     // Send info if no complete req.body
     if (!req.body.name || !req.body.email || !req.body.username || !req.body.password) {
       res.status(400).json({id: 'signup_failed', m: 'Please provide complete sign up data: name, email, username, password'})
     }
 
+    // Register method manually
+    // if (req.body) {
+    //   // Create account data
+    //   const accountData = new Account({
+    //     name: req.body.name,
+    //     email: req.body.email,
+    //     username: req.body.username,
+    //     hash: req.body.password
+    //   })
+    //   // Insert account data into database
+    //   Account.create(accountData, (err, account) => {
+    //     console.log('>>>', err)
+    //     console.log('>>>', account)
+    //     // Send an error message
+    //     if (err) res.status(422).json({ id: 'signup_error', e: err.message })
+    //     // Send a failed message
+    //     if (!account) res.status(404).json({ id: 'signup_failed', m: 'Sign up failed. Created account might not found or has a conflict.' })
+    //     // Send a success sign up message
+    //     else res.status(201).json({ id: 'signup_success', m: `Successfully signed up an account.`, username: account.username })
+    //   })
+    // }
+
     // Register method by passport-local-mongoose
     if (req.body) {
-      // // Create account data
-      // const accountData = new Account({
-      //   name: req.body.name,
-      //   email: req.body.email,
-      //   username: req.body.username,
-      //   hash: req.body.password
-      // })
-      // // Insert account data into database
-      // Account.create(accountData, (err, account) => {
-      //   console.log('>>>', err)
-      //   console.log('>>>', account)
-      //   // Send an error message
-      //   if (err) res.status(422).json({ id: 'signup_error', e: err.message })
-      //   // Send a failed message
-      //   if (!account) res.status(404).json({ id: 'signup_failed', m: 'Sign up failed. Created account might not found or has a conflict.' })
-      //   // Send a success sign up message
-      //   else res.status(201).json({ id: 'signup_success', m: `Successfully signed up an account.`, username: account.username })
-      // })
-
       Account.register(new Account({
         name: req.body.name,
         email: req.body.email,
         username: req.body.username
       }), req.body.password, (err, account) => {
-        console.log('>>>', err)
-        console.log('>>>', account)
-        // Send an error message
-        if (err) res.status(422).json({ id: 'signup_error', e: err.message })
-        // Send a failed message
-        if (!account) res.status(404).json({ id: 'signup_failed', m: 'Sign up failed. Created account might not found or has a conflict.' })
-        // Send a success sign up message
-        else res.status(201).json({ id: 'signup_success', m: `Successfully signed up an account with username '${account.username}'.` })
+        // if (error) return res.status(422).json({ id: 'signup_error', e: error.message })
+        // if (!account) res.status(404).json({ id: 'signup_failed', m: 'Sign up failed. Created account might not found or has a conflict.' })
+        if (account) res.status(201).json({ id: 'signup_success', m: `Successfully signed up an account with username '${account.username}'.` })
       })
     }
   },
@@ -125,14 +120,14 @@ module.exports = {
       // Create token content and config
       let content = {
         payload: { // or claims
-          iss: url,                   // ISSUER: URL of the service
+          iss: process.env.URL,       // ISSUER: URL of the service
           sub: account._id,           // SUBJECT: OID/UID of the account
           id: account.accountId,      // ACCOUNTID: Sequential ID of the account
           username: account.username, // USERNAME: Username of the account
           name: account.name,         // NAME: Full name of the account
           scope: 'self, profile'      // SCOPE: Choose specific payload/claims
         },
-        secret: jwt_secret,
+        secret: process.env.JWT_SECRET,
         options: {
           expiresIn: '1d'
         }
@@ -190,7 +185,7 @@ module.exports = {
     // Decode the token if it's available
     if (token !== 0) {
       // Verifies JWT token with provided secret and checks expiration
-      jwt.verify(token, jwt_secret, (err, decoded) => {
+      jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         // If there is an error when verifying the token...
         if (err) res.status(401).json({ s: false, id: 'auth_failed', m: 'Failed to authenticate token.', e: err })
         // If everything is good, save to request for use in other routes
@@ -225,7 +220,7 @@ module.exports = {
     else token = 0
 
     if (token !== 0) {
-      jwt.verify(token, jwt_secret, (err, decoded) => {
+      jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) res.status(401).json({ s: false, id: 'auth_failed', m: 'Failed to authenticate token.', e: err })
         else if (decoded.admin === true) {
           // console.log({decoded})

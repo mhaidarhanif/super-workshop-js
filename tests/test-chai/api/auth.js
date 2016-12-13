@@ -69,11 +69,11 @@ describe('auth', () => {
 
     // -------------------------------------------------------------------------
 
-    describe.skip('with no data', () => {
+    describe.only('with no data', () => {
       before(() => {
         chai.request(server).post('/auth/signup')
-        .then(response => { res = response })
-        .catch(error => { res = error })
+        .then(response => res = response)
+        .catch(error => res = error)
       })
 
       it('execute request', (done) => {
