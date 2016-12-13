@@ -1,14 +1,20 @@
 language: node_js
 node_js:
   - v6
-beforeScript:
+cache:
+  yarn: true
+services:
+  - mongodb
+before_install:
+  - cd tests/test-chai
+  - openssl aes-256-cbc -K $encrypted_677f205b7cff_key -iv $encrypted_677f205b7cff_iv -in .env.enc -out .env -d
+before_script:
   - npm install -g yarn
-  - cd servers/server-express
   - yarn
-  - npm run start:test
-  - cd ../..
+  - cd ../../servers/server-express
+  - npm install
+  - cd ../../tests/test-chai
 script:
-  - cd tests
   - npm test
 addons:
   code_climate:
