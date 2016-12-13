@@ -17,6 +17,16 @@
 3. Decide what actions the client should be allowed to perform on those resources.
 4. Figure out what pieces of data are required for each action and what format they should be in.
 
+## [How to Implement Password Reset](https://stormpath.com/blog/the-pain-of-password-reset)
+
+1. Put forgot password link in sign up or sign in page.
+2. In password reset page, there is a form to enter email address. Ask for a second factor to identify the user at this stage or a later stage.
+3. After the user has entered their email address, send an email with a link to the password reset page. This link should contain a unique password reset token that expires after a certain amount of time and one first use. MUST unique and expire.
+4. After sent the user an email, give them a message telling them what to do! Tell the user you sent them an email, and tell them to check their inbox.
+5. After the user clicks the link in their email, they should be brought to a page the site that prompts them to enter a new password. Ensure you make the user enter their new password twice so they don’t forget what they just typed. Make sure you validate their token before proceeding! If the token isn’t valid, you should display an error message and instructions on how to proceed.
+6. Once the user has reset their password, give them a confirmation message in the page and email. “Your password has been reset” is typically good enough.
+7. Lastly, ensure you send the user an email once their password has been changed letting them know what happened. This will ensure the user knows what they did, and is a great auditing tool in the future. It’s also an easy alert in the event the user didn’t initiate the reset themselves.
+
 ## References
 
 - [An Introduction to APIs, by Zapier](https://zapier.com/learn/apis)
