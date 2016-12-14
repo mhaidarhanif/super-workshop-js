@@ -28,12 +28,12 @@
   "scripts": {
     "test": "npm run mocha:api",
     "mocha:watch": "npm run mocha:api:watch",
-    "mocha:api": "mocha api",
-    "mocha:api:watch": "mocha api --watch",
-    "mocha:unit": "mocha unit",
-    "mocha:unit:watch": "mocha unit --watch",
-    "mocha:integration": "mocha integration",
-    "mocha:integration:watch": "mocha integration --watch"
+    "mocha:api": "mocha test/api",
+    "mocha:api:watch": "mocha test/api --watch",
+    "mocha:unit": "mocha test/unit",
+    "mocha:unit:watch": "mocha test/unit --watch",
+    "mocha:integration": "mocha test/integration",
+    "mocha:integration:watch": "mocha test/integration --watch"
   },
   "devDependencies": {
     "mocha": "3.2.0"
