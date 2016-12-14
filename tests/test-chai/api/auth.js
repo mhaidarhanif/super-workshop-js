@@ -8,9 +8,17 @@ chai.use(chaiHTTP)
 
 // -----------------------------------------------------------------------------
 
-describe('auth', () => {
-  var res
+var res
+const data = {
+  'name': 'New',
+  'email': 'new@new.com',
+  'username': 'new',
+  'password': 'newnewnew'
+}
 
+// -----------------------------------------------------------------------------
+
+describe('auth', () => {
   describe('setup', () => {
     it('expect ok to load', (done) => {
       expect(server).to.be.ok
@@ -21,7 +29,7 @@ describe('auth', () => {
       chai.request(server).delete('/api/accounts/actions/empty')
       .set('X-API-Key', process.env.API_KEY_TEST)
       .then(response => done())
-      .catch(error => { console.error(error.response.body); done(error) })
+      .catch(err => { done(err) })
     })
   })
 
@@ -33,7 +41,7 @@ describe('auth', () => {
     })
 
     it('execute request', (done) => {
-      done()
+      setTimeout(() => done(), 1)
     })
 
     it('expect json object that contains specific keys', (done) => {
@@ -65,19 +73,17 @@ describe('auth', () => {
   // ---------------------------------------------------------------------------
 
   describe('sign up', () => {
-    var res
-
     // -------------------------------------------------------------------------
 
-    describe.only('with no data', () => {
+    describe('with no data', () => {
       before(() => {
         chai.request(server).post('/auth/signup')
-        .then(response => res = response)
-        .catch(error => res = error)
+        .then(response => { res = response })
+        .catch(err => { res = err })
       })
 
       it('execute request', (done) => {
-        done()
+        setTimeout(() => done(), 1)
       })
 
       it('expect json object that contains specific keys', (done) => {
@@ -98,25 +104,18 @@ describe('auth', () => {
 
     describe.skip('with a new account data', () => {
       before(() => {
-        data = {
-          'name': 'Test',
-          'email': 'test@test.com',
-          'username': 'test',
-          'password': 'testtesttest'
-        }
-
         chai.request(server).post('/auth/signup').send(data)
-        .then(response => { res = response }).catch(error => { res = error })
+        .then(response => { res = response })
+        .catch(err => { res = err })
       })
 
       it('execute request', (done) => {
-        done()
+        setTimeout(() => done(), 1)
       })
 
       it('expect json object that contains specific keys', (done) => {
-        console.log(res.body)
         expect(res.body).to.be.an('object')
-        expect(res.body).to.have.all.keys('id', 'm')
+        expect(res.body).to.have.all.keys('id', 'm', 'name', 'email', 'username', 'password')
         done()
       })
 
@@ -124,7 +123,10 @@ describe('auth', () => {
         expect(res.status).to.equal(201)
         expect(res.body).to.have.property('id').to.include('success')
         expect(res.body).to.have.property('m').to.include('signed up')
+        expect(res.body).to.have.property('name').to.equal(data.name)
+        expect(res.body).to.have.property('email').to.equal(data.email)
         expect(res.body).to.have.property('username').to.equal(data.username)
+        expect(res.body).to.have.property('password').to.include('encrypt')
         done()
       })
     })
@@ -133,15 +135,13 @@ describe('auth', () => {
 
     describe.skip('with an existed account data', () => {
       before(() => {
-        chai
-        .request(server)
-        .post('/auth/signup')
+        chai.request(server).post('/auth/signup')
         .then(response => { res = response })
-        .catch(error => { res = error })
+        .catch(err => { res = err })
       })
 
       it('execute request', (done) => {
-        done()
+        setTimeout(() => done(), 1)
       })
 
       it('expect json object that contains specific keys', (done) => {
