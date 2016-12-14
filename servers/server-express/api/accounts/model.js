@@ -119,6 +119,18 @@ const AccountSchema = new Schema({
     email: String,
     name: String
   },
+  bitbucket: {
+    id: String,
+    token: String,
+    email: String,
+    name: String
+  },
+  gitlab: {
+    id: String,
+    token: String,
+    email: String,
+    name: String
+  },
   // Properties
   url: String,
   tokens: [],
