@@ -4,28 +4,58 @@ A person is either alive, dead, undead, or fictional.
 http://schema.org/Person
 */
 
+const bcrypt = require('bcryptjs')
 const mongoose = require('mongoose')
+const sequence = require('mongoose-sequence')
+const validate = require('mongoose-validator')
+
 const Schema = mongoose.Schema
 
-const passportLocalMongoose = require('passport-local-mongoose')
-const sequence = require('mongoose-sequence')
+const roleTypes = ['super', 'admin', 'dev', 'ops', 'test', 'user']
+const authTypes = ['local', 'github', 'twitter', 'facebook', 'google']
+
+// -----------------------------------------------------------------------------
+
+const validateName = validate({
+  validator: 'isLength',
+  arguments: [3, 50],
+  message: 'Name must between {ARGS[0]} and {ARGS[1]} characters'
+})
+
+const validateEmail = [
+  validate({
+    validator: 'isEmail',
+    message: 'Email must be a valid email (name@example.com)'
+  })
+]
+
+const validateUsername = [
+  validate({
+    validator: 'isLength',
+    arguments: [1, 50],
+    message: 'Username must between {ARGS[0]} and {ARGS[1]} characters'
+  }),
+  validate({
+    validator: 'isAlphanumeric',
+    passIfEmpty: true,
+    message: 'Name should contain alpha-numeric characters only'
+  })
+]
+
+const validateURL = [
+  validate({
+    validator: 'isURL',
+    message: 'URL must be a valid URL (http://example.com/path/to/image.png)'
+  })
+]
+
+// -----------------------------------------------------------------------------
 
 const AccountSchema = new Schema({
+  // Internal
   name: {
     type: String,
-    required: true,
-    first: {
-      type: String,
-      required: false
-    },
-    middle: {
-      type: String,
-      required: false
-    },
-    last: {
-      type: String,
-      required: false
-    }
+    validate: validateName
   },
   username: {
     type: String,
