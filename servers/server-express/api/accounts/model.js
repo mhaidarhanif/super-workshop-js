@@ -13,6 +13,7 @@ const Schema = mongoose.Schema
 
 const roleTypes = ['super', 'admin', 'dev', 'ops', 'test', 'user']
 const authTypes = ['local', 'github', 'twitter', 'facebook', 'google']
+const planTypes = ['free', 'personal', 'team', 'school', 'startup', 'enterprise', 'custom']
 
 // -----------------------------------------------------------------------------
 
@@ -120,6 +121,7 @@ const AccountSchema = new Schema({
   },
   // Properties
   url: String,
+  tokens: [],
   roles: [
     {
       type: String,
@@ -128,6 +130,17 @@ const AccountSchema = new Schema({
       default: ['user']
     }
   ],
+  // Preferences
+  notification: Boolean,
+  coupons: [],
+  plan: {
+    type: String,
+    lowercase: true,
+    enum: planTypes
+  },
+  // Development
+  apiKey: String,
+  sshKey: String,
   // Ownership
   books: [
     {
