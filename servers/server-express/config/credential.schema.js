@@ -7,6 +7,7 @@ const SECRET = {
 }
 
 const API_KEY = {
+  SETUP: process.env.API_KEY_SETUP || 'change_this',
   DEV: process.env.API_KEY_DEV || 'change_this',
   TEST: process.env.API_KEY_TEST || 'change_this',
   STAGING: process.env.API_KEY_STAGING || 'change_this',
