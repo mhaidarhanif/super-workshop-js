@@ -12,7 +12,7 @@
     "username": "dev",
     "email": "dev@dev.com",
     "password": "devdevdev",
-    "roles": "dev",
+    "roles": ["admin", "dev"],
     "providers": "local"
   },
   {
@@ -20,7 +20,7 @@
     "username": "test",
     "email": "test@test.com",
     "password": "testtest",
-    "roles": "test",
+    "roles": ["admin", "test"],
     "providers": "local"
   },
   {
@@ -28,7 +28,7 @@
     "username": "ops",
     "email": "ops@ops.com",
     "password": "opsopsops",
-    "roles": "ops",
+    "roles": ["admin", "ops"],
     "providers": "local"
   },
   {
@@ -36,6 +36,7 @@
     "username": "view",
     "email": "view@view.com",
     "password": "viewview",
+    "roles": "user",
     "providers": "local"
   },
   {
@@ -43,6 +44,7 @@
     "username": "user",
     "email": "user@user.com",
     "password": "useruser",
+    "roles": "user",
     "providers": "local"
   },
   {
@@ -50,6 +52,7 @@
     "username": "a",
     "email": "a@alpha.com",
     "password": "alphaalpha",
+    "roles": "user",
     "providers": "local"
   },
   {
@@ -57,6 +60,7 @@
     "username": "z",
     "email": "z@zet.com",
     "password": "zetzetzet",
+    "roles": "user",
     "providers": "local"
   }
 ]

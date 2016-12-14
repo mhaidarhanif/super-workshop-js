@@ -127,8 +127,7 @@ const AccountSchema = new Schema({
     {
       type: String,
       lowercase: true,
-      enum: roleTypes,
-      default: 'user'
+      enum: roleTypes
     }
   ],
   // Ownership

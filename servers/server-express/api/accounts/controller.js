@@ -53,11 +53,11 @@ module.exports = {
       })
       .then(() => {
         res.status(200).json({
-          accounts: { s: true, id: 'account_super_seed_success', m: `Successfully seeded super accounts.` }
+          accounts: { s: true, id: 'account_seed_success', m: `Successfully seeded normal accounts.` }
         })
       })
       .catch((err) => {
-        res.status(400).json({ id: 'account_super_seed_error', m: `Failed to seed super accounts. Might already have seeded before.`, e: err.message })
+        res.status(400).json({ id: 'account_seed_error', m: `Failed to seed normal accounts. Might already have seeded before.`, e: err.message })
       })
   },
 
