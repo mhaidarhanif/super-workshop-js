@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const Account = require('./model')
 
 const superAccounts = require('./seed.super.json')
-const accounts = require('./seed.json')
+const normalAccounts = require('./seed.json')
 
 module.exports = {
 
@@ -15,33 +15,31 @@ module.exports = {
    * @api {get} Seed super accounts
    */
   seedSuperAccounts: (req, res) => {
-    // Drop counters collection
+    // Drop all collection
     mongoose.connection.db.dropCollection('counters', (err, result) => {
-      if (err) res.status(400).json({ id: 'counter_drop_error', e: `${err}` })
-      console.log({ id: 'counter_dropped', m: `Collection 'counters' have been removed before seeding.` })
+      if (err) res.status(400).json({ id: 'counters_drop_error', e: `${err}` })
+      console.log('[x] Dropped collection: counters')
+    })
+    mongoose.connection.db.dropCollection('accounts', (err, result) => {
+      if (err) res.status(400).json({ id: 'accounts_drop_error', e: `${err}` })
+      console.log('[x] Dropped collection: accounts')
     })
 
-    // Seed some accounts from prepared data
-    superAccounts.forEach((account, index) => {
-      Account.register(new Account({
-        email: account.email,
-        name: account.name,
-        username: account.username
-      }),
-      account.password,
-      (err, account) => {
-        if (err) res.status(400).json({ id: 'account_super_seed_error', e: err.message })
-        else if (!account) res.status(304).json({ id: 'account_super_seed_failed', m: `Failed to seed super accounts.` })
+    // Seed them
+    Account
+      .find({})
+      .then(() => {
+        Account.create(superAccounts)
       })
-    })
-
-    // Wait until all accounts are registered
-    setTimeout(() => {
-      Account.find({}, (err, data) => {
-        if (err) res.status(400).json({ id: 'account_find_error', e: err.message })
-        res.status(200).json(data)
+      .then(() => {
+        res.status(200).json({
+          counters: { s: true, id: 'counter_drop_success', m: `Collection 'counters' have been removed before seeding.` },
+          accounts: { s: true, id: 'account_super_seed_success', m: `Successfully seeded super accounts.` }
+        })
       })
-    }, 2000)
+      .catch((err) => {
+        res.status(400).json({ id: 'account_super_seed_error', m: `Failed to seed super accounts. Might already have seeded before.`, e: err.message })
+      })
   },
 
   /* ---------------------------------------------------------------------------
@@ -51,27 +49,20 @@ module.exports = {
     // List of accounts from seed
     // console.log({accounts})
 
-    // Seed some accounts from prepared data
-    accounts.forEach((account, index) => {
-      Account.register(new Account({
-        email: account.email,
-        name: account.name,
-        username: account.username
-      }),
-      account.password,
-      (err, account) => {
-        if (err) res.status(400).json({ id: 'account_seed_error', e: err.message })
-        else if (!account) res.status(304).json({ id: 'account_seed_failed', m: `Failed to seed account: ${account}` })
+    // Seed them
+    Account
+      .find({})
+      .then(() => {
+        Account.create(normalAccounts)
       })
-    })
-
-    // Wait until all accounts are registered
-    setTimeout(() => {
-      Account.find({}, (err, data) => {
-        if (err) res.status(400).json({ id: 'account_find_error', e: err.message })
-        res.status(200).json(data)
+      .then(() => {
+        res.status(200).json({
+          accounts: { s: true, id: 'account_super_seed_success', m: `Successfully seeded super accounts.` }
+        })
       })
-    }, 2000)
+      .catch((err) => {
+        res.status(400).json({ id: 'account_super_seed_error', m: `Failed to seed super accounts. Might already have seeded before.`, e: err.message })
+      })
   },
 
   /* ---------------------------------------------------------------------------
@@ -112,7 +103,7 @@ module.exports = {
     // TODO: use fields query
     // ?fields=id,name,username,email,about,birthday,avatar,cover,
 
-    Account.findOne({
+    Account.findOneAsync({
       accountId: req.decoded.id
     }, {
       'name': 1,
@@ -133,7 +124,7 @@ module.exports = {
    * Get account profile by account ID
    */
   getAccountProfileById: (req, res) => {
-    Account.findOne({
+    Account.findOneAsync({
       accountId: req.params.accountId
     }, {
       '_id': 0,

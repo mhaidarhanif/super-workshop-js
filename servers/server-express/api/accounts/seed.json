@@ -4,51 +4,59 @@
     "username": "admin",
     "email": "admin@admin.com",
     "password": "adminadmin",
-    "roles": "admin"
+    "roles": "admin",
+    "providers": "local"
   },
   {
     "name": "Developer",
     "username": "dev",
     "email": "dev@dev.com",
     "password": "devdevdev",
-    "roles": "dev"
+    "roles": "dev",
+    "providers": "local"
   },
   {
     "name": "Tester",
     "username": "test",
     "email": "test@test.com",
     "password": "testtest",
-    "roles": "test"
+    "roles": "test",
+    "providers": "local"
   },
   {
     "name": "Operator",
     "username": "ops",
     "email": "ops@ops.com",
     "password": "opsopsops",
-    "roles": "ops"
+    "roles": "ops",
+    "providers": "local"
   },
   {
     "name": "Viewer",
     "username": "view",
     "email": "view@view.com",
-    "password": "viewview"
+    "password": "viewview",
+    "providers": "local"
   },
   {
     "name": "User",
     "username": "user",
     "email": "user@user.com",
-    "password": "useruser"
+    "password": "useruser",
+    "providers": "local"
   },
   {
     "name": "Alpha",
     "username": "a",
     "email": "a@alpha.com",
-    "password": "alphaalpha"
+    "password": "alphaalpha",
+    "providers": "local"
   },
   {
     "name": "Zet",
     "username": "z",
     "email": "z@zet.com",
-    "password": "zetzetzet"
+    "password": "zetzetzet",
+    "providers": "local"
   }
 ]

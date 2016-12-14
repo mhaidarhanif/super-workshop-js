@@ -1,9 +1,8 @@
-[
-  {
-    "name": "Super Administrator",
-    "email": "super@super.com",
-    "username": "super",
-    "password": "supersuper",
-    "roles": ["super", "admin"]
-  }
-]
+{
+  "name": "Super Administrator",
+  "email": "super@super.com",
+  "username": "super",
+  "password": "supersuper",
+  "roles": ["super", "admin"],
+  "providers": "local"
+}
