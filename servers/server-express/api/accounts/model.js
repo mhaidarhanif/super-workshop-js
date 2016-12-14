@@ -127,7 +127,8 @@ const AccountSchema = new Schema({
     {
       type: String,
       lowercase: true,
-      enum: roleTypes
+      enum: roleTypes,
+      default: ['user']
     }
   ],
   // Ownership
@@ -139,22 +140,8 @@ const AccountSchema = new Schema({
       ref: 'Book'
     }
   ],
-  createdBy: [
-    {
-      type: Number,
-      required: false,
-      foreignField: 'accountId',
-      ref: 'Account'
-    }
-  ],
-  updatedBy: [
-    {
-      type: Number,
-      required: false,
-      foreignField: 'accountId',
-      ref: 'Account'
-    }
-  ]
+  createdBy: [],
+  updatedBy: []
 }, {
   timestamps: true
 })
@@ -165,8 +152,14 @@ const AccountSchema = new Schema({
 // Auto increment accountId
 AccountSchema.plugin(sequence, { inc_field: 'accountId' })
 
+AccountSchema.pre('save', function (next) {
+  if (this.roles.length === 0) this.roles.push('user')
+  if (this.createdBy.length === 0) this.createdBy = this.id
+  next()
+})
+
 // Public profile information
-AccountSchema.virtual('profile').get(() => {
+AccountSchema.virtual('profile').get(function () {
   return {
     username: this.username,
     name: this.name,
@@ -178,7 +171,7 @@ AccountSchema.virtual('profile').get(() => {
 })
 
 // Non-sensitive info we'll be putting in the token
-AccountSchema.virtual('token').get(() => {
+AccountSchema.virtual('token').get(function () {
   return {
     _id: this._id,
     name: this.name,

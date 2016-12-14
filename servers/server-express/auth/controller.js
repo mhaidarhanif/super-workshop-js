@@ -68,13 +68,13 @@ module.exports = {
       res.status(400).json({ id: 'signup_failed', m: 'Password must be longer than 8 characters.' })
     } else {
       // Create the account
-      Account.create(new Account({
-        name: req.body.name,
-        email: req.body.email,
-        username: req.body.username,
-        hash: Account.generateHash(req.body.password),
-        providers: 'local'
-      }), (err, account) => {
+      let account = new Account()
+      account.name = req.body.name
+      account.email = req.body.email
+      account.username = req.body.username
+      account.hash = Account.generateHash(req.body.password)
+      account.providers = 'local'
+      account.save((err) => {
         // Send an error message
         if (err) res.status(422).json({ id: 'signup_error', e: err.errors || err })
         // Send a failed message
