@@ -59,50 +59,79 @@ const AccountSchema = new Schema({
   },
   username: {
     type: String,
-    required: true,
-    unique: true
+    unique: true,
+    lowercase: true,
+    validate: validateUsername
   },
   email: {
     type: String,
-    required: true,
-    unique: true
+    unique: true,
+    lowercase: true,
+    validate: validateEmail
   },
-  password: {
-    type: String,
-    required: false
-  },
-  verified: {
-    type: Boolean,
-    required: false
+  hash: String,
+  salt: String,
+  verified: Boolean,
+  gender: Number,
+  telephone: String,
+  affiliation: String,
+  birthDate: Date,
+  age: {
+    type: Number,
+    min: [6, 'Too young'],
+    max: [120, 'Too old']
   },
   image: {
     type: String,
-    required: false
+    validate: validateURL
   },
-  gender: {
-    type: Number,
-    required: false
+  // External
+  providers: [
+    {
+      type: String,
+      lowercase: true,
+      enum: authTypes,
+      default: 'local'
+    }
+  ],
+  github: {
+    id: String,
+    token: String,
+    email: String,
+    name: String
   },
-  birthDate: {
-    type: Date,
-    required: false
+  facebook: {
+    id: String,
+    token: String,
+    email: String,
+    name: String
   },
-  age: {
-    type: Number,
-    required: false
+  twitter: {
+    id: String,
+    token: String,
+    displayName: String,
+    username: String
   },
-  telephone: {
-    type: String,
-    required: false
+  google: {
+    id: String,
+    token: String,
+    email: String,
+    name: String
   },
-  affiliation: {
-    type: String,
-    required: false
-  },
+  // Properties
   url: {
     type: String,
     required: false
   },
+  roles: [
+    {
+      type: String,
+      lowercase: true,
+      enum: roleTypes,
+      default: 'user'
+    }
+  ],
+  // Ownership
   books: [
     {
       type: String,
