@@ -1,20 +1,21 @@
 const express = require('express')
 const router = express.Router()
 
+const auth = require('../../auth/controller')
 const api = require('./controller')
-const auth = require('../auth/controller')
 
 // -----------------------------------------------------------------------------
 // ADMINISTRATIVE
 // -----------------------------------------------------------------------------
 
 // Create super account, only once
-router.post('/actions/setup', api.seedSuperAccounts)
+router.post('/actions/setup', [auth.isWithAPIKey, auth.isSetup], api.seedSuperAccounts)
 // Seed initial accounts
-router.post('/actions/seed', auth.isAdmin, api.seedAccounts)
+router.post('/actions/seed', [auth.isWithAPIKey, auth.isSetup], api.seedAccounts)
 // Delete all accounts
-router.delete('/actions/delete', auth.isAdmin, api.deleteAccounts)
+router.delete('/actions/delete', [auth.isWithAPIKey, auth.isSetup], api.deleteAccounts)
 router.delete('/actions/empty', [auth.isWithAPIKey, auth.isTest], api.deleteAccounts)
+
 // Get all accounts
 router.get('/', auth.isAdmin, api.getAccounts)
 
