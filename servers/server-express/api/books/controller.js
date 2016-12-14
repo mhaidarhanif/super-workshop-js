@@ -49,7 +49,7 @@ module.exports = {
    */
   seedBooks: (req, res) => {
     Book
-      .create(books, (err, data) => {
+      .createAsync(books, (err, data) => {
         // console.log('seedBooks:', data)
         sendResponse(res, err, data, 'Failed to seed a few books.')
       })
@@ -60,7 +60,7 @@ module.exports = {
    */
   seedBooksLot: (req, res) => {
     Book
-      .create(booksLot, (err, data) => {
+      .createAsync(booksLot, (err, data) => {
         // console.log('seedBooksLot:', data)
         sendResponse(res, err, data, 'Failed to seed a lot of books.')
       })
@@ -71,7 +71,7 @@ module.exports = {
    */
   deleteBooks: (req, res) => {
     Book
-      .remove()
+      .removeAsync()
       .exec((err, data) => {
         // console.log('deleteBooks:', data)
         if (err) res.status(400).json({ id: 'book_delete_error', e: `Error: ${err}` })
@@ -117,7 +117,7 @@ module.exports = {
    */
   postBook: (req, res) => {
     Book
-      .create({
+      .createAsync({
         isbn: req.body.isbn,
         title: req.body.title,
         price: req.body.price,
@@ -141,7 +141,7 @@ module.exports = {
     console.log({book})
 
     Book
-      .create(book, (err, data) => {
+      .createAsync(book, (err, data) => {
         // console.log('postBookWithOwner:', data)
         sendResponse(res, err, data, `Failed to post book with ISBN ${req.body.isbn}.`)
       })
@@ -171,7 +171,7 @@ module.exports = {
    * @api {get} /books/:isbn Get book by ISBN
    */
   getBookByISBN: (req, res) => {
-    Book.findOne({
+    Book.findOneAsync({
       isbn: req.params.isbn
     }, {
       '_id': 0
@@ -192,7 +192,7 @@ module.exports = {
     }
 
     // Remove book from database
-    Book.findOneAndRemove({
+    Book.findOneAndRemoveAsync({
       isbn: req.params.isbn
     }, (err, data) => {
       // console.log('deleteBookByISBN:', data)
@@ -204,7 +204,7 @@ module.exports = {
     })
 
     // Remove book ISBN from multi accounts data
-    Account.update({
+    Account.updateAsync({
       books: { '$in': [req.params.isbn] }
     }, {
       $pull: { 'books': req.params.isbn },
@@ -250,7 +250,7 @@ module.exports = {
     }
 
     // Update existing book data with new book data
-    Book.findOneAndUpdate({
+    Book.findOneAndUpdateAsync({
       isbn: req.params.isbn
     }, {
       $set: book,
@@ -279,7 +279,7 @@ module.exports = {
     }
 
     // Assign accountId to book's owners
-    Book.findOneAndUpdate({
+    Book.findOneAndUpdateAsync({
       isbn: req.params.isbn
     }, {
       $addToSet: { 'updatedBy': req.decoded.id, 'owners': req.decoded.id }
@@ -302,7 +302,7 @@ module.exports = {
     })
 
     // Assign book ISBN to account's books
-    Account.findOneAndUpdate({
+    Account.findOneAndUpdateAsync({
       accountId: req.decoded.id
     }, {
       $addToSet: {

@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const api = require('./controller')
-const auth = require('../auth/controller')
+const auth = require('../../auth/controller')
 
 // -----------------------------------------------------------------------------
 // ADMINISTRATIVE ACCOUNT

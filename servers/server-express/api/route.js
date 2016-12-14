@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 
+const auth = require('../auth/controller')
 const api = require('./controller')
-const auth = require('./auth/controller')
 const accounts = require('./accounts/controller')
 
 // -----------------------------------------------------------------------------
