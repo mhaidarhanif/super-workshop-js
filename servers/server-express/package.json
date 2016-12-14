@@ -37,6 +37,7 @@
   "homepage": "https://github.com/mhaidarh/super-workshop-js#readme",
   "dependencies": {
     "acho": "^3.1.1",
+    "bcryptjs": "2.4.0",
     "body-parser": "^1.15.2",
     "cors": "^2.8.1",
     "express": "^4.14.0",
@@ -45,20 +46,23 @@
     "express-session": "^1.14.2",
     "express-validator": "^2.21.0",
     "jsonwebtoken": "^7.1.9",
+    "method-override": "2.3.7",
+    "moment": "2.17.1",
     "mongoose": "^4.6.8",
     "mongoose-paginate": "^5.0.3",
     "mongoose-sequence": "^3.1.0",
+    "mongoose-validator": "1.2.5",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-github": "^1.1.0",
     "passport-google-oauth": "^1.0.0",
     "passport-jwt": "^2.2.1",
     "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^4.0.0",
     "passport-twitter": "^1.0.4",
     "ramda": "0.22.1",
     "request-ip": "1.2.3",
-    "supertest": "2.0.1"
+    "supertest": "2.0.1",
+    "validator": "6.2.0"
   },
   "devDependencies": {
     "chance-cli": "^1.0.6",
