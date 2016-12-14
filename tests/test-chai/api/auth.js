@@ -114,7 +114,7 @@ describe('auth', () => {
       })
 
       it('expect json object that contains specific keys', (done) => {
-        console.log('[i] account:', res.body)
+        // console.log('[i] account:', res.body)
         expect(res.status).to.equal(201)
         expect(res.body).to.be.an('object')
         expect(res.body).to.have.all.keys('id', 'm', 'name', 'email', 'username', 'password', 'roles')
