@@ -1,3 +1,4 @@
+acho
 unirest
 passport-google
 nedb
@@ -12,3 +13,6 @@ faker
 chance
 casual
 camo
+moment
+passport-jwt
+method-override
