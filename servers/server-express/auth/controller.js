@@ -73,7 +73,7 @@ module.exports = {
         email: req.body.email,
         username: req.body.username,
         hash: Account.generateHash(req.body.password),
-        roles: req.body.roles
+        providers: 'local'
       }), (err, account) => {
         // Send an error message
         if (err) res.status(422).json({ id: 'signup_error', e: err.errors || err })
