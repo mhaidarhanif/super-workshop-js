@@ -14,7 +14,7 @@ module.exports = {
       name: meta.name,
       script: meta.main,
       node_args: '--harmony',
-      watch: [meta.name, 'server.js', 'api'],
+      watch: [meta.main, 'server.js', 'config', 'auth', 'api'],
       ignore_watch: ['node_modules'],
       watch_options: {
         followSymlinks: false
@@ -29,6 +29,7 @@ module.exports = {
         MONGODB_URI: database.MONGODB_URI,
         JWT_SECRET: credential.SECRET.JWT,
         SESSION_SECRET: credential.SECRET.SESSION,
+        API_KEY_SETUP: credential.API_KEY.SETUP,
         API_KEY_DEV: credential.API_KEY.DEV,
         API_KEY_TEST: credential.API_KEY.TEST,
         API_KEY_STAGING: credential.API_KEY.STAGING,
