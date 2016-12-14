@@ -46,10 +46,6 @@ module.exports = {
    * @api {get} Seed some accounts
    */
   seedAccounts: (req, res) => {
-    // List of accounts from seed
-    // console.log({accounts})
-
-    // Seed them
     Account
       .find({})
       .then(() => {
@@ -62,6 +58,22 @@ module.exports = {
       })
       .catch((err) => {
         res.status(400).json({ id: 'account_super_seed_error', m: `Failed to seed super accounts. Might already have seeded before.`, e: err.message })
+      })
+  },
+
+  /* ---------------------------------------------------------------------------
+   * @api {get} Seed accounts <entities> collection
+   */
+  seedAccountsEntities: (req, res) => {
+    Account
+      .find({})
+      .then(() => {
+        res.status(200).json({
+          accounts: { s: true, id: 'account_seed_entities_success', m: `Successfully seeded entities into accounts.` }
+        })
+      })
+      .catch((err) => {
+        res.status(400).json({ id: 'account_seed_entities_error', m: `Failed to seed entities into accounts.`, e: err.message })
       })
   },
 
