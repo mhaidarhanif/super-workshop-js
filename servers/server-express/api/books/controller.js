@@ -56,35 +56,40 @@ module.exports = {
 
       let account = []
 
+      // --------------------
       // Get the users
       Account.findOne({ roles: 'user' }, (err, user) => {
         if (err) res.status(400).json({ id: 'books_seed_find_users_failed', m: 'Failed to find users.' })
         account = user
-      })
 
-      // Post seed books
-      Book.create(books, (err, data) => {
-        // console.log('seedBooks:', data)
-        if (err) res.status(400).json({ id: 'books_seed_failed', m: 'Failed to seed books.' })
+        // --------------------
+        // Post seed books
+        Book.create(books, (err, data) => {
+          if (err) res.status(400).json({ id: 'books_seed_failed', m: 'Failed to seed books.' })
 
-        // Put the one account id into book owners field
-        Book.update({}, {
-          $push: { 'owners': account._id },
-          $addToSet: { 'updatedBy': account._id }
-        }, {
-          multi: true,
-          new: true,
-          upsert: true
-        }, (err, info) => {
-          if (err) {
-            res.status(400).json({ id: 'account_book_error', e: `${err}`, m: 'Something wrong. Try again.' })
-          } else if (!info) {
-            res.status(404).json({ id: 'account_book_data_failed', m: `Failed to update account with ID '${req.decoded.id}' and remove their books with ISBN '${req.params.isbn}'. Might not exist yet.` })
-          }
+          // --------------------
+          // Put the one account id into book owners field
+          Book.update({}, {
+            $push: { 'owners': account._id },
+            $addToSet: { 'updatedBy': account._id }
+          }, {
+            multi: true,
+            new: true,
+            upsert: true
+          }, (err, info) => {
+            if (err) {
+              res.status(400).json({ id: 'account_book_error', e: `${err}`, m: 'Something wrong. Try again.' })
+            } else if (!info) {
+              res.status(404).json({ id: 'account_book_data_failed', m: `Failed to update books' owners.` })
+            } else {
+              // --------------------
+              // Finally send the info
+              res.status(200).json({
+                books: { s: true, id: 'books_seed_success', m: `Successfully seeded some books.` }
+              })
+            }
+          })
         })
-
-        // Finally send the info
-        sendResponse(res, err, data, 'Failed to seed a few books.')
       })
     })
   },
@@ -99,8 +104,10 @@ module.exports = {
       // Then we can seed a lot of them!
       if (result) {
         Book.create(booksLot, (err, data) => {
-          // console.log('seedBooksLot:', data)
-          sendResponse(res, err, data, 'Failed to seed a lot of books.')
+          if (err) res.status(400).json({ id: 'books_seed_lot_failed', m: 'Failed to seed a lot of books.' })
+          res.status(200).json({
+            books: { s: true, id: 'books_seed_lot_success', m: `Successfully seeded a lot of books.` }
+          })
         })
       }
     })
