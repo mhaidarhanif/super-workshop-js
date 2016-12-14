@@ -9,9 +9,13 @@ chai.use(chaiHTTP)
 // -----------------------------------------------------------------------------
 
 describe('server-express', function () {
-  it('expect ok to load', function (done) {
-    expect(server).to.be.ok
-    done()
+  // ---------------------------------------------------------------------------
+
+  describe('setup', () => {
+    it('expect ok to load', (done) => {
+      expect(server).to.be.ok
+      done()
+    })
   })
 
   // ---------------------------------------------------------------------------
