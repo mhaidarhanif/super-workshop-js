@@ -8,13 +8,22 @@ chai.use(chaiHTTP)
 
 // -----------------------------------------------------------------------------
 
-var res
-const data = {
-  'name': 'New',
-  'email': 'new@new.com',
-  'username': 'new',
-  'password': 'newnewnew'
-}
+const faker = require('faker')
+const Chance = require('chance')
+const chance = new Chance()
+
+const a = {}
+a.first = faker.name.firstName()
+a.last = faker.name.lastName()
+a.name = `${a.first} ${a.last}`
+a.username = a.first.toLowerCase()
+a.email = `${a.username.toLowerCase()}@${a.last.toLowerCase()}.com`
+a.password = faker.internet.password()
+a.birthDate = chance.birthday({type: 'adult'})
+a.image = faker.image.imageUrl()
+a.roles = 'user'
+
+// console.log(a)
 
 // -----------------------------------------------------------------------------
 
@@ -63,6 +72,7 @@ describe('auth', () => {
 
     describe('with no data', () => {
       let res
+
       before(() => {
         chai.request(server).post('/auth/signup')
         .then(r => res = r)
@@ -89,31 +99,36 @@ describe('auth', () => {
 
     // -------------------------------------------------------------------------
 
-    describe.skip('with a new account data', () => {
-      before(() => {
-        chai.request(server).post('/auth/signup').send(data)
-        .then(r => { res = r })
-        .catch(err => { res = err })
-      })
+    describe('with a new account data', () => {
+      let res
 
       it('execute request', (done) => {
-        setTimeout(() => done(), 1)
+        chai.request(server).post('/auth/signup').send(a)
+        .then(r => {
+          res = r
+          done()
+        })
+        .catch(err => {
+          res = err
+        })
       })
 
       it('expect json object that contains specific keys', (done) => {
+        console.log('[i] account:', res.body)
+        expect(res.status).to.equal(201)
         expect(res.body).to.be.an('object')
-        expect(res.body).to.have.all.keys('id', 'm', 'name', 'email', 'username', 'password')
+        expect(res.body).to.have.all.keys('id', 'm', 'name', 'email', 'username', 'password', 'roles')
         done()
       })
 
       it('expect success info', (done) => {
-        expect(res.status).to.equal(201)
         expect(res.body).to.have.property('id').to.include('success')
         expect(res.body).to.have.property('m').to.include('signed up')
-        expect(res.body).to.have.property('name').to.equal(data.name)
-        expect(res.body).to.have.property('email').to.equal(data.email)
-        expect(res.body).to.have.property('username').to.equal(data.username)
-        expect(res.body).to.have.property('password').to.include('encrypt')
+        expect(res.body).to.have.property('name').to.equal(a.name)
+        expect(res.body).to.have.property('email').to.equal(a.email)
+        expect(res.body).to.have.property('username').to.equal(a.username)
+        // expect(res.body).to.have.property('roles').to.equal(a.roles)
+        expect(res.body).to.have.property('password').to.include('ENCRYPT')
         done()
       })
     })

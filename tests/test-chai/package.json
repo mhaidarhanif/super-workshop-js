@@ -3,7 +3,13 @@
   "version": "1.0.0",
   "description": "Super Workshop JS - Test with Chai",
   "keywords": [
-    "super", "workshop", "js", "test", "suite", "mocha", "chai"
+    "super",
+    "workshop",
+    "js",
+    "test",
+    "suite",
+    "mocha",
+    "chai"
   ],
   "author": "M Haidar Hanif <npm@mhaidarhanif.com> (https://mhaidarhanif.com)",
   "homepage": "https://github.com/mhaidarh/super-workshop-js#readme",
@@ -36,6 +42,8 @@
     "axios": "0.15.3",
     "chai": "3.5.0",
     "chai-http": "3.0.0",
-    "dotenv-extended": "1.0.4"
+    "chance": "1.0.4",
+    "dotenv-extended": "1.0.4",
+    "faker": "3.1.0"
   }
 }
