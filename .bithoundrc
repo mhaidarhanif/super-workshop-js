@@ -6,12 +6,13 @@
    "dist/**",
    "macros/**",
    "performance/**",
+   "servers/server-express-mvc",
    "test/**",
    "gulpfile.js"
  ],
   "critics": {
-    "lint": {"engine": "standard"},
-    "wc": { "limit": 300 }
+    "wc": { "limit": 300 },
+    "lint": { "engine": "standard" }
   },
   "packageJsonLocation": "servers/server-express/package.json"
 }
