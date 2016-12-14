@@ -7,6 +7,10 @@ const Schema = mongoose.Schema
 // Paginate list of all data
 const mongoosePaginate = require('mongoose-paginate')
 
+const statusTypes = ['unknown', 'available', 'unavailable', 'rare']
+
+// -----------------------------------------------------------------------------
+
 mongoosePaginate.paginate.options = {
   // lean: true,
   // leanWithId: false,
@@ -14,6 +18,8 @@ mongoosePaginate.paginate.options = {
   limit: 10,
   sort: { updatedAt: -1 }
 }
+
+// -----------------------------------------------------------------------------
 
 const BookSchema = new Schema({
   isbn: {
@@ -29,27 +35,32 @@ const BookSchema = new Schema({
     type: Number,
     required: true
   },
+  // Properties
+  url: String,
+  status: [
+    {
+      type: String,
+      lowercase: true,
+      enum: statusTypes,
+      default: 'unknown'
+    }
+  ],
+  // Ownership
   owners: [
     {
-      type: Number,
-      foreignField: 'accountId',
+      type: Schema.Types.ObjectId,
       ref: 'Account'
     }
   ],
-  url: {
-    type: String
-  },
   createdBy: [
     {
-      type: Number,
-      foreignField: 'accountId',
+      type: Schema.Types.ObjectId,
       ref: 'Account'
     }
   ],
   updatedBy: [
     {
-      type: Number,
-      foreignField: 'accountId',
+      type: Schema.Types.ObjectId,
       ref: 'Account'
     }
   ]
@@ -57,27 +68,34 @@ const BookSchema = new Schema({
   timestamps: true
 })
 
-// BookSchema.virtual('lenders', {
-//   ref: 'Account',
-//   localField: 'accountId', // Find account where `localField`
-//   foreignField: 'isbn'    // is equal to `foreignField`
-// })
+// -----------------------------------------------------------------------------
+// PAGINATION
 
 BookSchema.plugin(mongoosePaginate)
 
 // -----------------------------------------------------------------------------
+// ADDITIONALS
+
+BookSchema.virtual('lenders', {
+  ref: 'Account',
+  localField: 'owners', // Find account where `localField`
+  foreignField: 'books' // is equal to `foreignField`
+})
+
+// -----------------------------------------------------------------------------
 // POPULATE
 
-// BookSchema.pre('find', function (next) {
-//   this.populate('owners', 'name')
-//   next()
-// })
+BookSchema.pre('find', function (next) {
+  this.select({ _id: false, __v: false })
+  this.populate('owners', 'username')
+  next()
+})
 
-// BookSchema.pre('findOne', function (next) {
-//   this.populate('owners', 'name')
-//   next()
-// })
-// -----------------------------------------------------------------------------
+BookSchema.pre('findOne', function (next) {
+  this.select({ _id: false, __v: false })
+  this.populate('owners', 'username')
+  next()
+})
 
 // -----------------------------------------------------------------------------
 // FULL TEXT SEARCH

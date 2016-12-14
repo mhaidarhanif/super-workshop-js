@@ -5,13 +5,13 @@ const api = require('./controller')
 const auth = require('../../auth/controller')
 
 // -----------------------------------------------------------------------------
-// ADMINISTRATIVE ACCOUNT
+// ADMINISTRATIVE
 // -----------------------------------------------------------------------------
 
 // Seed a few books
-router.post('/actions/seed', auth.isAdmin, api.seedBooks)
+router.post('/actions/seed', [auth.isWithAPIKey, auth.isSetup], api.seedBooks)
 // Seed a lot of books
-router.post('/actions/seed-lot', auth.isAdmin, api.seedBooksLot)
+router.post('/actions/seed-lot', [auth.isWithAPIKey, auth.isSetup], api.seedBooksLot)
 // Delete all books
 router.delete('/actions/delete', auth.isAdmin, api.deleteBooks)
 

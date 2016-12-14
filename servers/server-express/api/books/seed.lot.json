@@ -1,33 +1,127 @@
 [
-{ "isbn": "000", "title": "Zero Hero", "price": 10, "owners": [1] },
-{ "isbn": "001", "title": "One Only", "price": 11, "owners": [2] },
-{ "isbn": "002", "title": "Two Times", "price": 12, "owners": [3] },
-{ "isbn": "003", "title": "Three Trees", "price": 13, "owners": [1, 2] },
-{ "isbn": "004", "title": "Four O'Four", "price": 14, "owners": [2, 3] },
-{ "isbn": "005", "title": "Five Fine", "price": 15, "owners": [1, 3] },
-{ "isbn": "006", "title": "Six Mix Pix", "price": 16, "owners": [2, 1] },
-{ "isbn": "007", "title": "Seven Eleven", "price": 17, "owners": [3, 2] },
-{ "isbn": "008", "title": "Eight Eggs", "price": 18, "owners": [1] },
-{ "isbn": "009", "title": "Nine Noons", "price": 19, "owners": [2] },
-{ "isbn": "010", "title": "Ten Teenagers", "price": 10, "owners": [3] },
-{ "isbn": "011", "title": "Eleven Seven", "price": 11, "owners": [4] },
-{ "isbn": "012", "title": "Twelve Wolves", "price": 12, "owners": [5] },
-{ "isbn": "013", "title": "Thirteen Rooms", "price": 13, "owners": [1] },
-{ "isbn": "014", "title": "Fourteen Forts", "price": 14, "owners": [2] },
-{ "isbn": "015", "title": "Fifteen XV", "price": 15, "owners": [3] },
-{ "isbn": "016", "title": "Sixteen Speed", "price": 16, "owners": [4] },
-{ "isbn": "017", "title": "Seventeen Sweet", "price": 17, "owners": [5] },
-{ "isbn": "018", "title": "Eighteen Yolks", "price": 18, "owners": [1] },
-{ "isbn": "019", "title": "Nineteen Mines", "price": 19, "owners": [2] },
-{ "isbn": "020", "title": "Twenty Plenty", "price": 20, "owners": [3] },
-{ "isbn": "021", "title": "Twenty One Gen", "price": 21, "owners": [4] },
-{ "isbn": "022", "title": "Twenty Two to Go", "price": 22, "owners": [5] },
-{ "isbn": "023", "title": "Twenty Three Trips", "price": 23, "owners": [1] },
-{ "isbn": "024", "title": "Twenty Four Flours", "price": 24, "owners": [2] },
-{ "isbn": "025", "title": "Twenty Five Fights", "price": 25, "owners": [3] },
-{ "isbn": "026", "title": "Twenty Six Sigma", "price": 26, "owners": [4] },
-{ "isbn": "027", "title": "Twenty Seven Signal", "price": 27, "owners": [5] },
-{ "isbn": "028", "title": "Twenty Eight Eik", "price": 28, "owners": [1] },
-{ "isbn": "029", "title": "Twenty Nine Tales Fox", "price": 29, "owners": [2] },
-{ "isbn": "030", "title": "Thirty Thirsty Teas", "price": 30, "owners": [3] }
+{
+  "isbn": "000",
+  "title": "Zero Hero",
+  "price": 10
+}, {
+  "isbn": "001",
+  "title": "One Only",
+  "price": 11
+}, {
+  "isbn": "002",
+  "title": "Two Times",
+  "price": 12
+}, {
+  "isbn": "003",
+  "title": "Three Trees",
+  "price": 13
+}, {
+  "isbn": "004",
+  "title": "Four O'Four",
+  "price": 14
+}, {
+  "isbn": "005",
+  "title": "Five Fine",
+  "price": 15
+}, {
+  "isbn": "006",
+  "title": "Six Mix Pix",
+  "price": 16
+}, {
+  "isbn": "007",
+  "title": "Seven Eleven",
+  "price": 17
+}, {
+  "isbn": "008",
+  "title": "Eight Eggs",
+  "price": 18
+}, {
+  "isbn": "009",
+  "title": "Nine Noons",
+  "price": 19
+}, {
+  "isbn": "010",
+  "title": "Ten Teenagers",
+  "price": 10
+}, {
+  "isbn": "011",
+  "title": "Eleven Seven",
+  "price": 11
+}, {
+  "isbn": "012",
+  "title": "Twelve Wolves",
+  "price": 12
+}, {
+  "isbn": "013",
+  "title": "Thirteen Rooms",
+  "price": 13
+}, {
+  "isbn": "014",
+  "title": "Fourteen Forts",
+  "price": 14
+}, {
+  "isbn": "015",
+  "title": "Fifteen XV",
+  "price": 15
+}, {
+  "isbn": "016",
+  "title": "Sixteen Speed",
+  "price": 16
+}, {
+  "isbn": "017",
+  "title": "Seventeen Sweet",
+  "price": 17
+}, {
+  "isbn": "018",
+  "title": "Eighteen Yolks",
+  "price": 18
+}, {
+  "isbn": "019",
+  "title": "Nineteen Mines",
+  "price": 19
+}, {
+  "isbn": "020",
+  "title": "Twenty Plenty",
+  "price": 20
+}, {
+  "isbn": "021",
+  "title": "Twenty One Gen",
+  "price": 21
+}, {
+  "isbn": "022",
+  "title": "Twenty Two to Go",
+  "price": 22
+}, {
+  "isbn": "023",
+  "title": "Twenty Three Trips",
+  "price": 23
+}, {
+  "isbn": "024",
+  "title": "Twenty Four Flours",
+  "price": 24
+}, {
+  "isbn": "025",
+  "title": "Twenty Five Fights",
+  "price": 25
+}, {
+  "isbn": "026",
+  "title": "Twenty Six Sigma",
+  "price": 26
+}, {
+  "isbn": "027",
+  "title": "Twenty Seven Signal",
+  "price": 27
+}, {
+  "isbn": "028",
+  "title": "Twenty Eight Eik",
+  "price": 28
+}, {
+  "isbn": "029",
+  "title": "Twenty Nine Tales Fox",
+  "price": 29
+}, {
+  "isbn": "030",
+  "title": "Thirty Thirsty Teas",
+  "price": 30
+}
 ]

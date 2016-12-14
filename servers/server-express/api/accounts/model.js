@@ -119,10 +119,7 @@ const AccountSchema = new Schema({
     name: String
   },
   // Properties
-  url: {
-    type: String,
-    required: false
-  },
+  url: String,
   roles: [
     {
       type: String,
@@ -134,14 +131,22 @@ const AccountSchema = new Schema({
   // Ownership
   books: [
     {
-      type: String,
-      required: false,
-      foreignField: 'isbn',
+      type: Schema.Types.ObjectId,
       ref: 'Book'
     }
   ],
-  createdBy: [],
-  updatedBy: []
+  createdBy: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Account'
+    }
+  ],
+  updatedBy: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Account'
+    }
+  ]
 }, {
   timestamps: true
 })
