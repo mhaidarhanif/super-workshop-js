@@ -160,17 +160,52 @@ const AccountSchema = new Schema({
   timestamps: true
 })
 
+// -----------------------------------------------------------------------------
+// ADDITIONALS
+
 // Auto increment accountId
 AccountSchema.plugin(sequence, { inc_field: 'accountId' })
 
-// Auto hash and salt the password field
-AccountSchema.plugin(passportLocalMongoose)
+// Public profile information
+AccountSchema.virtual('profile').get(() => {
+  return {
+    username: this.username,
+    name: this.name,
+    github: { name: this.github.name },
+    facebook: { name: this.facebook.name },
+    twitter: { name: this.twitter.name },
+    google: { name: this.google.name }
+  }
+})
+
+// Non-sensitive info we'll be putting in the token
+AccountSchema.virtual('token').get(() => {
+  return {
+    _id: this._id,
+    name: this.name,
+    username: this.username,
+    role: this.role
+  }
+})
+
+// -----------------------------------------------------------------------------
+// ASYNC PASSWORD GENERATOR + VALIDATOR
+
+// Generating a hash
+// Via statis class methods
+AccountSchema.statics.generateHash = (password) => {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null)
+}
+// Checking if password has is valid
+// Via instance methods
+AccountSchema.methods.validPassword = (password) => {
+  return bcrypt.compareSync(password, this.password)
+}
 
 // -----------------------------------------------------------------------------
 // POPULATE
 
 // AccountSchema.plugin(deepPopulate)
-
 // AccountSchema.pre('find', function (next) {
 //   this.populate('books.isbn', 'name')
 //   next()
@@ -179,6 +214,7 @@ AccountSchema.plugin(passportLocalMongoose)
 //   this.populate('books.isbn', 'name')
 //   next()
 // })
+
 // -----------------------------------------------------------------------------
 
 module.exports = mongoose.model('Account', AccountSchema)
