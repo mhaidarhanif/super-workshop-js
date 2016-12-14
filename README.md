@@ -20,7 +20,7 @@
 | Code Climate   | [![GPA](https://codeclimate.com/github/mhaidarh/super-workshop-js/badges/gpa.svg)](https://codeclimate.com/github/mhaidarh/super-workshop-js) [![Issue Count](https://codeclimate.com/github/mhaidarh/super-workshop-js/badges/issue_count.svg)](https://codeclimate.com/github/mhaidarh/super-workshop-js/issues) [![Test Coverage](https://codeclimate.com/github/mhaidarh/super-workshop-js/badges/coverage.svg)](https://codeclimate.com/github/mhaidarh/super-workshop-js/coverage)
 | Travis CI      | [![Build Status](https://travis-ci.org/mhaidarh/super-workshop-js.svg?branch=master)](https://travis-ci.org/mhaidarh/super-workshop-js)
 | Snap CI        | ...
-| Codeship       | ...
+| Codeship       | [![Codeship Status for mhaidarh/super-workshop-js](https://app.codeship.com/projects/110b6980-981b-0134-b488-52e360588e5c/status?branch=master)](https://app.codeship.com/projects/187266)
 | Inch CI Docs   | [![Inch CI](https://inch-ci.org/github/mhaidarh/super-workshop-js.svg?branch=master)](https://inch-ci.org/github/mhaidarh/super-workshop-js)
 
 ### Server with Node.js and Express
