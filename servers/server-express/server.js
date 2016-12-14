@@ -16,34 +16,19 @@ const app = express()
 
 // DATA
 const mongoose = require('mongoose')
-
-// PASSPORT
 const passport = require('passport')
-const LocalStrategy = require('passport-local').Strategy
-const GitHubStrategy = require('passport-github').Strategy
-const FacebookStrategy = require('passport-facebook').Strategy
-const TwitterStrategy = require('passport-twitter').Strategy
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
-
-// JSON WEB TOKENS
-// const jwt = require('jsonwebtoken')
-// const ejwt = require('express-jwt')
-// const guard = require('express-jwt-permissions')()
-// const JwtStrategy = require('passport-jwt').Strategy
-// const ExtractJwt = require('passport-jwt').ExtractJwt
 
 // -----------------------------------------------------------------------------
 // REQUIRE INTERNAL MODULES
 // -----------------------------------------------------------------------------
 
 // MODELS
-const Account = require('./api/accounts/model')
+// const Account = require('./api/accounts/model')
 // const Book = require('./api/books/model')
 
 // ROUTES
+const auth = require('./auth/route')
 const api = require('./api/route')
-const apiAuth = require('./api/auth/route')
-const apiAuthProviders = require('./api/auth/providers')
 const apiAccounts = require('./api/accounts/route')
 const apiBooks = require('./api/books/route')
 
@@ -78,63 +63,15 @@ app.use(expressSession({
 // CONFIGURE ROUTES
 // -----------------------------------------------------------------------------
 
-// PASSPORT AUTHENTICATION
+// PASSPORT
 app.use(passport.initialize())
 app.use(passport.session())
 
 // PUBLIC ROUTES
 app.use('/', api)
-app.use('/auth', apiAuth)
+app.use('/auth', auth)
 app.use('/api/accounts', apiAccounts)
 app.use('/api/books', apiBooks)
-
-// -----------------------------------------------------------------------------
-// CONFIGURE PASSPORT
-// -----------------------------------------------------------------------------
-
-// LOCAL
-passport.use(new LocalStrategy(Account.authenticate()))
-
-// GITHUB
-passport.use(new GitHubStrategy({
-  clientID: process.env.GITHUB_CLIENT_ID,
-  clientSecret: process.env.GITHUB_CLIENT_SECRET,
-  callbackURL: process.env.GITHUB_CALLBACK,
-  passReqToCallback: true
-},
-apiAuthProviders.github))
-
-// FACEBOOK
-passport.use(new FacebookStrategy({
-  clientID: process.env.FACEBOOK_APP_ID,
-  clientSecret: process.env.FACEBOOK_APP_SECRET,
-  callbackURL: process.env.FACEBOOK_CALLBACK,
-  profileFields: ['id', 'displayName', 'photos', 'email'],
-  passReqToCallback: true
-},
-apiAuthProviders.facebook))
-
-// TWITTER
-passport.use(new TwitterStrategy({
-  consumerKey: process.env.TWITTER_API_KEY,
-  consumerSecret: process.env.TWITTER_API_SECRET,
-  callbackURL: process.env.TWITTER_CALLBACK,
-  passReqToCallback: true
-},
-apiAuthProviders.twitter))
-
-// GOOGLE
-passport.use(new GoogleStrategy({
-  clientID: process.env.GOOGLE_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: process.env.GOOGLE_CALLBACK,
-  passReqToCallback: true
-},
-apiAuthProviders.google))
-
-// ACCOUNT SERIALIZATION
-passport.serializeUser(Account.serializeUser())
-passport.deserializeUser(Account.deserializeUser())
 
 // -----------------------------------------------------------------------------
 // EXPORT THE APP
