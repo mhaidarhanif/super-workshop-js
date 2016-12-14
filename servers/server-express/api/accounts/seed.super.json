@@ -1,8 +1,9 @@
 [
   {
     "name": "Super Administrator",
-    "username": "super",
     "email": "super@super.com",
-    "password": "super"
+    "username": "super",
+    "password": "supersuper",
+    "roles": ["super", "admin"]
   }
 ]
