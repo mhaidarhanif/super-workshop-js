@@ -5,7 +5,7 @@ require('../config/auth.schema')(passport)
 
 const Account = require('../api/accounts/model')
 
-module.exports = {
+const auth = module.exports = {
 
   /**
    * Info about this route
@@ -72,8 +72,9 @@ module.exports = {
       account.name = req.body.name
       account.email = req.body.email
       account.username = req.body.username
-      account.hash = Account.generateHash(req.body.password)
+      account.hash = account.generateHash(req.body.password)
       account.providers = 'local'
+      // Save created account into database
       account.save((err) => {
         // Send an error message
         if (err) res.status(422).json({ id: 'signup_error', e: err.errors || err })
@@ -99,40 +100,65 @@ module.exports = {
    * Sign in a signed up account
    */
   signin: (req, res, next) => {
-    passport.authenticate('local', (err, account, info) => {
-      console.log('>>> account:', account)
-      console.log('>>> info:', info)
+    // Check for username and password
+    if (!req.body.username || !req.body.password) {
+      res.status(400).json({ id: 'signin_failed_no_username_password', m: `Sign in failed because no username or password.` })
+    } else {
+      const username = (req.body.username).toLowerCase()
+      const password = req.body.password
+      // console.log({username, password})
 
-      if (err) res.status(422).json({ id: 'signin_failed', e: err.message })
-      if (!account) res.status(401).json({ s: false, id: 'signin_not_found', m: `Sign in failed because account with username '${req.body.username}' is not found.` })
+      // Find the account with that username
+      Account
+        .findOne({ username: username })
+        .then(account => {
+          console.log('>>> account:', account)
+          console.log('>>> account.valid:', account.validPassword)
+          // Account not found
+          if (!account) {
+            res.status(401).json({ s: false, id: 'signin_not_found', m: `Sign in failed because account with username '${username}' is not found.` })
+          // Password not match
+          } else if (!account.validPassword(password)) {
+            res.status(401).json({ s: false, id: 'signin_password_failed', m: `Sign in failed because password of '${username}' is not match.` })
+          // Correct account and password
+          } else {
+            // Create token content and config
+            let content = {
+              payload: { // or claims
+                iss: process.env.URL,       // ISSUER: DOMAIN/URL of the service
+                sub: account._id,           // SUBJECT: OID/UID/UUID/GUID
+                id: account.accountId,      // ACCOUNTID: Sequential ID
+                username: account.username, // USERNAME: Username
+                name: account.name,         // NAME: Full name
+                roles: account.roles,       // ROLES: Authorization
+                scope: 'self, profile'      // SCOPE: Specific payload/claims
+              },
+              secret: process.env.JWT_SECRET,
+              options: {
+                expiresIn: '1d' // EXPIRATION: 1 day
+              }
+            }
 
-      // Create token content and config
-      let content = {
-        payload: { // or claims
-          iss: process.env.URL,             // ISSUER: DOMAIN/URL of the service
-          sub: account._id,                 // SUBJECT: OID/UID
-          id: account.accountId,            // ACCOUNTID: Sequential ID
-          username: account.username, // USERNAME: Username
-          name: account.name,         // NAME: Full name
-          roles: account.roles,             // ROLES: Authorization
-          scope: 'self, profile'            // SCOPE: Specific payload/claims
-        },
-        secret: process.env.JWT_SECRET,
-        options: {
-          expiresIn: '1d'
-        }
-      }
+            // Assign admin flag if required
+            if (account.roles === 'super' || 'admin' || 'dev' || 'test' || 'ops') {
+              content.payload.admin = true
+            }
 
-      // Assign admin flag
-      if (account.username === 'super' || 'admin') {
-        content.payload.admin = true
-      }
+            // Generate a token
+            const token = auth.generateJWT(account)
+            console.log('token:', token)
 
-      // Generate a token
-      res.status(200).json({
-        token: jwt.sign(content.payload, content.secret, content.options)
-      })
-    })(req, res, next)
+            // Finally send that token
+            res.status(200).json({
+              token: jwt.sign(content.payload, content.secret, content.options)
+            })
+          }
+        })
+        .catch(err => {
+          if (err) res.status(422).json({ id: 'signin_failed', e: err.message })
+        })
+        // Finish sign in
+    }
   },
 
   /**
@@ -141,6 +167,14 @@ module.exports = {
   signout: (req, res) => {
     // req.logout()
     res.status(200).json({ id: 'signout', m: 'Sign out succeded.' })
+  },
+
+  /**
+   * Generate authentic JWT account
+   */
+  generateJWT: (content) => {
+    const token = content
+    console.log('JWT GENERATED:', token)
   },
 
   /**
@@ -154,7 +188,7 @@ module.exports = {
     }, (err, count) => {
       if (err) res.status(422).json({ s: false, id: 'account_exist', m: 'Failed to check account existency.' })
       else if (count === 0) next()
-      else res.json({ id: 'account_info_exist', m: `Account with username '${req.body.username}' is already exist.` })
+      else res.status(400).json({ id: 'account_info_exist', m: `Account with username '${req.body.username}' is already exist.` })
     })
   },
 

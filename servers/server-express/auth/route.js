@@ -24,6 +24,18 @@ router.post('/signin', auth.signin)
 router.get('/signout', auth.isAuthenticated, auth.signout)
 router.post('/signout', auth.isAuthenticated, auth.signout)
 
+// -----------------------------------------------------------------------------
+// VERIFICATION/INVITATION + RESET/CONFIRMATION
+// -----------------------------------------------------------------------------
+
+router.post('/signup/actions/verify', (req, res) => { res.status(501).json({m: `The account is successfully verified with that confirmation token.`}) })
+router.post('/password/actions/reset', (req, res) => { res.status(501).json({m: `Password reset link has been sent to {email}.`}) })
+router.post('/password/actions/confirm', (req, res) => { res.status(501).json({m: `Password has been changed. Please sign in with the new password.`}) })
+
+// -----------------------------------------------------------------------------
+// VALIDATOR
+// -----------------------------------------------------------------------------
+
 // IS WITH TOKEN?
 // Require 'Authorization: Bearer JWT' (Optional)
 router.get('/is-with-token', auth.isWithToken, (req, res) => { res.json(req.info) })
@@ -55,7 +67,7 @@ router.post('/is-test', [auth.isWithAPIKey, auth.isTest], (req, res) => { res.js
 
 // -----------------------------------------------------------------------------
 // OAUTH THIRD PARTY
-//
+// -----------------------------------------------------------------------------
 // There's no actual controller here since for each API endpoint,
 // they're only calling authentication through Passport.
 //
@@ -68,62 +80,34 @@ router.post('/is-test', [auth.isWithAPIKey, auth.isTest], (req, res) => { res.js
 // GITHUB
 // -----------------------------------------------------------------------------
 
-router.get('/github',
-  passport.authenticate('github')
-)
-
-router.get('/github/callback',
-  passport.authenticate('github', {
-    successRedirect: '/profile',
-    failureRedirect: '/'
-  })
-)
+router.get('/github', auth.isWithToken, passport.authenticate('github'))
+router.get('/github/callback', auth.isWithToken, passport.authenticate('github'))
 
 // -----------------------------------------------------------------------------
 // FACEBOOK
 // -----------------------------------------------------------------------------
 
-router.get('/facebook',
-  passport.authenticate('facebook', {
-    scope: ['email']
-  }))
-
-router.get('/facebook/callback',
-  passport.authenticate('facebook', {
-    successRedirect: '/profile',
-    failureRedirect: '/'
-  })
-)
+router.get('/facebook', auth.isWithToken, passport.authenticate('facebook', {
+  scope: ['email']
+}))
+router.get('/facebook/callback', auth.isWithToken, passport.authenticate('facebook'))
 
 // -----------------------------------------------------------------------------
 // TWITTER
 // -----------------------------------------------------------------------------
 
-router.get('/twitter',
-  passport.authenticate('twitter')
-)
-
-router.get('/twitter/callback',
-  passport.authenticate('twitter', {
-    successRedirect: '/profile',
-    failureRedirect: '/'
-  })
+router.get('/twitter', auth.isWithToken, passport.authenticate('twitter'))
+router.get('/twitter/callback', auth.isWithToken, passport.authenticate('twitter')
 )
 
 // -----------------------------------------------------------------------------
 // GOOGLE
 // -----------------------------------------------------------------------------
 
-router.get('/google',
-  passport.authenticate('google', {
-    scope: ['profile', 'email']
-  }))
-
-router.get('/google/callback',
-  passport.authenticate('google', {
-    successRedirect: '/profile',
-    failureRedirect: '/'
-  }))
+router.get('/google', auth.isWithToken, passport.authenticate('google', {
+  scope: ['profile', 'email']
+}))
+router.get('/google/callback', auth.isWithToken, passport.authenticate('google'))
 
 // -----------------------------------------------------------------------------
 
