@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 
 const Account = require('./model')
-
 const superAccounts = require('./seed.super.json')
 const normalAccounts = require('./seed.json')
 
@@ -145,8 +144,27 @@ module.exports = {
       'username': 1
     }, (err, data) => {
       // console.log('getProfileById:', data)
-      if (err) res.status(400).json({ id: 'account_profile_error', e: `${err}` })
-      else if (!data) res.status(404).json({ id: 'account_profile_failed', m: 'Failed to get account profile by ID.' })
+      if (err) res.status(400).json({ id: 'account_profile_id_error', e: `${err}` })
+      else if (!data) res.status(404).json({ id: 'account_profile_id_failed', m: 'Failed to get account profile by ID.' })
+      else res.status(200).json(data)
+    })
+  },
+
+  /* ---------------------------------------------------------------------------
+   * Get account profile by username
+   */
+  getAccountProfileByUsername: (req, res) => {
+    Account.findOneAsync({
+      username: req.params.username
+    }, {
+      '_id': 0,
+      'accountId': 1,
+      'name': 1,
+      'username': 1
+    }, (err, data) => {
+      // console.log('profile:', data)
+      if (err) res.status(400).json({ id: 'account_profile_username_error', e: `${err}` })
+      else if (!data) res.status(404).json({ id: 'account_profile_username_failed', m: 'Failed to get account profile by username.' })
       else res.status(200).json(data)
     })
   }

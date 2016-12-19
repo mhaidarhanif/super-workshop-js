@@ -156,8 +156,18 @@ const AccountSchema = new Schema({
   // Ownership
   books: [
     {
-      type: Schema.Types.ObjectId,
-      ref: 'Book'
+      book: {
+        type: Schema.Types.ObjectId,
+        ref: 'Book'
+      },
+      createdAt: {
+        type: Date,
+        default: Date.now
+      },
+      updatedAt: {
+        type: Date,
+        default: Date.now
+      }
     }
   ],
   createdBy: [
@@ -215,17 +225,30 @@ AccountSchema.virtual('token').get(function () {
 
 // Generating a hash
 // Via statis class methods
-AccountSchema.statics.generateHash = (password) => {
+AccountSchema.methods.generateHash = (password) => {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null)
 }
 // Checking if password has is valid
 // Via instance methods
 AccountSchema.methods.validPassword = (password) => {
-  return bcrypt.compareSync(password, this.password)
+  console.log('this:', this)
+  return bcrypt.compareSync(password, this.hash)
 }
 
 // -----------------------------------------------------------------------------
 // POPULATE
+
+AccountSchema.pre('find', function (next) {
+  this.select({ _id: false, __v: false })
+  this.populate('books.book', 'title')
+  next()
+})
+
+AccountSchema.pre('findOne', function (next) {
+  this.select({ _id: false, __v: false })
+  this.populate('books.book', 'title')
+  next()
+})
 
 // AccountSchema.plugin(deepPopulate)
 // AccountSchema.pre('find', function (next) {

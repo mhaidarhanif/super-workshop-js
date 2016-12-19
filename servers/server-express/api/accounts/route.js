@@ -14,17 +14,27 @@ router.post('/actions/setup', [auth.isWithAPIKey, auth.isSetup], api.seedSuperAc
 router.post('/actions/seed', [auth.isWithAPIKey, auth.isSetup], api.seedAccounts)
 // Delete all accounts
 router.delete('/actions/delete', [auth.isWithAPIKey, auth.isSetup], api.deleteAccounts)
+// Delete all accounts (for test purpose)
 router.delete('/actions/empty', [auth.isWithAPIKey, auth.isTest], api.deleteAccounts)
 
 // Get all accounts
 router.get('/', auth.isAdmin, api.getAccounts)
 
 // -----------------------------------------------------------------------------
+// PROFILE
+// -----------------------------------------------------------------------------
+
+router.post('/profile/actions/edit-profile', auth.isAuthenticated, (req, res) => { res.json({m: `Profile has been updated.`}) })
+router.post('/profile/actions/edit-image', auth.isAuthenticated, (req, res) => { res.json({m: `Profile image or avatar has been updated.`}) })
+
+// -----------------------------------------------------------------------------
 // PUBLIC
 // -----------------------------------------------------------------------------
 
-// Get account by accountId
+// Get account profile by accountId
 router.get('/:accountId', auth.isAuthenticated, api.getAccountProfileById)
+// Get account profile by username
+router.get('/:accountId', auth.isAuthenticated, api.getAccountProfileByUsername)
 
 // -----------------------------------------------------------------------------
 
