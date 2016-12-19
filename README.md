@@ -2,7 +2,20 @@
 <h1>Super Workshop JS :gear: Workshop with JavaScript</h1>
 </div>
 
-> This experimental workshop repo is designed for faster learning curve of practicing and implementing friendly best practice of various web technologies.
+## Why? [![Start with Why](https://img.shields.io/badge/start%20with-why%3F-orange.svg)](http://www.ted.com/talks/simon_sinek_how_great_leaders_inspire_action)
+
+> "Tell me and I forget. Teach me and I remember. Involve me and I learn."
+— Benjamin Franklin
+
+To engage and involve people who want to learn and collaborate together.
+
+## What?
+
+This experimental workshop repo is intended as a fuondation and designed for faster learning curve of practicing, implementing, and teaching friendly best practice of various web technologies.
+
+## How? [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)](https://github.com/mhaidarh/super-workshop-js/issues)
+
+By telling and teaching directly to learners in the most simple and interactive fashion. As we want to actualize good ideas, architectures, and infrastructures of RESTful web application.
 
 ## Hall of Badges
 
@@ -16,7 +29,7 @@
 | Dependency CI  | [![Dependency CI](https://dependencyci.com/github/mhaidarh/super-workshop-js/badge)](https://dependencyci.com/github/mhaidarh/super-workshop-js)
 | bitHound       | [![bitHound Overall Score](https://bithound.io/github/mhaidarh/super-workshop-js/badges/score.svg)](https://bithound.io/github/mhaidarh/super-workshop-js) [![bitHound Code](https://www.bithound.io/github/mhaidarh/super-workshop-js/badges/code.svg)](https://www.bithound.io/github/mhaidarh/super-workshop-js)
 | bitHound Dep   | [![bitHound Dependencies](https://www.bithound.io/github/mhaidarh/super-workshop-js/badges/dependencies.svg)](https://www.bithound.io/github/mhaidarh/super-workshop-js/master/dependencies/npm) [![bitHound Dev Dependencies](https://www.bithound.io/github/mhaidarh/super-workshop-js/badges/devDependencies.svg)](https://www.bithound.io/github/mhaidarh/super-workshop-js/master/dependencies/npm)
-| Codacy Grade   | [![Codacy Grade](https://img.shields.io/codacy/grade/9820a9dd1787489dae6122392e101f53.svg)](https://codacy.com/app/mhaidarh/super-workshop-js?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mhaidarh/super-workshop-js&amp;utm_campaign=Badge_Grade)
+| Codacy Grade   | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9820a9dd1787489dae6122392e101f53)](https://www.codacy.com/app/mhaidarh/super-workshop-js?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mhaidarh/super-workshop-js&amp;utm_campaign=Badge_Grade)
 | Code Climate   | [![GPA](https://codeclimate.com/github/mhaidarh/super-workshop-js/badges/gpa.svg)](https://codeclimate.com/github/mhaidarh/super-workshop-js) [![Issue Count](https://codeclimate.com/github/mhaidarh/super-workshop-js/badges/issue_count.svg)](https://codeclimate.com/github/mhaidarh/super-workshop-js/issues) [![Test Coverage](https://codeclimate.com/github/mhaidarh/super-workshop-js/badges/coverage.svg)](https://codeclimate.com/github/mhaidarh/super-workshop-js/coverage)
 | Travis CI      | [![Build Status](https://travis-ci.org/mhaidarh/super-workshop-js.svg?branch=master)](https://travis-ci.org/mhaidarh/super-workshop-js)
 | Snap CI        | ...
