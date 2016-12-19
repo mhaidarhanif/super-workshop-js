@@ -48,8 +48,18 @@ const BookSchema = new Schema({
   // Ownership
   owners: [
     {
-      type: Schema.Types.ObjectId,
-      ref: 'Account'
+      owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'Account'
+      },
+      createdAt: {
+        type: Date,
+        default: Date.now
+      },
+      updatedAt: {
+        type: Date,
+        default: Date.now
+      }
     }
   ],
   createdBy: [
@@ -87,13 +97,17 @@ BookSchema.virtual('lenders', {
 
 BookSchema.pre('find', function (next) {
   this.select({ _id: false, __v: false })
-  this.populate('owners', 'username')
+  this.populate('owners.owner', 'username')
+  this.populate('createdBy', 'username')
+  this.populate('updatedBy', 'username')
   next()
 })
 
 BookSchema.pre('findOne', function (next) {
   this.select({ _id: false, __v: false })
-  this.populate('owners', 'username')
+  this.populate('owners.owner', 'username')
+  this.populate('createdBy', 'username')
+  this.populate('updatedBy', 'username')
   next()
 })
 

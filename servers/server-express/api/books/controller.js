@@ -54,13 +54,11 @@ module.exports = {
       if (err) res.status(400).json({ id: 'books_drop_error', e: `${err}` })
       console.log('[x] Dropped collection: books')
 
-      let account = []
-
       // --------------------
-      // Get the users
+      // Get the users you're looking for...
       Account.findOne({ roles: 'user' }, (err, user) => {
-        if (err) res.status(400).json({ id: 'books_seed_find_users_failed', m: 'Failed to find users.' })
-        account = user
+        if (err) res.status(400).json({ id: 'books_seed_find_users_error', m: err })
+        if (!user) res.status(400).json({ id: 'books_seed_find_users_failed', m: 'Failed to find users.' })
 
         // --------------------
         // Post seed books
@@ -70,8 +68,7 @@ module.exports = {
           // --------------------
           // Put the one account id into book owners field
           Book.update({}, {
-            $push: { 'owners': account._id },
-            $addToSet: { 'updatedBy': account._id }
+            $addToSet: { 'owners': user._id, 'updatedBy': user._id }
           }, {
             multi: true,
             new: true,
@@ -143,16 +140,24 @@ module.exports = {
         // console.log('getBooksPaginated:', result.docs)
         sendResponseNF(res, err, result.docs, 'Failed to get all books with pagination.')
       })
+      .catch((err) => {
+        res.status(400).json({ id: 'books_error', e: `${err}`, m: 'Failed to get all books with pagination.' })
+      })
   },
 
   /* ---------------------------------------------------------------------------
    * @api {get} /books/all Get all books without pagination
    */
   getBooksAll: (req, res) => {
-    Book.find({}).exec((err, data) => {
-      // console.log('getBooks:', data)
-      sendResponseNF(res, err, data, 'Failed to get all books.')
-    })
+    Book
+      .find({})
+      .exec((err, data) => {
+        // console.log('getBooks:', data)
+        sendResponseNF(res, err, data, 'Failed to get all books.')
+      })
+      .catch((err) => {
+        res.status(400).json({ id: 'books_error', e: `${err}`, m: 'Failed to get all books without pagination.' })
+      })
   },
 
   /* ---------------------------------------------------------------------------
@@ -179,7 +184,10 @@ module.exports = {
     const book = {
       isbn: req.body.isbn,
       title: req.body.title,
-      price: req.body.price
+      price: req.body.price,
+      owner: {
+        id: req.body.ownerId
+      }
     }
     console.log({book})
 
@@ -325,7 +333,10 @@ module.exports = {
     Book.findOneAndUpdate({
       isbn: req.params.isbn
     }, {
-      $addToSet: { 'updatedBy': req.decoded.sub, 'owners': req.decoded.sub }
+      $addToSet: {
+        'updatedBy': req.decoded.sub,
+        'owners.$.id': req.decoded.sub
+      }
     }, {
       new: true,
       upsert: false

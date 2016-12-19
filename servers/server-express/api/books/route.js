@@ -21,8 +21,6 @@ router.delete('/actions/delete', auth.isAdmin, api.deleteBooks)
 
 // Post a book
 router.post('/', auth.isAuthenticated, api.postBook)
-// Search books by data
-router.post('/search', auth.isAuthenticated, api.searchBooks)
 // Update a book by ISBN
 router.put('/:isbn', auth.isAuthenticated, api.updateBookByISBN)
 // Update a book owners
@@ -40,6 +38,8 @@ router.get('/', api.getBooks)
 router.get('/all', api.getBooksAll)
 // Get a book by ISBN
 router.get('/:isbn', api.getBookByISBN)
+// Search books by data
+router.post('/search', api.searchBooks)
 
 // -----------------------------------------------------------------------------
 
