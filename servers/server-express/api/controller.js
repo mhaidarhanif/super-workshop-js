@@ -1,10 +1,5 @@
 const reqip = require('request-ip')
 
-const app_name = process.env.NAME
-const host = process.env.HOST
-const port = process.env.PORT
-const url = process.env.URL
-
 module.exports = {
 
   // ---------------------------------------------------------------------------
@@ -17,11 +12,9 @@ module.exports = {
   home: (req, res) => {
     res.json({
       id: 'root',
-      m: `You might want to check ${url}/api instead.`,
-      name: app_name,
-      host: host,
-      port: port,
-      url: url
+      m: `You might want to check ${process.env.SERVER_URL}/api instead.`,
+      name: process.env.NAME,
+      url: process.env.URL
     })
   },
 
@@ -31,8 +24,8 @@ module.exports = {
   api: (req, res) => {
     res.json({
       id: 'api',
-      name: app_name,
-      description: `Welcome to the API that run with ${app_name}! This a quick help for you to consume the API.`,
+      name: process.env.NAME,
+      description: `Welcome to the API that run with ${process.env.NAME}! This a quick help for you to consume the API.`,
       documentation: 'https://github.com/mhaidarh/super-workshop-js#readme',
       endpoints: {
         '/auth': 'Authentication',
