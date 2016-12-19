@@ -9,6 +9,8 @@ chai.use(chaiHTTP)
 // -----------------------------------------------------------------------------
 
 describe('server-express', function () {
+  let res
+
   // ---------------------------------------------------------------------------
 
   describe('setup', () => {
@@ -21,8 +23,6 @@ describe('server-express', function () {
   // ---------------------------------------------------------------------------
 
   describe('root', () => {
-    var res
-
     before(() => {
       chai.request(server).get('/').then(response => { res = response })
     })
@@ -33,7 +33,7 @@ describe('server-express', function () {
 
     it('expect json object that contains specific keys', (done) => {
       expect(res.body).to.be.an('object')
-      expect(res.body).to.have.all.keys('id', 'name', 'm', 'host', 'port', 'url')
+      expect(res.body).to.have.all.keys('id', 'name', 'm', 'url')
       done()
     })
   })
@@ -67,8 +67,6 @@ describe('server-express', function () {
   // ---------------------------------------------------------------------------
 
   describe('api', function () {
-    var res
-
     before(() => {
       chai.request(server).get('/api').then(response => { res = response })
     })

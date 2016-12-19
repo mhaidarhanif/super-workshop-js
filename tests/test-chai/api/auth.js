@@ -1,5 +1,6 @@
 require('dotenv-extended').load()
 const server = require(process.env.SERVER_DIR + 'server')
+const accountsController = require(process.env.SERVER_DIR + 'api/accounts/controller')
 
 const chai = require('chai')
 const chaiHTTP = require('chai-http')
@@ -12,31 +13,40 @@ const faker = require('faker')
 const Chance = require('chance')
 const chance = new Chance()
 
-const a = {}
-a.first = faker.name.firstName()
-a.last = faker.name.lastName()
-a.name = `${a.first} ${a.last}`
-a.username = a.first.toLowerCase()
-a.email = `${a.username.toLowerCase()}@${a.last.toLowerCase()}.com`
-a.password = faker.internet.password()
-a.birthDate = chance.birthday({type: 'adult'})
-a.image = faker.image.imageUrl()
-a.roles = 'user'
+const account = {}
+account.first = faker.name.firstName()
+account.last = faker.name.lastName()
+account.name = `${account.first} ${account.last}`
+account.username = account.first.toLowerCase()
+account.email = `${account.username.toLowerCase()}@${account.last.toLowerCase()}.com`
+account.password = faker.internet.password()
+account.birthDate = chance.birthday({type: 'adult'})
+account.image = faker.image.imageUrl()
+account.roles = 'user'
 
-// console.log(a)
+// console.log(account)
 
 // -----------------------------------------------------------------------------
 
 describe('auth', () => {
+  let res
+
+  // ---------------------------------------------------------------------------
+
+  describe.skip('clear data', () => {
+    it('execute delete accounts', (done) => {
+      accountsController.deleteAccounts()
+      done()
+    })
+  })
+
   // ---------------------------------------------------------------------------
 
   describe('root', () => {
-    before(() => {
-      chai.request(server).get('/auth').then(response => { res = response })
-    })
-
     it('execute request', (done) => {
-      setTimeout(() => done(), 1)
+      chai.request(server).get('/auth')
+      .then(response => { res = response; done() })
+      .catch(err => { res = err })
     })
 
     it('expect json object that contains specific keys', (done) => {
@@ -66,16 +76,13 @@ describe('auth', () => {
   })
 
   // ---------------------------------------------------------------------------
-
   describe('sign up', () => {
     // -------------------------------------------------------------------------
 
     describe('with no data', () => {
-      let res
-
       before(() => {
         chai.request(server).post('/auth/signup')
-        .then(r => res = r)
+        .then(response => res = response)
         .catch(err => res = err)
       })
 
@@ -100,17 +107,10 @@ describe('auth', () => {
     // -------------------------------------------------------------------------
 
     describe('with a new account data', () => {
-      let res
-
       it('execute request', (done) => {
-        chai.request(server).post('/auth/signup').send(a)
-        .then(r => {
-          res = r
-          done()
-        })
-        .catch(err => {
-          res = err
-        })
+        chai.request(server).post('/auth/signup').send(account)
+        .then(response => { res = response; done() })
+        .catch(err => { done(err) })
       })
 
       it('expect json object that contains specific keys', (done) => {
@@ -124,10 +124,10 @@ describe('auth', () => {
       it('expect success info', (done) => {
         expect(res.body).to.have.property('id').to.include('success')
         expect(res.body).to.have.property('m').to.include('signed up')
-        expect(res.body).to.have.property('name').to.equal(a.name)
-        expect(res.body).to.have.property('email').to.equal(a.email)
-        expect(res.body).to.have.property('username').to.equal(a.username)
-        // expect(res.body).to.have.property('roles').to.equal(a.roles)
+        expect(res.body).to.have.property('name').to.equal(account.name)
+        expect(res.body).to.have.property('email').to.equal(account.email)
+        expect(res.body).to.have.property('username').to.equal(account.username)
+        // expect(res.body).to.have.property('roles').to.equal(account.roles)
         expect(res.body).to.have.property('password').to.include('ENCRYPT')
         done()
       })
@@ -135,15 +135,18 @@ describe('auth', () => {
 
     // -------------------------------------------------------------------------
 
-    describe.skip('with an existed account data', () => {
+    describe('with an existed account data', () => {
+      // this will not reach the actual signup
+      // since there is an auth.isAccountExist middleware
+
       before(() => {
-        chai.request(server).post('/auth/signup')
-        .then(response => { res = response })
-        .catch(err => { res = err })
+        chai.request(server).post('/auth/signup').send(account)
+        .then(response => res = response)
+        .catch(err => res = err)
       })
 
       it('execute request', (done) => {
-        setTimeout(() => done(), 1)
+        setTimeout(() => done(), 10)
       })
 
       it('expect json object that contains specific keys', (done) => {
@@ -154,8 +157,38 @@ describe('auth', () => {
 
       it('expect failure info', (done) => {
         expect(res.status).to.equal(400)
-        expect(res.response.body).to.have.property('id').to.include('fail')
-        expect(res.response.body).to.have.property('m').to.include('sign up')
+        expect(res.response.body).to.have.property('id').to.include('exist')
+        expect(res.response.body).to.have.property('m').to.include('exist')
+        done()
+      })
+    })
+  })
+
+  // ---------------------------------------------------------------------------
+  describe('sign in', () => {
+    // -------------------------------------------------------------------------
+
+    describe('with no username and password', () => {
+      before(() => {
+        chai.request(server).post('/auth/signin')
+        .then(response => res = response)
+        .catch(err => res = err)
+      })
+
+      it('execute request', (done) => {
+        setTimeout(() => done(), 1)
+      })
+
+      it('expect json object that contains specific keys', (done) => {
+        expect(res.status).to.equal(400)
+        expect(res.response.body).to.be.an('object')
+        expect(res.response.body).to.have.all.keys('id', 'm')
+        done()
+      })
+
+      it('expect failure info', (done) => {
+        expect(res.response.body).to.have.property('id').to.include('no_username_password')
+        expect(res.response.body).to.have.property('m').to.include('failed')
         done()
       })
     })
