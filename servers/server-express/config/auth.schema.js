@@ -1,5 +1,4 @@
 // PASSPORT
-const LocalStrategy = require('passport-local').Strategy
 const GitHubStrategy = require('passport-github').Strategy
 const FacebookStrategy = require('passport-facebook').Strategy
 const TwitterStrategy = require('passport-twitter').Strategy
@@ -8,30 +7,11 @@ const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 // const ExtractJwt = require('passport-jwt').ExtractJwt
 const providers = require('./providers.schema')
 
-// MONGOOSE
-const Account = require('../api/accounts/model')
-
 // -----------------------------------------------------------------------------
 // CONFIGURE PASSPORT
 // -----------------------------------------------------------------------------
 
 module.exports = (passport) => {
-  // ---------------------------------------------------------------------------
-  // LOCAL
-  passport.use(new LocalStrategy({
-    usernameField: 'username',
-    passwordField: 'password',
-    passReqToCallback: true
-  }, (req, username, password, done) => {
-    Account.findOne({ 'local.username': username }, (err, account) => {
-      console.log('>>> account:', account)
-      if (err) done(err)
-      if (!account) done(null, false)
-      if (!account.validPassword(password)) done(null, false)
-      else done(null, account)
-    })
-  }))
-
   // ---------------------------------------------------------------------------
   // GITHUB
   passport.use(new GitHubStrategy({
@@ -48,7 +28,7 @@ module.exports = (passport) => {
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
     callbackURL: process.env.FACEBOOK_CALLBACK,
-    profileFields: ['id', 'displayName', 'photos', 'email'],
+    profileFields: process.env.FACEBOOK_SCOPE,
     passReqToCallback: true
   },
   providers.facebook))
