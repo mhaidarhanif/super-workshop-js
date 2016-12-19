@@ -21,28 +21,44 @@ module.exports = {
       },
       env: {
         COMMON_VARIABLE: 'true',
+        // APP
         NAME: meta.name,
-        HOST: connection.HOST,
-        PORT: connection.PORT,
-        URL: connection.URL,
+        HOST: connection.HOST.SERVER,
+        PORT: connection.PORT.SERVER,
+        URL: connection.URL.SERVER,
+        // DATABASE
         NEDB_PATH: database.NEDB_PATH,
         MONGODB_URI: database.MONGODB_URI,
+        // SECRET
         JWT_SECRET: credential.SECRET.JWT,
         SESSION_SECRET: credential.SECRET.SESSION,
+        // API KEY
         API_KEY_SETUP: credential.API_KEY.SETUP,
         API_KEY_DEV: credential.API_KEY.DEV,
         API_KEY_TEST: credential.API_KEY.TEST,
         API_KEY_STAGING: credential.API_KEY.STAGING,
         API_KEY_PRODUCTION: credential.API_KEY.PRODUCTION,
+        // MAILGUN
+        MAILGUN_API_KEY: credential.MAIL.MAILGUN.API_KEY,
+        MAILGUN_DOMAIN: credential.MAIL.MAILGUN.DOMAIN,
+        MAILGUN_SENDER: credential.MAIL.MAILGUN.SENDER,
+        // SENDGRID
+        SENDGRID_API_KEY: credential.MAIL.SENDGRID.API_KEY,
+        SENDGRID_DOMAIN: credential.MAIL.SENDGRID.DOMAIN,
+        SENDGRID_SENDER: credential.MAIL.SENDGRID.SENDER,
+        // GITHUB
         GITHUB_CLIENT_ID: credential.GITHUB.CLIENT_ID,
         GITHUB_CLIENT_SECRET: credential.GITHUB.CLIENT_SECRET,
         GITHUB_CALLBACK: credential.GITHUB.CALLBACK,
+        // FACEBOOK
         FACEBOOK_APP_ID: credential.FACEBOOK.APP_ID,
         FACEBOOK_APP_SECRET: credential.FACEBOOK.APP_SECRET,
         FACEBOOK_CALLBACK: credential.FACEBOOK.CALLBACK,
+        // TWITTER
         TWITTER_API_KEY: credential.TWITTER.API_KEY,
         TWITTER_API_SECRET: credential.TWITTER.API_SECRET,
         TWITTER_CALLBACK: credential.TWITTER.CALLBACK,
+        // GOOGLE
         GOOGLE_CLIENT_ID: credential.GOOGLE.CLIENT_ID,
         GOOGLE_CLIENT_SECRET: credential.GOOGLE.CLIENT_SECRET,
         GOOGLE_CALLBACK: credential.GOOGLE.CALLBACK
