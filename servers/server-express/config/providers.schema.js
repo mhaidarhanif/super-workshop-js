@@ -3,21 +3,21 @@ const Account = require('../api/accounts/model')
 const github = function (req, accessToken, refreshToken, profile, done) {
   if (profile) {
     Account.findOneAndUpdate({
-      $and: [
-        { email: profile.emails[0].value },
-        { provider: profile.provider }
-      ]
+      username: req.decoded.username
     }, {
-      // account.github.id: profile.id
-      name: profile.displayName,
-      username: profile.username,
-      email: profile.emails[0].value,
-      photo: profile.photos[0].value,
-      provider: profile.provider
+      // username: profile.username,
+      image: profile.photos[0].value,
+      provider: profile.provider,
+      github: {
+        id: profile.id,
+        name: profile.displayName,
+        username: profile.username,
+        email: profile.emails[0].value
+      }
     }, {
       upsert: true
     },
-      done
+      done()
     )
   } else {
     done(new Error('Your email privacy settings prevent you.'), null)
@@ -27,21 +27,21 @@ const github = function (req, accessToken, refreshToken, profile, done) {
 const facebook = function (req, accessToken, refreshToken, profile, done) {
   if (profile) {
     Account.findOneAndUpdate({
-      $and: [
-        { email: profile.emails[0].value },
-        { provider: profile.provider }
-      ]
+      username: req.decoded.username
     }, {
-      // account.facebook.id: profile.id,
-      name: profile.displayName,
-      username: profile.displayName.toLowerCase().replace(/\s+/g, ''),
-      email: profile.emails[0].value,
-      photo: profile.photos[0].value,
-      provider: profile.provider
+      // username: profile.username,
+      image: profile.photos[0].value,
+      provider: profile.provider,
+      facebook: {
+        id: profile.id,
+        name: profile.displayName,
+        username: profile.displayName.toLowerCase().replace(/\s+/g, ''),
+        email: profile.emails[0].value
+      }
     }, {
       upsert: true
     },
-      done
+      done()
     )
   } else {
     done(new Error('Your email privacy settings prevent you.'), null)
@@ -54,21 +54,21 @@ const facebook = function (req, accessToken, refreshToken, profile, done) {
 const twitter = function (req, token, tokenSecret, profile, done) {
   if (profile) {
     Account.findOneAndUpdate({
-      $and: [
-        { email: profile.username + '@twitter.com' },
-        { provider: profile.provider }
-      ]
+      username: req.decoded.username
     }, {
-      // account.twitter.id: profile.id,
-      name: profile.displayName,
-      username: profile.username,
-      email: profile.username + '@twitter.com',
-      photo: profile.photos[0].value,
-      provider: profile.provider
+      // username: profile.username,
+      image: profile.photos[0].value,
+      provider: profile.provider,
+      twitter: {
+        id: profile.id,
+        name: profile.displayName,
+        username: profile.username,
+        email: profile.username + '@twitter.com'
+      }
     }, {
       upsert: true
     },
-      done
+      done()
     )
   } else {
     done(new Error('Profile not found.'), null)
@@ -78,21 +78,21 @@ const twitter = function (req, token, tokenSecret, profile, done) {
 const google = function (req, accessToken, refreshToken, profile, done) {
   if (profile) {
     Account.findOneAndUpdate({
-      $and: [
-        { email: profile.emails[0].value },
-        { provider: profile.provider }
-      ]
+      username: req.decoded.username
     }, {
-      // account.google.id: profile.id,
-      name: profile.displayName,
-      username: profile.displayName,
-      email: profile.emails[0].value,
-      photo: profile.photos[0].value,
-      provider: profile.provider
+      // username: profile.username,
+      image: profile.photos[0].value,
+      provider: profile.provider,
+      google: {
+        id: profile.id,
+        name: profile.displayName,
+        username: profile.displayName,
+        email: profile.emails[0].value
+      }
     }, {
       upsert: true
     },
-      done
+      done()
     )
   } else {
     done(new Error('Your email privacy settings prevent you.'), null)
@@ -100,8 +100,8 @@ const google = function (req, accessToken, refreshToken, profile, done) {
 }
 
 module.exports = {
-  github: github,
-  facebook: facebook,
-  twitter: twitter,
-  google: google
+  github,
+  facebook,
+  twitter,
+  google
 }
