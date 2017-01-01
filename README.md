@@ -23,6 +23,7 @@ By telling and teaching directly to learners in the most simple and interactive 
 
 | Category | Badge |
 |----------|-------|
+| Website  | [![Website](https://img.shields.io/website-up-down-green-red/http/mhaidarhanif.com.svg)](https://mhaidarhanif.com)
 | Management     | [![ZenHub](https://raw.githubusercontent.com/ZenHubIO/support/master/zenhub-badge.png)](https://zenhub.com) [![Waffle.io](https://img.shields.io/waffle/label/mhaidarh/super-workshop-js/ready.svg)](https://waffle.io/mhaidarh/super-workshop-js)
 | License        | [![License](https://img.shields.io/github/license/mhaidarh/super-workshop-js.svg)](LICENSE)
 | Style Guide    | [![Standard](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com) [![Good Parts](https://img.shields.io/badge/code%20style-goodparts-brightgreen.svg)](https://github.com/dwyl/goodparts "JavaScript The Good Parts")
