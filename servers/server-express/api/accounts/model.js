@@ -56,7 +56,9 @@ const AccountSchema = new Schema({
   // Internal
   name: {
     type: String,
-    validate: validateName
+    validate: validateName,
+    firstName: String,
+    lastName: String
   },
   username: {
     type: String,
@@ -73,6 +75,7 @@ const AccountSchema = new Schema({
   hash: String,
   salt: String,
   verified: Boolean,
+  title: String,
   gender: Number,
   telephone: String,
   affiliation: String,
