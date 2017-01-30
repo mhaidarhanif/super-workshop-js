@@ -114,14 +114,12 @@ const auth = module.exports = {
         .then(account => {
           console.log('>>> account:', account)
           console.log('>>> account.valid:', account.validPassword)
-          // Account not found
-          if (!account) {
+
+          if (!account) { // Account not found
             res.status(401).json({ s: false, id: 'signin_not_found', m: `Sign in failed because account with username '${username}' is not found.` })
-          // Password not match
-          } else if (!account.validPassword(password)) {
+          } else if (!account.validPassword(password)) { // Password not match
             res.status(401).json({ s: false, id: 'signin_password_failed', m: `Sign in failed because password of '${username}' is not match.` })
-          // Correct account and password
-          } else {
+          } else { // Correct account and password
             // Create token content and config
             let content = {
               payload: { // or claims
@@ -135,7 +133,7 @@ const auth = module.exports = {
               },
               secret: process.env.JWT_SECRET,
               options: {
-                expiresIn: '1d' // EXPIRATION: 1 day
+                expiresIn: '365d' // EXPIRATION: 1 day
               }
             }
 

@@ -12,7 +12,7 @@ module.exports = {
   home: (req, res) => {
     res.json({
       id: 'root',
-      m: `You might want to check ${process.env.SERVER_URL}/api instead.`,
+      m: `You might want to check ${process.env.URL}/api instead.`,
       name: process.env.NAME,
       url: process.env.URL
     })
