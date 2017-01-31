@@ -1,4 +1,4 @@
-// PASSPORT
+const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
 require('../config/auth.schema')(passport)
@@ -74,6 +74,7 @@ const auth = module.exports = {
       account.username = req.body.username
       account.hash = account.generateHash(req.body.password)
       account.providers = 'local'
+
       // Save created account into database
       account.save((err) => {
         // Send an error message
@@ -112,12 +113,12 @@ const auth = module.exports = {
       Account
         .findOne({ username: username })
         .then(account => {
-          console.log('>>> account:', account)
-          console.log('>>> account.valid:', account.validPassword)
+          // console.log('>>> account:', account)
+          const validPassword = bcrypt.compareSync(password, account.hash)
 
           if (!account) { // Account not found
             res.status(401).json({ s: false, id: 'signin_not_found', m: `Sign in failed because account with username '${username}' is not found.` })
-          } else if (!account.validPassword(password)) { // Password not match
+          } else if (!validPassword) { // Password not match
             res.status(401).json({ s: false, id: 'signin_password_failed', m: `Sign in failed because password of '${username}' is not match.` })
           } else { // Correct account and password
             // Create token content and config
@@ -143,12 +144,15 @@ const auth = module.exports = {
             }
 
             // Generate a token
-            const token = auth.generateJWT(account)
-            console.log('token:', token)
+            const token = auth.generateJWT(content)
+            console.log({
+              username: content.payload.username,
+              token: token
+            })
 
             // Finally send that token
             res.status(200).json({
-              token: jwt.sign(content.payload, content.secret, content.options)
+              token: token
             })
           }
         })
@@ -171,8 +175,8 @@ const auth = module.exports = {
    * Generate authentic JWT account
    */
   generateJWT: (content) => {
-    const token = content
-    console.log('JWT GENERATED:', token)
+    const token = jwt.sign(content.payload, content.secret, content.options)
+    return token
   },
 
   /**

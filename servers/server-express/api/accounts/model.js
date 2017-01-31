@@ -197,6 +197,7 @@ AccountSchema.plugin(sequence, { inc_field: 'accountId' })
 
 AccountSchema.pre('save', function (next) {
   if (this.roles.length === 0) this.roles.push('user')
+  if (this.username === 'super' || 'admin') this.roles.push('admin')
   if (this.createdBy.length === 0) this.createdBy = this.id
   next()
 })
@@ -226,17 +227,16 @@ AccountSchema.virtual('token').get(function () {
 // -----------------------------------------------------------------------------
 // ASYNC PASSWORD GENERATOR + VALIDATOR
 
-// Generating a hash
-// Via statis class methods
+// Generating a hash via statis class methods (OK)
 AccountSchema.methods.generateHash = (password) => {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null)
 }
-// Checking if password has is valid
-// Via instance methods
-AccountSchema.methods.validPassword = (password) => {
-  console.log('this:', this)
-  return bcrypt.compareSync(password, this.hash)
-}
+
+// Checking if password has is valid via instance methods (WIP)
+// AccountSchema.methods.validPassword = (password) => {
+//   console.log('this:', this)
+//   return bcrypt.compareSync(password, this.hash)
+// }
 
 // -----------------------------------------------------------------------------
 // POPULATE

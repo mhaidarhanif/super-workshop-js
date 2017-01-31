@@ -14,7 +14,7 @@ module.exports = {
    * @api {get} Seed super accounts
    */
   seedSuperAccounts: (req, res) => {
-    // Drop all collection
+    // Drop all collections
     mongoose.connection.db.dropCollection('counters', (err, result) => {
       if (err) res.status(400).json({ id: 'counters_drop_error', e: `${err}` })
       console.log('[x] Dropped collection: counters')
