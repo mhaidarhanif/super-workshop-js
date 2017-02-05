@@ -122,6 +122,8 @@ const auth = module.exports = {
             res.status(401).json({ s: false, id: 'signin_password_failed', m: `Sign in failed because password of '${username}' is not match.` })
           } else { // Correct account and password
             // Create token content and config
+            console.log({account})
+
             let content = {
               payload: { // or claims
                 iss: process.env.URL,       // ISSUER: DOMAIN/URL of the service
@@ -139,7 +141,7 @@ const auth = module.exports = {
             }
 
             // Assign admin flag if required
-            if (account.roles === 'super' || 'admin' || 'dev' || 'test' || 'ops') {
+            if (account.roles === 'admin') {
               content.payload.admin = true
             }
 
@@ -206,7 +208,7 @@ const auth = module.exports = {
     else token = 0
 
     // There's a token coming in!
-    // console.log({token})
+    console.log({token})
 
     // Decode the token if it's available
     if (token !== 0) {
@@ -216,8 +218,11 @@ const auth = module.exports = {
         if (err) res.status(401).json({ s: false, id: 'auth_failed', m: 'Failed to authenticate token.', e: err })
         // If everything is good, save to request for use in other routes
         else req.decoded = decoded
+
+        console.log({decoded: req.decoded})
+
         // Find the account based on the token subject
-        Account.findById(decoded.sub, (err, account) => {
+        Account.findById(req.decoded.sub, (err, account) => {
           // If there is no associated acccount...
           if (err || !account) {
             res.status(401).send({ s: false, id: 'auth_not_found', m: 'No account is associated with that token.', e: err })
