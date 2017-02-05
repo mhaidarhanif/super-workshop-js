@@ -96,7 +96,7 @@ BookSchema.virtual('lenders', {
 // POPULATE
 
 BookSchema.pre('find', function (next) {
-  this.select({ _id: false, __v: false })
+  this.select({ __v: false })
   this.populate('owners.owner', 'username')
   this.populate('createdBy', 'username')
   this.populate('updatedBy', 'username')
@@ -104,7 +104,7 @@ BookSchema.pre('find', function (next) {
 })
 
 BookSchema.pre('findOne', function (next) {
-  this.select({ _id: false, __v: false })
+  this.select({ __v: false })
   this.populate('owners.owner', 'username')
   this.populate('createdBy', 'username')
   this.populate('updatedBy', 'username')

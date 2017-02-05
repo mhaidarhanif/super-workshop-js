@@ -20,7 +20,7 @@ router.delete('/actions/delete', auth.isAdmin, api.deleteBooks)
 // -----------------------------------------------------------------------------
 
 // Post a book
-router.post('/', auth.isAuthenticated, api.postBook)
+router.post('/', auth.isAuthenticated, api.postBookAndOwner)
 // Update a book by ISBN
 router.put('/:isbn', auth.isAuthenticated, api.updateBookByISBN)
 // Update a book owners

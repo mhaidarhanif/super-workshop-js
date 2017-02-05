@@ -335,7 +335,7 @@ module.exports = {
     }, {
       $addToSet: {
         'updatedBy': req.decoded.sub,
-        'owners.$.id': req.decoded.sub
+        'owners.$.owner': req.decoded.sub
       }
     }, {
       new: true,
@@ -374,7 +374,7 @@ module.exports = {
       } else if (!data) {
         res.status(404).json({
           id: 'book_data_failed',
-          m: `Failed to update account with id OF '${req.decoded.USERNAME}' and assign book with ISBN '${req.params.isbn}'. Might not exist yet.`
+          m: `Failed to update account with id of '${req.decoded.USERNAME}' and assign book with ISBN '${req.params.isbn}'. Might not exist yet.`
         })
       } else {
         updated.account = data
