@@ -114,7 +114,7 @@ module.exports = {
     // TODO: use fields query
     // ?fields=id,name,username,email,about,birthday,avatar,cover,
 
-    Account.findOneAsync({
+    Account.findOne({
       accountId: req.decoded.id
     }, {
       'name': 1,
