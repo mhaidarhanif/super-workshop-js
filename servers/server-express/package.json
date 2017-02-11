@@ -51,7 +51,6 @@
     "passport-facebook": "^2.1.1",
     "passport-github": "^1.1.0",
     "passport-google-oauth": "^1.0.0",
-    "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.4",
     "ramda": "0.23.0",
     "request-ip": "1.2.3"
