@@ -29,8 +29,6 @@ account.roles = 'user'
 // -----------------------------------------------------------------------------
 
 describe('auth', () => {
-  let res
-
   // ---------------------------------------------------------------------------
 
   describe.skip('clear data', () => {
@@ -82,6 +80,7 @@ describe('auth', () => {
     describe('with no data', () => {
       before(() => {
         chai.request(server).post('/auth/signup')
+        .send({})
         .then(response => res = response)
         .catch(err => res = err)
       })

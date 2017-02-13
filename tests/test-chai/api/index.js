@@ -9,8 +9,6 @@ chai.use(chaiHTTP)
 // -----------------------------------------------------------------------------
 
 describe('server-express', function () {
-  let res
-
   // ---------------------------------------------------------------------------
 
   describe('setup', () => {
@@ -41,8 +39,6 @@ describe('server-express', function () {
   // ---------------------------------------------------------------------------
 
   describe('ping', () => {
-    var res
-
     before(() => {
       chai.request(server).get('/ping').then(response => { res = response })
     })
