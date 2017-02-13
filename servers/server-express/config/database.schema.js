@@ -1,4 +1,4 @@
-const DATABASE_NAME = 'workshop-js'
+const DATABASE_NAME = 'super-workshop-js'
 
 const NEDB_PATH = './data/' + DATABASE_NAME
 

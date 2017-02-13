@@ -21,18 +21,12 @@ describe('server-express', function () {
   // ---------------------------------------------------------------------------
 
   describe('root', () => {
-    before(() => {
-      chai.request(server).get('/').then(response => { res = response })
-    })
-
-    it('execute request', (done) => {
-      done()
-    })
-
     it('expect json object that contains specific keys', (done) => {
-      expect(res.body).to.be.an('object')
-      expect(res.body).to.have.all.keys('id', 'name', 'm', 'url')
-      done()
+      chai.request(server).get('/').then(res => {
+        expect(res.body).to.be.an('object')
+        expect(res.body).to.have.all.keys('id', 'name', 'm', 'url')
+        done()
+      })
     })
   })
 
