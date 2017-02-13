@@ -1,0 +1,29 @@
+config:
+  defaults:
+    headers:
+      x-test-token: 'artillery'
+  environments:
+    production:
+      target: 'http://app.mhaidarhanif.com/api'
+    testing:
+      target: 'http://testing.mhaidarhanif.com/api'
+    staging:
+      target: 'http://staging.mhaidarhanif.com/api'
+    dev:
+      target: 'http://localhost:3000/api'
+      phases:
+        - name: 'warm-up'
+          duration: 5
+          arrivalRate: 10
+          rampTo: 50
+          arrivalCount: 10
+
+scenarios:
+  - name: 'get /'
+    flow:
+    - get:
+        url: '/'
+  - name: 'get /api'
+    flow:
+    - get:
+        url: '/api'

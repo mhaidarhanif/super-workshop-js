@@ -1,0 +1,30 @@
+{
+  "name": "super-workshop-js-test-artillery",
+  "version": "1.0.0",
+  "description": "Super Workshop JS - Test with Artillery",
+  "main": "index.js",
+  "scripts": {
+    "start": "echo 'Please run the server first'",
+    "test": "artillery run index.yml -e dev "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/mhaidarh/super-workshop-js.git"
+  },
+  "keywords": [
+    "super",
+    "workshop",
+    "js",
+    "test",
+    "suite",
+    "performance",
+    "benchmark",
+    "artillery"
+  ],
+  "author": "M Haidar Hanif <npm@mhaidarhanif.com> (https://mhaidarhanif.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mhaidarh/super-workshop-js/issues"
+  },
+  "homepage": "https://github.com/mhaidarh/super-workshop-js#readme"
+}
