@@ -1,11 +1,10 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const sequence = require('mongoose-sequence')
+const mongoosePaginate = require('mongoose-paginate')
 
 // const searchPlugin = require('mongoose-search-plugin')
 // const textSearch = require('mongoose-text-search')
-
-// Paginate list of all data
-const mongoosePaginate = require('mongoose-paginate')
 
 const statusTypes = ['unknown', 'available', 'unavailable', 'rare']
 
@@ -79,13 +78,15 @@ const BookSchema = new Schema({
 })
 
 // -----------------------------------------------------------------------------
-// PAGINATION
+// AUTO INCREMENT ID
+BookSchema.plugin(sequence, { inc_field: 'bookId' })
 
+// -----------------------------------------------------------------------------
+// PAGINATION
 BookSchema.plugin(mongoosePaginate)
 
 // -----------------------------------------------------------------------------
 // ADDITIONALS
-
 BookSchema.virtual('lenders', {
   ref: 'Account',
   localField: 'owners', // Find account where `localField`
@@ -94,7 +95,6 @@ BookSchema.virtual('lenders', {
 
 // -----------------------------------------------------------------------------
 // POPULATE
-
 BookSchema.pre('find', function (next) {
   this.select({ __v: false })
   this.populate('owners.owner', 'username')
@@ -102,7 +102,6 @@ BookSchema.pre('find', function (next) {
   this.populate('updatedBy', 'username')
   next()
 })
-
 BookSchema.pre('findOne', function (next) {
   this.select({ __v: false })
   this.populate('owners.owner', 'username')

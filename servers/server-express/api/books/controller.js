@@ -171,7 +171,7 @@ module.exports = {
     data.createdBy = req.decoded.id
     data.updatedBy = req.decoded.id
 
-    Book.save((err) => {
+    Book.create(data, (err) => {
       // console.log('postBook:', data)
       sendResponse(res, err, data, `Book with ISBN ${req.body.isbn} is probably already exist.`)
     })
