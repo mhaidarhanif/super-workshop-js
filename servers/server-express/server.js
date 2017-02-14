@@ -31,6 +31,7 @@ const auth = require('./auth/route')
 const api = require('./api/route')
 const apiAccounts = require('./api/accounts/route')
 const apiBooks = require('./api/books/route')
+const apiPosts = require('./api/posts/route')
 
 // -----------------------------------------------------------------------------
 // CONFIGURE APP + DATA
@@ -72,6 +73,7 @@ app.use('/', api)
 app.use('/auth', auth)
 app.use('/api/accounts', apiAccounts)
 app.use('/api/books', apiBooks)
+app.use('/api/posts', apiPosts)
 
 // -----------------------------------------------------------------------------
 // EXPORT THE APP
