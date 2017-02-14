@@ -30,7 +30,8 @@ module.exports = {
       endpoints: {
         '/auth': 'Authentication',
         '/api/accounts': 'Accounts collection',
-        '/api/books': 'Books collection'
+        '/api/books': 'Books collection',
+        '/api/posts': 'Posts collection'
       },
       codes: {
         d: 'd indicates previous data that might already removed.',
