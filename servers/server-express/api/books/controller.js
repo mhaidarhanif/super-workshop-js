@@ -14,25 +14,25 @@ const Account = require('../accounts/model')
 // Send response when POST
 const sendResponse = (res, err, data, message) => {
   if (err) {
-    res.status(400).json({
+    res.status(400).send({
       id: 'book_error',
       e: `${err}`,
       m: 'Probably a duplicated data issue. Please check the potential book data which probably the same.'
     })
-  } else if (!data) res.status(304).json({ id: 'book_data_failed', m: message })
-  else res.status(201).json(data)
+  } else if (!data) res.status(304).send({ id: 'book_data_failed', m: message })
+  else res.status(201).send(data)
 }
 
 // Send response when GET/PUT
 const sendResponseNF = (res, err, data, message) => {
   if (err) {
-    res.status(400).json({
+    res.status(400).send({
       id: 'book_error',
       e: `${err}`,
       m: 'Something wrong. Try again.'
     })
-  } else if (!data) res.status(404).json({ id: 'book_data_failed', m: message })
-  else res.status(200).json(data)
+  } else if (!data) res.status(404).send({ id: 'book_data_failed', m: message })
+  else res.status(200).send(data)
 }
 
 // -----------------------------------------------------------------------------
@@ -46,42 +46,43 @@ module.exports = {
   // ---------------------------------------------------------------------------
 
   /* ---------------------------------------------------------------------------
-   * @api {get} /books/actions/seed Seed some books
+   * @api {get} /actions/seed
    */
   seedBooks: (req, res) => {
     // Drop books collection
     mongoose.connection.db.dropCollection('books', (err, result) => {
-      if (err) res.status(400).json({ id: 'books_drop_error', e: `${err}` })
+      if (err) res.status(400).send({ id: 'books_drop_error', e: `${err}` })
       console.log('[x] Dropped collection: books')
 
-      // --------------------
       // Get the users you're looking for...
       Account.findOne({ roles: 'user' }, (err, user) => {
-        if (err) res.status(400).json({ id: 'books_seed_find_users_error', m: err })
-        if (!user) res.status(400).json({ id: 'books_seed_find_users_failed', m: 'Failed to find users.' })
+        if (err) res.status(400).send({ id: 'books_seed_find_users_error', m: err })
+        if (!user) res.status(400).send({ id: 'books_seed_find_users_failed', m: 'Failed to find users.' })
 
-        // --------------------
         // Post seed books
         Book.create(books, (err, data) => {
-          if (err) res.status(400).json({ id: 'books_seed_failed', m: 'Failed to seed books.' })
+          if (err) res.status(400).send({ id: 'books_seed_failed', m: 'Failed to seed books.' })
 
-          // --------------------
           // Put the one account id into book owners field
           Book.update({}, {
-            $addToSet: { 'owners': user._id, 'updatedBy': user._id }
+            $addToSet: {
+              'createdBy': user._id,
+              'updatedBy': user._id,
+              'owners': {owner: user._id}
+            }
           }, {
-            multi: true,
-            new: true,
-            upsert: true
+            multi: true, // add more than one items
+            new: true,   // return updated data
+            upsert: true // create new data if didn't exist yet
           }, (err, info) => {
             if (err) {
-              res.status(400).json({ id: 'account_book_error', e: `${err}`, m: 'Something wrong. Try again.' })
+              res.status(400).send({ id: 'account_book_error', e: `${err}`, m: 'Something wrong. Try again.' })
             } else if (!info) {
-              res.status(404).json({ id: 'account_book_data_failed', m: `Failed to update books' owners.` })
+              res.status(404).send({ id: 'account_book_data_failed', m: `Failed to update books' owners.` })
             } else {
               // --------------------
               // Finally send the info
-              res.status(200).json({
+              res.status(200).send({
                 books: { s: true, id: 'books_seed_success', m: `Successfully seeded some books.` }
               })
             }
@@ -97,12 +98,12 @@ module.exports = {
   seedBooksLot: (req, res) => {
     // Drop the collection first...
     mongoose.connection.db.dropCollection('books', (err, result) => {
-      if (err) res.status(400).json({ id: 'books_drop_error', e: `${err}` })
+      if (err) res.status(400).send({ id: 'books_drop_error', e: `${err}` })
       // Then we can seed a lot of them!
       if (result) {
         Book.create(booksLot, (err, data) => {
-          if (err) res.status(400).json({ id: 'books_seed_lot_failed', m: 'Failed to seed a lot of books.' })
-          res.status(200).json({
+          if (err) res.status(400).send({ id: 'books_seed_lot_failed', m: 'Failed to seed a lot of books.' })
+          res.status(200).send({
             books: { s: true, id: 'books_seed_lot_success', m: `Successfully seeded a lot of books.` }
           })
         })
@@ -116,9 +117,9 @@ module.exports = {
   deleteBooks: (req, res) => {
     Book.remove().exec((err, data) => {
       // console.log('deleteBooks:', data)
-      if (err) res.status(400).json({ id: 'book_delete_error', e: `Error: ${err}` })
-      else if (!data) res.status(404).json({ id: 'book_delete_failed', m: 'Data already empty.' })
-      else res.status(200).json({ m: `All books have been removed.` })
+      if (err) res.status(400).send({ id: 'book_delete_error', e: `Error: ${err}` })
+      else if (!data) res.status(404).send({ id: 'book_delete_failed', m: 'Data already empty.' })
+      else res.status(200).send({ m: `All books have been removed.` })
     })
   },
 
@@ -141,7 +142,7 @@ module.exports = {
         sendResponseNF(res, err, result.docs, 'Failed to get all books with pagination.')
       })
       .catch((err) => {
-        res.status(400).json({ id: 'books_error', e: `${err}`, m: 'Failed to get all books with pagination.' })
+        res.status(400).send({ id: 'books_error', e: `${err}`, m: 'Failed to get all books with pagination.' })
       })
   },
 
@@ -156,7 +157,7 @@ module.exports = {
         sendResponseNF(res, err, data, 'Failed to get all books.')
       })
       .catch((err) => {
-        res.status(400).json({ id: 'books_error', e: `${err}`, m: 'Failed to get all books without pagination.' })
+        res.status(400).send({ id: 'books_error', e: `${err}`, m: 'Failed to get all books without pagination.' })
       })
   },
 
@@ -214,7 +215,7 @@ module.exports = {
         sendResponse(res, err, data, `Failed to search books with data: ${book}`)
       })
     } else {
-      res.status(422).json({ id: 'book_search_no_data', m: `Failed to search books with no data.` })
+      res.status(422).send({ id: 'book_search_no_data', m: `Failed to search books with no data.` })
     }
   },
 
@@ -247,8 +248,8 @@ module.exports = {
       isbn: req.params.isbn
     }, (err, data) => {
       // console.log('deleteBookByISBN:', data)
-      if (err) res.status(400).json({ id: 'book_delete_error', e: `Error: ${err}` })
-      else if (!data) res.status(404).json({ id: 'book_delete_not_found', m: `No book found with ISBN '${req.params.isbn}'.` })
+      if (err) res.status(400).send({ id: 'book_delete_error', e: `Error: ${err}` })
+      else if (!data) res.status(404).send({ id: 'book_delete_not_found', m: `No book found with ISBN '${req.params.isbn}'.` })
       else {
         updated.book = data
       }
@@ -266,11 +267,11 @@ module.exports = {
       upsert: true
     }, (err, info) => {
       if (err) {
-        res.status(400).json({
+        res.status(400).send({
           id: 'account_book_error', e: `${err}`, m: 'Something wrong. Try again.'
         })
       } else if (!info) {
-        res.status(404).json({
+        res.status(404).send({
           id: 'account_book_data_failed',
           m: `Failed to update account with ID '${req.decoded.id}' and remove their books with ISBN '${req.params.isbn}'. Might not exist yet.`
         })
@@ -281,7 +282,7 @@ module.exports = {
     // Wait until all data have been removed and updated
     // Finally send the deleted book and updated account data
     // console.log(updated)
-    setTimeout(() => { res.status(201).json(updated) }, 1000)
+    setTimeout(() => { res.status(201).send(updated) }, 1000)
   },
 
   /* ---------------------------------------------------------------------------
@@ -297,7 +298,7 @@ module.exports = {
 
     // Check if the required data are exist
     if (!R.isEmpty(book)) {
-      res.status(422).json({ id: 'book_update_no_data', m: `Failed to update book with no data.` })
+      res.status(422).send({ id: 'book_update_no_data', m: `Failed to update book with no data.` })
     }
 
     // Update existing book data with new book data
@@ -342,11 +343,11 @@ module.exports = {
       upsert: false
     }, (err, data) => {
       if (err) {
-        res.status(400).json({
+        res.status(400).send({
           id: 'book_error', e: `${err}`, m: 'Something wrong. Try again.'
         })
       } else if (!data) {
-        res.status(404).json({
+        res.status(404).send({
           id: 'book_data_failed',
           m: `Failed to update book with ISBN '${req.params.isbn}' and assign owner of accountId '${req.decoded.id}'.`
         })
@@ -368,11 +369,11 @@ module.exports = {
       upsert: false
     }, (err, data) => {
       if (err) {
-        res.status(400).json({
+        res.status(400).send({
           id: 'book_error', e: `${err}`, m: 'Something wrong. Try again.'
         })
       } else if (!data) {
-        res.status(404).json({
+        res.status(404).send({
           id: 'book_data_failed',
           m: `Failed to update account with id of '${req.decoded.USERNAME}' and assign book with ISBN '${req.params.isbn}'. Might not exist yet.`
         })
@@ -384,7 +385,7 @@ module.exports = {
     // Wait until all data have been updated
     // Finally send the updated book and account data
     // console.log(updated)
-    setTimeout(() => { res.status(201).json(updated) }, 1000)
+    setTimeout(() => { res.status(201).send(updated) }, 1000)
   }
 
 // BookController
