@@ -80,12 +80,7 @@ module.exports = {
    * Get list of all accounts
    */
   getAccounts: (req, res) => {
-    Account.find({}, {
-      '_id': 0,
-      'accountId': 1,
-      'name': 1,
-      'username': 1
-    }, (err, data) => {
+    Account.find({}, (err, data) => {
       // console.log('getAccounts:', data)
       if (err) res.status(400).json({ id: 'account_get_error', e: `${err}` })
       if (!data) res.status(404).json({ id: 'account_get_failed', m: 'Failed to get list of all accounts.' })

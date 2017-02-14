@@ -225,7 +225,7 @@ AccountSchema.virtual('token').get(function () {
 })
 
 // -----------------------------------------------------------------------------
-// ASYNC PASSWORD GENERATOR + VALIDATOR
+// PASSWORD GENERATOR + VALIDATOR
 
 // Generating a hash via statis class methods (OK)
 AccountSchema.methods.generateHash = (password) => {
@@ -242,13 +242,13 @@ AccountSchema.methods.generateHash = (password) => {
 // POPULATE
 
 AccountSchema.pre('find', function (next) {
-  this.select({ __v: false })
+  // this.select({ __v: false })
   this.populate('books.book', 'title')
   next()
 })
 
 AccountSchema.pre('findOne', function (next) {
-  this.select({ __v: false })
+  // this.select({ __v: false })
   this.populate('books.book', 'title')
   next()
 })
