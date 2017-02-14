@@ -7,7 +7,7 @@ const Account = require('../api/accounts/model')
 
 const auth = module.exports = {
 
-  /**
+  /** --------------------------------------------------------------------------
    * Info about this route
    */
   getInfo: (req, res) => {
@@ -28,7 +28,7 @@ const auth = module.exports = {
     })
   },
 
-  /**
+  /** --------------------------------------------------------------------------
    * Check if there is a passed token
    */
   isWithToken: (req, res, next) => {
@@ -56,7 +56,7 @@ const auth = module.exports = {
     }
   },
 
-  /**
+  /** --------------------------------------------------------------------------
    * Create a new account
    */
   signup: (req, res, next) => {
@@ -80,9 +80,9 @@ const auth = module.exports = {
         // Send an error message
         if (err) res.status(422).json({ id: 'signup_error', e: err.errors || err })
         // Send a failed message
-        if (!account) res.status(404).json({ id: 'signup_failed', m: 'Sign up failed. Created account might not found or has a conflict.' })
+        else if (!account) res.status(404).json({ id: 'signup_failed', m: 'Sign up failed. Created account might not found or has a conflict.' })
         // Send a success sign up message
-        if (account) {
+        else if (account) {
           res.status(201).json({
             id: 'signup_success',
             m: `Successfully signed up an account.`,
@@ -97,7 +97,7 @@ const auth = module.exports = {
     }
   },
 
-  /**
+  /** --------------------------------------------------------------------------
    * Sign in a signed up account
    */
   signin: (req, res, next) => {
@@ -165,7 +165,7 @@ const auth = module.exports = {
     }
   },
 
-  /**
+  /** --------------------------------------------------------------------------
    * Sign out
    */
   signout: (req, res) => {
@@ -173,7 +173,7 @@ const auth = module.exports = {
     res.status(200).json({ id: 'signout', m: 'Sign out succeded.' })
   },
 
-  /**
+  /** --------------------------------------------------------------------------
    * Generate authentic JWT account
    */
   generateJWT: (content) => {
@@ -181,7 +181,7 @@ const auth = module.exports = {
     return token
   },
 
-  /**
+  /** --------------------------------------------------------------------------
    * Check whether the username is already signed up
    */
   isAccountExist: (req, res, next) => {
@@ -196,7 +196,7 @@ const auth = module.exports = {
     })
   },
 
-  /**
+  /** --------------------------------------------------------------------------
    * Check whether the user is authenticated
    */
   isAuthenticated: (req, res, next) => {
@@ -226,10 +226,11 @@ const auth = module.exports = {
           // If there is no associated acccount...
           if (err || !account) {
             res.status(401).send({ s: false, id: 'auth_not_found', m: 'No account is associated with that token.', e: err })
+          } else {
+            // There's the account! Finally sure that actual account is authenticated with valid token
+            // console.log({account})
+            next()
           }
-          // There's the account! Finally sure that actual account is authenticated with valid token
-          // console.log({account})
-          next()
         })
       })
     } else {
@@ -239,7 +240,7 @@ const auth = module.exports = {
     // Finish token checker for authentication
   },
 
-  /**
+  /** --------------------------------------------------------------------------
    * Check whether the account is an admin
    */
   isAdmin: (req, res, next) => {
@@ -267,7 +268,7 @@ const auth = module.exports = {
     // Finish token checker for admin
   },
 
-  /**
+  /** --------------------------------------------------------------------------
    * Check the API Key in header
    */
   isWithAPIKey: (req, res, next) => {
@@ -278,7 +279,7 @@ const auth = module.exports = {
     else res.status(401).send({ s: false, m: 'Sorry, no access without API key.' })
   },
 
-  /**
+  /** --------------------------------------------------------------------------
    * Check whether the environment is a setup via API Key
    */
   isSetup: (req, res, next) => {
@@ -287,7 +288,7 @@ const auth = module.exports = {
     else res.status(401).send({ s: false, m: 'Sorry, initial setup need a key.' })
   },
 
-  /**
+  /** --------------------------------------------------------------------------
    * Check whether the environment is a test via API Key
    */
   isTest: (req, res, next) => {
