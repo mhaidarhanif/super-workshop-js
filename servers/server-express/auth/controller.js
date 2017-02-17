@@ -1,9 +1,9 @@
+const Account = require('../api/accounts/model')
+
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
 require('../config/auth.schema')(passport)
-
-const Account = require('../api/accounts/model')
 
 const auth = module.exports = {
 
@@ -72,8 +72,9 @@ const auth = module.exports = {
       account.name = req.body.name
       account.email = req.body.email
       account.username = req.body.username
-      account.hash = account.generateHash(req.body.password)
+      account.password = req.body.password
       account.providers = 'local'
+      account.roles = 'user'
 
       // Save created account into database
       account.save((err) => {
@@ -113,17 +114,17 @@ const auth = module.exports = {
       Account
         .findOne({ username: username })
         .then(account => {
-          // console.log('>>> account:', account)
           const validPassword = bcrypt.compareSync(password, account.hash)
+          // console.log('>>> account:', account)
+          // console.log({validPassword})
 
           if (!account) { // Account not found
             res.status(401).json({ s: false, id: 'signin_not_found', m: `Sign in failed because account with username '${username}' is not found.` })
           } else if (!validPassword) { // Password not match
             res.status(401).json({ s: false, id: 'signin_password_failed', m: `Sign in failed because password of '${username}' is not match.` })
-          } else { // Correct account and password
+          } else { // Password is match
+            // console.log({account})
             // Create token content and config
-            console.log({account})
-
             let content = {
               payload: { // or claims
                 iss: process.env.URL,       // ISSUER: DOMAIN/URL of the service
@@ -136,9 +137,10 @@ const auth = module.exports = {
               },
               secret: process.env.JWT_SECRET,
               options: {
-                expiresIn: '365d' // EXPIRATION: 1 day
+                expiresIn: '30d' // EXPIRATION: 30 days
               }
             }
+            console.log(content)
 
             // Assign admin flag if required
             if (account.roles === 'admin') {
