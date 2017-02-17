@@ -29,6 +29,9 @@ module.exports = {
         // DATABASE
         NEDB_PATH: database.NEDB_PATH,
         MONGODB_URI: database.MONGODB_URI,
+        // ACCOUNT
+        USERNAME: credential.ACCOUNT.USERNAME,
+        PASSWORD: credential.ACCOUNT.PASSWORD,
         // SECRET
         JWT_SECRET: credential.SECRET.JWT,
         SESSION_SECRET: credential.SECRET.SESSION,

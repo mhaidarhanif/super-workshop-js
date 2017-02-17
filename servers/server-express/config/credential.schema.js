@@ -1,6 +1,11 @@
 const connection = require('./connection')
 const url = connection.URL
 
+const ACCOUNT = {
+  username: process.env.USERNAME || 'change_this',
+  password: process.env.PASSWORD || 'change_this'
+}
+
 const SECRET = {
   JWT: process.env.JWT_SECRET || 'change_this',
   SESSION: process.env.SESSION_SECRET || 'change_this'
@@ -56,6 +61,7 @@ const GOOGLE = {
 }
 
 module.exports = {
+  ACCOUNT,
   SECRET,
   API_KEY,
   MAIL,
