@@ -3,9 +3,10 @@ const R = require('ramda')
 const Post = require('./model')
 const seedData = require('./seed.json')
 const Account = require('../accounts/model')
+const AuthController = require('../../auth/controller')
 
-const model = `post`
-const models = `posts`
+const resource = `post`
+const resources = `posts`
 
 // -----------------------------------------------------------------------------
 // HELPERS
@@ -19,7 +20,7 @@ const sendResponse = (res, err, data, message) => {
       e: `${err}`,
       m: 'Probably a duplicated data issue. Please check the potential post data which probably the same.'
     })
-  } else if (!data) res.status(304).send({ id: `${model}_data_failed`, m: message })
+  } else if (!data) res.status(304).send({ id: `${resource}_data_failed`, m: message })
   else res.status(201).send(data)
 }
 
@@ -31,7 +32,7 @@ const sendResponseNF = (res, err, data, message) => {
       e: `${err}`,
       m: 'Something wrong. Try again.'
     })
-  } else if (!data) res.status(404).send({ id: `${model}_data_failed`, m: message })
+  } else if (!data) res.status(404).send({ id: `${resource}_data_failed`, m: message })
   else res.status(200).send(data)
 }
 
@@ -50,30 +51,31 @@ module.exports = {
    */
   seed: (req, res) => {
     // Drop posts collection
-    mongoose.connection.db.dropCollection(`${models}`, (err, result) => {
-      if (err) res.status(400).send({ id: `${models}_drop_error`, e: `${err}` })
-      console.log(`[x] Dropped collection: ${models}`)
+    mongoose.connection.db.dropCollection(`${resources}`, (err, result) => {
+      if (err) res.status(400).send({ id: `${resources}_drop_error`, e: `${err}` })
+      // console.log(`[x] Dropped collection: ${resources}`)
 
       // Get the users you're looking for...
       Account.findOne({ roles: 'user' }, (err, user) => {
         if (err) res.status(400).send({ id: 'posts_seed_find_users_error', m: err })
-        if (!user) res.status(400).send({ id: 'posts_seed_find_users_failed', m: 'Failed to find users.' })
+        else if (!user) res.status(400).send({ id: 'posts_seed_find_users_failed', m: 'Failed to find users.' })
+        // console.log(`[i] ACCOUNT FOUND`)
 
-        console.log(`[i] ACCOUNT FOUND`)
-
-        // Post seed posts
+        // Create via seed data
         Post.create(seedData, (err, data) => {
           if (err) res.status(400).send({ id: 'posts_seed_failed', m: 'Failed to seed posts.' })
-
-          console.log(`[i] DATA CREATED`)
+          // console.log(`[i] DATA CREATED`)
 
           // Put the one account id into post owners field
           Post.update({}, {
-            $addToSet: { 'createdBy': user._id, 'updatedBy': user._id }
+            $addToSet: {
+              'createdBy': user._id,
+              'updatedBy': user._id
+            }
           }, {
-            multi: true,
-            new: true,
-            upsert: true
+            multi: true, // add more than one items
+            new: true,   // return updated data
+            upsert: true // create new data if didn't exist yet
           }, (err, info) => {
             if (err) {
               res.status(400).send({ id: 'account_post_error', e: `${err}`, m: 'Something wrong. Try again.' })
@@ -118,7 +120,7 @@ module.exports = {
         limit: Number(req.query.limit) || 10
       })
       .then((result) => {
-        console.log('getPostsPaginated:', result.docs)
+        // console.log('getPostsPaginated:', result.docs)
         sendResponseNF(res, false, result.docs, 'Failed to get all posts with pagination.')
       })
       .catch((err) => {
@@ -142,6 +144,18 @@ module.exports = {
   },
 
   /* ---------------------------------------------------------------------------
+   * @api {get} /:id
+   */
+  getById: (req, res) => {
+    Post.findOne({
+      id: req.params.id
+    }, (err, data) => {
+      // console.log('getPostByID:', data)
+      sendResponseNF(res, err, data, 'Failed to GET post by ID.')
+    })
+  },
+
+  /* ---------------------------------------------------------------------------
    * @api {post} /
    */
   post: (req, res) => {
@@ -161,7 +175,7 @@ module.exports = {
    */
   search: (req, res) => {
     let post = {}
-    if (req.body.isbn) post.isbn = new RegExp(req.body.isbn, 'i')
+    if (req.body.id) post.id = new RegExp(req.body.id, 'i')
     if (req.body.title) post.title = new RegExp(req.body.title, 'i')
     if (req.body.price) post.price = Number(req.body.price)
     console.log({post})
@@ -176,50 +190,33 @@ module.exports = {
   },
 
   /* ---------------------------------------------------------------------------
-   * @api {get} /:id
-   */
-  getById: (req, res) => {
-    Post.findOne({
-      isbn: req.params.id
-    }, {
-      '_id': 0
-    }, (err, data) => {
-      // console.log('getPostByID:', data)
-      sendResponseNF(res, err, data, 'Failed to GET post by ID.')
-    })
-  },
-
-  /* ---------------------------------------------------------------------------
-   * @api {delete} /:isbn
+   * @api {delete} /:id
    */
   deleteById: (req, res) => {
-    let updated = {
-      m: `Post with ID '${req.params.id}' has been removed.`,
-      post: null,
-      i: null
-    }
-
     // Remove post from database
     Post.findOneAndRemove({
-      isbn: req.params.id
+      id: req.params.id
     }, (err, data) => {
       // console.log('deletePostByID:', data)
       if (err) res.status(400).send({ id: 'post_delete_error', e: `Error: ${err}` })
       else if (!data) res.status(404).send({ id: 'post_delete_not_found', m: `No post found with ID '${req.params.id}'.` })
       else {
-        updated.post = data
-        res.status(201).send(updated)
+        res.status(201).send({
+          m: `Post with ID '${req.params.id}' has been removed.`,
+          post: data,
+          i: null
+        })
       }
     })
   },
 
   /* ---------------------------------------------------------------------------
-   * @api {put} /:isbn
+   * @api {put} /:id
    */
   updateById: (req, res) => {
     // Prepare required data
     let post = {}
-    if (req.body.isbn) post.isbn = req.body.isbn
+    if (req.body.id) post.id = req.body.id
     if (req.body.title) post.title = req.body.title
     if (req.body.price) post.price = req.body.price
     console.log({post})
@@ -231,7 +228,7 @@ module.exports = {
 
     // Update existing post data with new post data
     Post.findOneAndUpdate({
-      isbn: req.params.id
+      id: req.params.id
     }, {
       $set: post,
       $addToSet: { // only add if not exist
@@ -259,7 +256,7 @@ module.exports = {
 
     // Assign accountId to post's owners
     Post.findOneAndUpdate({
-      isbn: req.params.id
+      id: req.params.id
     }, {
       $addToSet: {
         'updatedBy': req.decoded.sub,

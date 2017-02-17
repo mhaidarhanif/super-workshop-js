@@ -25,12 +25,13 @@ const PostSchema = new Schema({
     required: true
   },
   url: String,
-  status: [{
+  status: {
     type: String,
+    required: true,
     lowercase: true,
     enum: statusTypes,
     default: 'draft'
-  }],
+  },
   createdBy: [{
     type: Schema.Types.ObjectId,
     ref: 'Account'
@@ -45,11 +46,20 @@ const PostSchema = new Schema({
 
 // -----------------------------------------------------------------------------
 // AUTO INCREMENT ID
-PostSchema.plugin(sequence, { inc_field: 'postId' })
+PostSchema.plugin(sequence, { inc_field: 'id' })
 
 // -----------------------------------------------------------------------------
 // PAGINATION
 PostSchema.plugin(mongoosePaginate)
+
+// -----------------------------------------------------------------------------
+// VIRTUALS
+// PostSchema.virtual('author').set(function () {
+//   this.author = this.createdBy
+// })
+// PostSchema.virtual('author').get(function () {
+//   return this.createdBy
+// })
 
 // -----------------------------------------------------------------------------
 // POPULATE
@@ -59,8 +69,8 @@ PostSchema.pre('find', function (next) {
   next()
 })
 PostSchema.pre('findOne', function (next) {
-  // this.populate('createdBy', 'username')
-  // this.populate('updatedBy', 'username')
+  this.populate('createdBy', 'username')
+  this.populate('updatedBy', 'username')
   next()
 })
 
