@@ -197,7 +197,8 @@ AccountSchema.plugin(sequence, { inc_field: 'accountId' })
 
 AccountSchema.pre('save', function (next) {
   if (this.roles.length === 0) this.roles.push('user')
-  if (this.username === 'admin') this.roles.push('admin')
+  if (this.username === 'super') this.roles.push('super')
+  if (this.username === 'super' || 'admin') this.roles.push('admin')
   if (this.createdBy.length === 0) this.createdBy = this.id
   next()
 })
@@ -242,13 +243,11 @@ AccountSchema.methods.generateHash = (password) => {
 // POPULATE
 
 AccountSchema.pre('find', function (next) {
-  // this.select({ __v: false })
   this.populate('books.book', 'title')
   next()
 })
 
 AccountSchema.pre('findOne', function (next) {
-  // this.select({ __v: false })
   this.populate('books.book', 'title')
   next()
 })

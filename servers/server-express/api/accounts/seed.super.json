@@ -3,6 +3,5 @@
   "email": "super@super.com",
   "username": "super",
   "password": "supersuper",
-  "roles": ["super", "admin"],
   "providers": "local"
 }

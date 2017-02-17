@@ -3,64 +3,51 @@
     "name": "Administrator",
     "username": "admin",
     "email": "admin@admin.com",
-    "password": "adminadmin",
-    "roles": "admin",
-    "providers": "local"
+    "password": "adminadmin"
   },
   {
     "name": "Developer",
     "username": "dev",
     "email": "dev@dev.com",
     "password": "devdevdev",
-    "roles": ["admin", "dev"],
-    "providers": "local"
+    "roles": "dev"
   },
   {
     "name": "Tester",
     "username": "test",
     "email": "test@test.com",
     "password": "testtest",
-    "roles": ["admin", "test"],
-    "providers": "local"
+    "roles": "test"
   },
   {
     "name": "Operator",
     "username": "ops",
     "email": "ops@ops.com",
     "password": "opsopsops",
-    "roles": ["admin", "ops"],
-    "providers": "local"
+    "roles": "ops"
   },
   {
     "name": "Viewer",
     "username": "view",
     "email": "view@view.com",
-    "password": "viewview",
-    "roles": "user",
-    "providers": "local"
+    "password": "viewview"
   },
   {
     "name": "User",
     "username": "user",
     "email": "user@user.com",
-    "password": "useruser",
-    "roles": "user",
-    "providers": "local"
+    "password": "useruser"
   },
   {
     "name": "Alpha",
     "username": "a",
     "email": "a@alpha.com",
-    "password": "alphaalpha",
-    "roles": "user",
-    "providers": "local"
+    "password": "alphaalpha"
   },
   {
     "name": "Zet",
     "username": "z",
     "email": "z@zet.com",
-    "password": "zetzetzet",
-    "roles": "user",
-    "providers": "local"
+    "password": "zetzetzet"
   }
 ]
