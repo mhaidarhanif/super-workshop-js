@@ -10,7 +10,7 @@ module.exports = {
    * Home
    */
   home: (req, res) => {
-    res.json({
+    res.send({
       id: 'root',
       m: `You might want to check ${process.env.URL}/api instead.`,
       name: process.env.NAME,
@@ -22,7 +22,7 @@ module.exports = {
    * API
    */
   api: (req, res) => {
-    res.json({
+    res.send({
       id: 'api',
       name: process.env.NAME,
       description: `Welcome to the API that run with ${process.env.NAME}! This a quick help for you to consume the API.`,
@@ -48,7 +48,7 @@ module.exports = {
    * Ping
    */
   ping: (req, res) => {
-    res.json({
+    res.send({
       id: 'ping_pong',
       m: `ping from ${reqip.getClientIp(req)}`
     })
