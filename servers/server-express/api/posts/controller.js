@@ -56,7 +56,7 @@ module.exports = {
       // console.log(`[x] Dropped collection: ${resources}`)
 
       // Get the users you're looking for...
-      Account.findOne({ roles: 'user' }, (err, user) => {
+      Account.findOne({ roles: { '$in': ['admin'] } }, (err, user) => {
         if (err) res.status(400).send({ id: 'posts_seed_find_users_error', m: err })
         else if (!user) res.status(400).send({ id: 'posts_seed_find_users_failed', m: 'Failed to find users.' })
         // console.log(`[i] ACCOUNT FOUND`)
@@ -159,13 +159,14 @@ module.exports = {
    * @api {post} /
    */
   post: (req, res) => {
-    const data = {}
-    data.title = req.body.title
-    data.content = req.body.content
-    data.createdBy = req.decoded.sub
-    data.updatedBy = req.decoded.sub
+    const newData = {
+      title: req.body.title,
+      content: req.body.content,
+      createdBy: req.decoded.sub,
+      updatedBy: req.decoded.sub
+    }
 
-    Post.create(data, (err) => {
+    Post.create(newData, (err, data) => {
       sendResponse(res, err, data, `Post with title ${req.body.title} is probably already exist.`)
     })
   },
@@ -177,10 +178,10 @@ module.exports = {
     let post = {}
     if (req.body.id) post.id = new RegExp(req.body.id, 'i')
     if (req.body.title) post.title = new RegExp(req.body.title, 'i')
-    if (req.body.price) post.price = Number(req.body.price)
-    console.log({post})
+    if (req.body.content) post.content = new RegExp(req.body.content, 'i')
+    // console.log({post})
 
-    if (!R.isEmpty(post)) {
+    if (post.id) {
       Post.find(post, (err, data) => {
         sendResponse(res, err, data, `Failed to search posts with data: ${post}`)
       })
@@ -218,13 +219,8 @@ module.exports = {
     let post = {}
     if (req.body.id) post.id = req.body.id
     if (req.body.title) post.title = req.body.title
-    if (req.body.price) post.price = req.body.price
-    console.log({post})
-
-    // Check if the required data are exist
-    if (!R.isEmpty(post)) {
-      res.status(422).send({ id: 'post_update_no_data', m: `Failed to update post with no data.` })
-    }
+    if (req.body.content) post.content = req.body.content
+    // console.log({post})
 
     // Update existing post data with new post data
     Post.findOneAndUpdate({
@@ -232,7 +228,7 @@ module.exports = {
     }, {
       $set: post,
       $addToSet: { // only add if not exist
-        'updatedBy': req.decoded.id
+        'updatedBy': req.decoded.sub
       }
     }, {
       new: true,    // return the modified document
@@ -240,76 +236,6 @@ module.exports = {
     }, (err, data) => {
       sendResponseNF(res, err, data, `Failed to update post with ID '${req.params.id}'.`)
     })
-  },
-
-  /* ---------------------------------------------------------------------------
-   * @api {put} /:id/author
-   */
-  updateByIdAndAuthor: (req, res) => {
-    // Prepare response data
-    let updated = {
-      s: true,
-      m: 'Successfully updated post by ID to put with author ID.',
-      post: null,
-      account: null
-    }
-
-    // Assign accountId to post's owners
-    Post.findOneAndUpdate({
-      id: req.params.id
-    }, {
-      $addToSet: {
-        'updatedBy': req.decoded.sub,
-        'owners.$.owner': req.decoded.sub
-      }
-    }, {
-      new: true,
-      upsert: false
-    }, (err, data) => {
-      if (err) {
-        res.status(400).send({
-          id: 'post_error', e: `${err}`, m: 'Something wrong. Try again.'
-        })
-      } else if (!data) {
-        res.status(404).send({
-          id: 'post_data_failed',
-          m: `Failed to update post with ID '${req.params.id}' and assign owner of accountId '${req.decoded.id}'.`
-        })
-      } else {
-        updated.post = data
-      }
-    })
-
-    // Assign post ID to account's posts
-    Account.findOneAndUpdate({
-      accountId: req.decoded.id
-    }, {
-      $addToSet: {
-        'updatedBy': req.decoded.sub,
-        'posts': String(req.params.id)
-      }
-    }, {
-      new: true,
-      upsert: false
-    }, (err, data) => {
-      if (err) {
-        res.status(400).send({
-          id: 'post_error', e: `${err}`, m: 'Something wrong. Try again.'
-        })
-      } else if (!data) {
-        res.status(404).send({
-          id: 'post_data_failed',
-          m: `Failed to update account with id of '${req.decoded.USERNAME}' and assign post with ID '${req.params.id}'. Might not exist yet.`
-        })
-      } else {
-        updated.account = data
-      }
-    })
-
-    // Wait until all data have been updated
-    // Finally send the updated post and account data
-    // console.log(updated)
-    setTimeout(() => { res.status(201).send(updated) }, 1000)
   }
 
 // PostController

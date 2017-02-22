@@ -24,14 +24,13 @@ const PostSchema = new Schema({
     type: String,
     required: true
   },
-  url: String,
   status: {
     type: String,
-    required: true,
     lowercase: true,
     enum: statusTypes,
     default: 'draft'
   },
+  url: String,
   createdBy: [{
     type: Schema.Types.ObjectId,
     ref: 'Account'
@@ -64,13 +63,19 @@ PostSchema.plugin(mongoosePaginate)
 // -----------------------------------------------------------------------------
 // POPULATE
 PostSchema.pre('find', function (next) {
-  this.populate('createdBy', 'username')
-  this.populate('updatedBy', 'username')
+  this.select({ __v: false })
+  this.populate([
+    {path: 'createdBy', select: 'username name'},
+    {path: 'updatedBy', select: 'username name'}
+  ])
   next()
 })
 PostSchema.pre('findOne', function (next) {
-  this.populate('createdBy', 'username')
-  this.populate('updatedBy', 'username')
+  this.select({ __v: false })
+  this.populate([
+    {path: 'createdBy', select: 'username name'},
+    {path: 'updatedBy', select: 'username name'}
+  ])
   next()
 })
 

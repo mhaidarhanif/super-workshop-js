@@ -21,8 +21,6 @@ router.delete('/actions/delete', [auth.isWithAPIKey, auth.isSetup], api.delete)
 router.post('/', auth.isAuthenticated, api.post)
 // Update by ID
 router.put('/:id', auth.isAuthenticated, api.updateById)
-// Update author
-router.put('/:id/author', auth.isAuthenticated, api.updateByIdAndAuthor)
 // Delete by ID
 router.delete('/:id', auth.isAuthenticated, api.deleteById)
 
