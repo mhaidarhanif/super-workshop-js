@@ -41,6 +41,7 @@
   "dependencies": {
     "axios": "0.15.3",
     "chai": "3.5.0",
+    "chai-arrays": "^0.0.1",
     "chai-http": "3.0.0",
     "chance": "1.0.4",
     "dotenv-extended": "1.0.4",

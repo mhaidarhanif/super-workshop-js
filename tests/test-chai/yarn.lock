@@ -35,6 +35,10 @@ buffer-shims@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/buffer-shims/-/buffer-shims-1.0.0.tgz#9978ce317388c649ad8793028c3477ef044a8b51"
 
+chai-arrays@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/chai-arrays/-/chai-arrays-0.0.1.tgz#273aa032f5bcfe0e7d99ef230cc6020214d3e008"
+
 chai-http@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/chai-http/-/chai-http-3.0.0.tgz#5460d8036e1f1a12b0b5b5cbd529e6dc1d31eb4b"
@@ -52,6 +56,10 @@ chai@3.5.0:
     assertion-error "^1.0.1"
     deep-eql "^0.1.3"
     type-detect "^1.0.0"
+
+chance@1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/chance/-/chance-1.0.4.tgz#2dbc3ea6ad0541f7f965bd0af25d1ca275c853c4"
 
 combined-stream@^1.0.5:
   version "1.0.5"
@@ -119,6 +127,10 @@ escape-string-regexp@1.0.5:
 extend@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/extend/-/extend-3.0.0.tgz#5a474353b9f3353ddd8176dfd37b91c83a46f1d4"
+
+faker@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/faker/-/faker-3.1.0.tgz#0f908faf4e6ec02524e54a57e432c5c013e08c9f"
 
 follow-redirects@1.0.0:
   version "1.0.0"
