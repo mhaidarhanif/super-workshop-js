@@ -4,13 +4,15 @@ const server = require(process.env.SERVER_DIR + 'server')
 const chai = require('chai')
 const chaiHTTP = require('chai-http')
 const expect = chai.expect
+
 chai.use(chaiHTTP)
 
 // -----------------------------------------------------------------------------
 
 describe('server-express', function () {
-  // ---------------------------------------------------------------------------
+  let res
 
+  // ---------------------------------------------------------------------------
   describe('setup', () => {
     it('expect ok to load', (done) => {
       expect(server).to.be.ok
@@ -19,7 +21,6 @@ describe('server-express', function () {
   })
 
   // ---------------------------------------------------------------------------
-
   describe('root', () => {
     it('expect json object that contains specific keys', (done) => {
       chai.request(server).get('/').then(res => {
@@ -31,7 +32,6 @@ describe('server-express', function () {
   })
 
   // ---------------------------------------------------------------------------
-
   describe('ping', () => {
     before(() => {
       chai.request(server).get('/ping').then(response => { res = response })
@@ -55,7 +55,6 @@ describe('server-express', function () {
   })
 
   // ---------------------------------------------------------------------------
-
   describe('api', function () {
     before(() => {
       chai.request(server).get('/api').then(response => { res = response })

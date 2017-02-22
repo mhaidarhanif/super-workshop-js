@@ -4,18 +4,16 @@ const server = require(process.env.SERVER_DIR + 'server')
 const chai = require('chai')
 const chaiHTTP = require('chai-http')
 const expect = chai.expect
+
 chai.use(chaiHTTP)
 
 // -----------------------------------------------------------------------------
 
 describe('accounts', () => {
-  let res
-
   // -------------------------------------------------------------------------
-
   describe('seed', () => {
     // -------------------------------------------------------------------------
-    describe.skip('super accounts', () => {
+    describe('super accounts', () => {
       it('expect to seed super', (done) => {
         chai.request(server).post('/api/accounts/actions/setup')
         .set('X-API-Key', process.env.API_KEY_SETUP)
@@ -31,8 +29,9 @@ describe('accounts', () => {
         .catch(err => { done(err) })
       })
     })
+
     // -------------------------------------------------------------------------
-    describe.skip('normal accounts', () => {
+    describe('normal accounts', () => {
       it('expect to seed normal', (done) => {
         chai.request(server).post('/api/accounts/actions/seed')
         .set('X-API-Key', process.env.API_KEY_SETUP)

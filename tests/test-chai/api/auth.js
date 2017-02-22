@@ -1,11 +1,19 @@
 require('dotenv-extended').load()
 const server = require(process.env.SERVER_DIR + 'server')
-const accountsController = require(process.env.SERVER_DIR + 'api/accounts/controller')
+
+// -----------------------------------------------------------------------------
 
 const chai = require('chai')
 const chaiHTTP = require('chai-http')
 const expect = chai.expect
+
 chai.use(chaiHTTP)
+
+// -----------------------------------------------------------------------------
+
+const resource = `account`
+const resources = `${resource}s`
+const endpoint = `/api/${resources}`
 
 // -----------------------------------------------------------------------------
 
@@ -13,7 +21,7 @@ const faker = require('faker')
 const Chance = require('chance')
 const chance = new Chance()
 
-const account = {}
+let account = {}
 account.first = faker.name.firstName()
 account.last = faker.name.lastName()
 account.name = `${account.first} ${account.last}`
@@ -24,27 +32,32 @@ account.birthDate = chance.birthday({type: 'adult'})
 account.image = faker.image.imageUrl()
 account.roles = 'user'
 
-// console.log(account)
-
 // -----------------------------------------------------------------------------
 
 describe('auth', () => {
   // ---------------------------------------------------------------------------
 
-  describe.skip('clear data', () => {
-    it('execute delete accounts', (done) => {
-      accountsController.deleteAccounts()
-      done()
+  describe('DELETE', () => {
+    it('delete all accounts', (done) => {
+      chai.request(server).delete(`${endpoint}/actions/delete`)
+        .set('X-API-Key', process.env.API_KEY_SETUP)
+        .then(res => {
+          expect(res.body).to.be.an('object')
+          done()
+        })
+        .catch(err => {
+          done(err)
+        })
     })
   })
 
   // ---------------------------------------------------------------------------
 
-  describe('root', () => {
-    it('execute request', (done) => {
+  describe('GET', () => {
+    it('root', (done) => {
       chai.request(server).get('/auth')
-      .then(response => { res = response; done() })
-      .catch(err => { res = err })
+        .then(response => { res = response; done() })
+        .catch(err => { res = err })
     })
 
     it('expect json object that contains specific keys', (done) => {
@@ -75,18 +88,14 @@ describe('auth', () => {
 
   // ---------------------------------------------------------------------------
   describe('sign up', () => {
+    let res
     // -------------------------------------------------------------------------
 
     describe('with no data', () => {
-      before(() => {
-        chai.request(server).post('/auth/signup')
-        .send({})
-        .then(response => res = response)
-        .catch(err => res = err)
-      })
-
       it('execute request', (done) => {
-        setTimeout(() => done(), 1)
+        chai.request(server).post('/auth/signup')
+          .then(response => { res = response; done() })
+          .catch(err => { res = err; done() }) // must be error
       })
 
       it('expect json object that contains specific keys', (done) => {
@@ -140,8 +149,8 @@ describe('auth', () => {
 
       before(() => {
         chai.request(server).post('/auth/signup').send(account)
-        .then(response => res = response)
-        .catch(err => res = err)
+        .then(response => { res = response })
+        .catch(err => { res = err })
       })
 
       it('execute request', (done) => {
@@ -170,8 +179,8 @@ describe('auth', () => {
     describe('with no username and password', () => {
       before(() => {
         chai.request(server).post('/auth/signin')
-        .then(response => res = response)
-        .catch(err => res = err)
+        .then(response => { res = response })
+        .catch(err => { res = err })
       })
 
       it('execute request', (done) => {
