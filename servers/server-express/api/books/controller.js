@@ -15,6 +15,7 @@ const Account = require('../accounts/model')
 const sendResponse = (res, err, data, message) => {
   if (err) {
     res.status(400).send({
+      s: false,
       id: 'book_error',
       e: `${err}`,
       m: 'Probably a duplicated data issue. Please check the potential book data which probably the same.'
@@ -27,6 +28,7 @@ const sendResponse = (res, err, data, message) => {
 const sendResponseNF = (res, err, data, message) => {
   if (err) {
     res.status(400).send({
+      s: false,
       id: 'book_error',
       e: `${err}`,
       m: 'Something wrong. Try again.'
@@ -54,72 +56,108 @@ module.exports = {
       if (err) res.status(400).send({ id: 'books_drop_error', e: `${err}` })
       console.log('[x] Dropped collection: books')
 
-      // Get the users you're looking for...
-      Account.findOne({ roles: 'user' }, (err, user) => {
+      // Get the admin you're looking for...
+      Account.findOne({ roles: { '$in': ['admin']} }, (err, user) => {
         if (err) res.status(400).send({ id: 'books_seed_find_users_error', m: err })
         if (!user) res.status(400).send({ id: 'books_seed_find_users_failed', m: 'Failed to find users.' })
-
         // Post seed books
-        Book.create(books, (err, data) => {
-          if (err) res.status(400).send({ id: 'books_seed_failed', m: 'Failed to seed books.' })
+        else {
+          Book.create(books, (err, data) => {
+            if (err) res.status(400).send({ id: 'books_seed_failed', m: 'Failed to seed books.' })
 
           // Put the one account id into book owners field
-          Book.update({}, {
-            $addToSet: {
-              'createdBy': user._id,
-              'updatedBy': user._id,
-              'owners': {owner: user._id}
-            }
-          }, {
-            multi: true, // add more than one items
-            new: true,   // return updated data
-            upsert: true // create new data if didn't exist yet
-          }, (err, info) => {
-            if (err) {
-              res.status(400).send({ id: 'account_book_error', e: `${err}`, m: 'Something wrong. Try again.' })
-            } else if (!info) {
-              res.status(404).send({ id: 'account_book_data_failed', m: `Failed to update books' owners.` })
-            } else {
-              // --------------------
+            Book.update({}, {
+              $addToSet: {
+                'createdBy': user._id,
+                'updatedBy': user._id,
+                'owners': {owner: user._id}
+              }
+            }, {
+              multi: true, // add more than one items
+              new: true,   // return updated data
+              upsert: true // create new data if didn't exist yet
+            }, (err, info) => {
+              if (err) {
+                res.status(400).send({ id: 'account_book_error', e: `${err}`, m: 'Something wrong. Try again.' })
+              } else if (!info) {
+                res.status(404).send({ id: 'account_book_data_failed', m: `Failed to update books' owners.` })
+              } else {
               // Finally send the info
-              res.status(200).send({
-                books: { s: true, id: 'books_seed_success', m: `Successfully seeded some books.` }
-              })
-            }
+                res.status(200).send({
+                  books: { s: true, id: 'books_seed_success', m: `Successfully seeded some books.` }
+                })
+              }
+            })
           })
-        })
+        }
       })
     })
   },
 
   /* ---------------------------------------------------------------------------
-   * @api {get} /books/actions/seed-lot Seed a lot of books
+   * @api {get} //actions/seed-lot
    */
   seedBooksLot: (req, res) => {
-    // Drop the collection first...
-    mongoose.connection.db.dropCollection('books', (err, result) => {
-      if (err) res.status(400).send({ id: 'books_drop_error', e: `${err}` })
-      // Then we can seed a lot of them!
-      if (result) {
+    // Get the admin you're looking for...
+    Account.findOne({ roles: { '$in': ['admin']} }, (err, user) => {
+      if (err) res.status(400).send({ id: 'books_seed_find_users_error', m: err })
+      if (!user) res.status(400).send({ id: 'books_seed_find_users_failed', m: 'Failed to find users.' })
+      // Post seed a lot of books
+      else {
         Book.create(booksLot, (err, data) => {
           if (err) res.status(400).send({ id: 'books_seed_lot_failed', m: 'Failed to seed a lot of books.' })
-          res.status(200).send({
-            books: { s: true, id: 'books_seed_lot_success', m: `Successfully seeded a lot of books.` }
-          })
+          else {
+            // Put the one account id into book owners field
+            Book.update({}, {
+              $addToSet: {
+                'createdBy': user._id,
+                'updatedBy': user._id,
+                'owners': {owner: user._id}
+              }
+            }, {
+              multi: true, // add more than one items
+              new: true,   // return updated data
+              upsert: true // create new data if didn't exist yet
+            }, (err, info) => {
+              if (err) {
+                res.status(400).send({
+                  s: false,
+                  id: 'account_book_error',
+                  e: `${err}`,
+                  m: 'Something wrong. Try again.'
+                })
+              } else if (!info) {
+                res.status(404).send({
+                  s: false,
+                  id: 'account_book_data_failed',
+                  e: `${err}`,
+                  m: `Failed to update books' owners.`
+                })
+              } else {
+            // Finally send the info
+                res.status(200).send({
+                  books: {
+                    s: true,
+                    id: 'books_seed_lot_success',
+                    m: `Successfully seeded some books.`
+                  }
+                })
+              }
+            })
+          }
         })
       }
     })
   },
 
   /* ---------------------------------------------------------------------------
-   * @api {get} /books Delete all books
+   * @api {delete} /
    */
   deleteBooks: (req, res) => {
-    Book.remove().exec((err, data) => {
-      // console.log('deleteBooks:', data)
-      if (err) res.status(400).send({ id: 'book_delete_error', e: `Error: ${err}` })
-      else if (!data) res.status(404).send({ id: 'book_delete_failed', m: 'Data already empty.' })
-      else res.status(200).send({ m: `All books have been removed.` })
+    Book.remove().exec((err, result) => {
+      if (err) res.status(400).send({books: { s: false, id: 'book_delete_error', e: `${err}` }})
+      else if (!result) res.status(404).send({books: { s: false, id: 'book_delete_failed', m: 'Something went wrong.', e: `${err}` }})
+      else res.status(200).send({books: { s: true, id: 'book_delete_success', m: `All books have been removed.` }})
     })
   },
 
@@ -128,7 +166,7 @@ module.exports = {
   // ---------------------------------------------------------------------------
 
   /* ---------------------------------------------------------------------------
-   * @api {get} /books?page=1 Get all books with pagination
+   * @api {get} /?page=1
    */
   getBooks: (req, res) => {
     Book
@@ -147,7 +185,7 @@ module.exports = {
   },
 
   /* ---------------------------------------------------------------------------
-   * @api {get} /books/all Get all books without pagination
+   * @api {get} //all
    */
   getBooksAll: (req, res) => {
     Book
@@ -162,45 +200,51 @@ module.exports = {
   },
 
   /* ---------------------------------------------------------------------------
-   * @api {post} /books Post a new book
+   * @api {post} /
    */
   postBook: (req, res) => {
-    const data = {}
-    data.isbn = req.body.isbn
-    data.title = req.body.title
-    data.price = req.body.price
-    data.createdBy = req.decoded.id
-    data.updatedBy = req.decoded.id
+    const data = {
+      isbn: req.body.isbn,
+      title: req.body.title,
+      price: req.body.price,
+      createdBy: req.decoded.sub,
+      updatedBy: req.decoded.sub
+    }
 
-    Book.create(data, (err) => {
+    console.log('.....', data)
+
+    Book.create(data, (err, data) => {
       // console.log('postBook:', data)
-      sendResponse(res, err, data, `Book with ISBN ${req.body.isbn} is probably already exist.`)
+      sendResponse(res, err, data, `Book with ISBN ${data.isbn} is probably already exist.`)
     })
   },
 
   /* ---------------------------------------------------------------------------
-   * @api {post} /books Post a new book with data
+   * @api {post} /
    */
   postBookAndOwner: (req, res) => {
-    const book = {
+    const data = {
       isbn: req.body.isbn,
       title: req.body.title,
       price: req.body.price,
-      owner: {
-        id: req.body.ownerId
+      createdBy: req.decoded.sub,
+      updatedBy: req.decoded.sub,
+      owners: {
+        owner: req.decoded.sub
       }
     }
-    console.log({book})
+
+    console.log({book: {data}})
 
     Book
-      .create(book, (err, data) => {
+      .create(data, (err, data) => {
         // console.log('postBookWithOwner:', data)
         sendResponse(res, err, data, `Failed to post book with ISBN ${req.body.isbn}.`)
       })
   },
 
   /* ---------------------------------------------------------------------------
-   * @api {post} /books/search Search some books
+   * @api {post} //search Search some books
    */
   searchBooks: (req, res) => {
     let book = {}
@@ -220,7 +264,7 @@ module.exports = {
   },
 
   /* ---------------------------------------------------------------------------
-   * @api {get} /books/:isbn Get book by ISBN
+   * @api {get} /:isbn Get book by ISBN
    */
   getBookByISBN: (req, res) => {
     Book.findOne({
@@ -234,7 +278,7 @@ module.exports = {
   },
 
   /* ---------------------------------------------------------------------------
-   * @api {delete} /books/:isbn Delete book by ISBN
+   * @api {delete} /:isbn Delete book by ISBN
    */
   deleteBookByISBN: (req, res) => {
     let updated = {
@@ -260,7 +304,7 @@ module.exports = {
       books: { '$in': [req.params.isbn] }
     }, {
       $pull: { 'books': req.params.isbn },
-      $addToSet: { 'updatedBy': req.decoded.id }
+      $addToSet: { 'updatedBy': req.decoded.sub }
     }, {
       multi: true,
       new: true,
@@ -286,20 +330,15 @@ module.exports = {
   },
 
   /* ---------------------------------------------------------------------------
-   * @api {put} /books/:isbn Update book by ISBN
+   * @api {put} /:isbn
    */
   updateBookByISBN: (req, res) => {
     // Prepare required data
     let book = {}
-    if (req.body.isbn) book.isbn = req.body.isbn
+    if (req.body.isbn) book.isbn = String(req.body.isbn)
     if (req.body.title) book.title = req.body.title
     if (req.body.price) book.price = req.body.price
     console.log({book})
-
-    // Check if the required data are exist
-    if (!R.isEmpty(book)) {
-      res.status(422).send({ id: 'book_update_no_data', m: `Failed to update book with no data.` })
-    }
 
     // Update existing book data with new book data
     Book.findOneAndUpdate({
@@ -307,7 +346,7 @@ module.exports = {
     }, {
       $set: book,
       $addToSet: { // only add if not exist
-        'updatedBy': req.decoded.id
+        'updatedBy': req.decoded.sub
       }
     }, {
       new: true,    // return the modified document
@@ -319,7 +358,7 @@ module.exports = {
   },
 
   /* ---------------------------------------------------------------------------
-   * @api {put} /books/:isbn/owner Update book by ISBN to put with owner
+   * @api {put} /:isbn/owner Update book by ISBN to put with owner
    */
   updateBookByISBNAndOwner: (req, res) => {
     // Prepare response data
@@ -358,7 +397,7 @@ module.exports = {
 
     // Assign book ISBN to account's books
     Account.findOneAndUpdate({
-      accountId: req.decoded.id
+      _id: req.decoded.sub
     }, {
       $addToSet: {
         'updatedBy': req.decoded.sub,

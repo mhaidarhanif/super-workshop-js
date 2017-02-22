@@ -13,7 +13,7 @@ router.post('/actions/seed', [auth.isWithAPIKey, auth.isSetup], api.seedBooks)
 // Seed a lot of books
 router.post('/actions/seed-lot', [auth.isWithAPIKey, auth.isSetup], api.seedBooksLot)
 // Delete all books
-router.delete('/actions/delete', auth.isAdmin, api.deleteBooks)
+router.delete('/actions/delete', [auth.isWithAPIKey, auth.isSetup], api.deleteBooks)
 
 // -----------------------------------------------------------------------------
 // AUTHENTICATED ACCOUNT

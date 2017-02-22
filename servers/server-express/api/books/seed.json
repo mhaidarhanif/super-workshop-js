@@ -1,5 +1,3 @@
 [
-{ "isbn": "000", "title": "Zero Hero", "price": 10},
-{ "isbn": "001", "title": "One Only", "price": 11},
-{ "isbn": "002", "title": "Two Times", "price": 12}
+{ "isbn": "000", "title": "Zero Hero", "price": 10}
 ]
