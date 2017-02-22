@@ -11,7 +11,7 @@ const auth = module.exports = {
    * Info about this route
    */
   getInfo: (req, res) => {
-    res.json({
+    res.send({
       id: 'auth',
       m: 'Check the endpoints',
       i: req.info,
@@ -52,7 +52,7 @@ const auth = module.exports = {
       })
     } else {
       req.info = { id: 'user_no_token', m: 'You did not pass a token.' }
-      next()
+      return next()
     }
   },
 
@@ -140,19 +140,17 @@ const auth = module.exports = {
                 expiresIn: '30d' // EXPIRATION: 30 days
               }
             }
-            console.log(content)
+            // console.log(content)
 
             // Assign admin flag if required
-            if (account.roles === 'admin') {
-              content.payload.admin = true
-            }
+            if (account.roles === 'admin') content.payload.admin = true
 
             // Generate a token
             const token = auth.generateJWT(content)
-            console.log({
-              username: content.payload.username,
-              token: token
-            })
+            // console.log({
+            //   username: content.payload.username,
+            //   token: token
+            // })
 
             // Finally send that token
             res.status(200).json({
@@ -161,7 +159,7 @@ const auth = module.exports = {
           }
         })
         .catch(err => {
-          if (err) res.status(422).json({ id: 'signin_failed', e: err.message })
+          if (err) res.status(422).json({ id: 'signin_failed', e: `Sign in failed because account with username '${req.body.username}' is not found` })
         })
         // Finish sign in
     }
@@ -193,7 +191,7 @@ const auth = module.exports = {
       'username': req.body.username
     }, (err, count) => {
       if (err) res.status(422).json({ s: false, id: 'account_exist', m: 'Failed to check account existency.' })
-      else if (count === 0) next()
+      else if (count === 0) return next()
       else res.status(400).json({ id: 'account_info_exist', m: `Account with username '${req.body.username}' is already exist.` })
     })
   },
@@ -203,14 +201,10 @@ const auth = module.exports = {
    */
   isAuthenticated: (req, res, next) => {
     // Check for token from various ways
-    let token
-    if (req.body.token) token = req.body.token
-    else if (req.query.token) token = req.query.token
-    else if (req.headers.authorization) token = req.headers.authorization.split(' ')[1]
-    else token = 0
+    const token = req.body.token || req.query.token || req.headers.authorization.split(' ')[1] || 0
 
     // There's a token coming in!
-    console.log({token})
+    // console.log({token})
 
     // Decode the token if it's available
     if (token !== 0) {
@@ -221,7 +215,7 @@ const auth = module.exports = {
         // If everything is good, save to request for use in other routes
         else req.decoded = decoded
 
-        console.log({decoded: req.decoded})
+        // console.log({decoded: req.decoded})
 
         // Find the account based on the token subject
         Account.findById(req.decoded.sub, (err, account) => {
@@ -231,7 +225,7 @@ const auth = module.exports = {
           } else {
             // There's the account! Finally sure that actual account is authenticated with valid token
             // console.log({account})
-            next()
+            return next()
           }
         })
       })
@@ -258,7 +252,7 @@ const auth = module.exports = {
         if (err) res.status(401).json({ s: false, id: 'auth_failed', m: 'Failed to authenticate token.', e: err })
         else if (decoded.admin === true) {
           // console.log({decoded})
-          next()
+          return next()
         } else {
           res.status(403).send({ s: false, id: 'auth_not_admin', m: `Account '${decoded.name}' is not an admin.`, e: err })
         }
@@ -277,7 +271,7 @@ const auth = module.exports = {
     // Check for X-API-Key from various ways
     req.apikey = req.body['x-api-key'] || req.query['x-api-key'] || req.headers['x-api-key'] || null
     // console.log('X-API-Key:', req.apikey)
-    if (req.apikey !== null) next()
+    if (req.apikey !== null) return next()
     else res.status(401).send({ s: false, m: 'Sorry, no access without API key.' })
   },
 
@@ -285,7 +279,7 @@ const auth = module.exports = {
    * Check whether the environment is a setup via API Key
    */
   isSetup: (req, res, next) => {
-    if (req.apikey === process.env.API_KEY_SETUP) next()
+    if (req.apikey === process.env.API_KEY_SETUP) return next()
     else if (req.apikey !== process.env.API_KEY_SETUP) res.status(403).send({ s: false, m: 'Sorry, initial setup need valid key.' })
     else res.status(401).send({ s: false, m: 'Sorry, initial setup need a key.' })
   },
@@ -294,7 +288,7 @@ const auth = module.exports = {
    * Check whether the environment is a test via API Key
    */
   isTest: (req, res, next) => {
-    if (req.apikey === process.env.API_KEY_TEST) next()
+    if (req.apikey === process.env.API_KEY_TEST) return next()
     else if (req.apikey !== process.env.API_KEY_TEST) res.status(403).send({ s: false, m: 'Sorry, test mode need valid key.' })
     else res.status(401).send({ s: false, m: 'Sorry, test mode need a key.' })
   }

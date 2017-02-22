@@ -38,32 +38,39 @@ router.post('/password/actions/confirm', (req, res) => { res.status(501).json({m
 
 // IS WITH TOKEN?
 // Require 'Authorization: Bearer JWT' (Optional)
-router.get('/is-with-token', auth.isWithToken, (req, res) => { res.json(req.info) })
-router.post('/is-with-token', auth.isWithToken, (req, res) => { res.json(req.info) })
+router.get('/is-with-token', auth.isWithToken, (req, res) => { res.send(req.info) })
+router.post('/is-with-token', auth.isWithToken, (req, res) => { res.send(req.info) })
 
 // IS ACCOUNT EXIST?
 // Require 'username'
-router.post('/is-account-exist', auth.isAccountExist, (req, res) => { res.json({m: `Account with username '${req.body.username}' is available.`}) })
+router.post('/is-account-exist', auth.isAccountExist, (req, res) => { res.send({m: `Account with username '${req.body.username}' is available.`}) })
 
 // IS AUTHENTICATED?
 // Require 'Authorization: Bearer JWT'
-router.post('/is-authenticated', auth.isAuthenticated, (req, res) => { res.json({m: `Account with that token is authenticated.`}) })
+router.post('/is-authenticated', auth.isAuthenticated, (req, res) => {
+  res.send({
+    decoded: {
+      sub: req.decoded.sub,
+      m: `Account with that token is authenticated.`
+    }
+  })
+})
 
 // IS ADMIN?
 // Require 'Authorization: Bearer JWT' with Admin role
-router.post('/is-admin', auth.isAdmin, (req, res) => { res.json({m: `Account with that token is an admin.`}) })
+router.post('/is-admin', auth.isAdmin, (req, res) => { res.send({m: `Account with that token is an admin.`}) })
 
 // IS WITH API KEY?
 // Require 'X-API-Key: String'
-router.post('/is-with-api-key', auth.isWithAPIKey, (req, res) => { res.json({m: `Accepted API Key: ${req.apikey}`}) })
+router.post('/is-with-api-key', auth.isWithAPIKey, (req, res) => { res.send({m: `Accepted API Key: ${req.apikey}`}) })
 
 // IS SETUP?
 // Require 'X-API-Key: String' with setup secret
-router.post('/is-setup', [auth.isWithAPIKey, auth.isSetup], (req, res) => { res.json({m: `Accepted as a setup environment.`}) })
+router.post('/is-setup', [auth.isWithAPIKey, auth.isSetup], (req, res) => { res.send({m: `Accepted as a setup environment.`}) })
 
 // IS TEST?
 // Require 'X-API-Key: String' with test secret
-router.post('/is-test', [auth.isWithAPIKey, auth.isTest], (req, res) => { res.json({m: `Accepted as a test environment.`}) })
+router.post('/is-test', [auth.isWithAPIKey, auth.isTest], (req, res) => { res.send({m: `Accepted as a test environment.`}) })
 
 // -----------------------------------------------------------------------------
 // OAUTH THIRD PARTY
