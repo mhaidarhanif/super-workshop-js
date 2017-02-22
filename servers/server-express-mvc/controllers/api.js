@@ -22,7 +22,7 @@ module.exports = {
   */
   ping: (req, res) => {
     console.log('ping')
-    res.json({ 'message': 'PONG!' })
+    res.send({ 'message': 'PONG!' })
   }
 
 }

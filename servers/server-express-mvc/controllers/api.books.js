@@ -178,7 +178,7 @@ module.exports = {
       if (err) return res.status(500).send(err)
       else if (err) res.status(400).json({ 'error': `Error: ${err}` })
       else if (!data) res.status(304).json({ 'message': `Failed to search books with params: ${params}` })
-      else res.json(data)
+      else res.send(data)
     })
   },
 

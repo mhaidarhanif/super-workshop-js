@@ -21,8 +21,8 @@ const Auth = module.exports = {
       email: req.body.email
     }), req.body.password,
     (err, account) => {
-      if (err) res.json({ error: err.message })
-      if (!account) res.json({ success: false, message: 'Sign up failed.' })
+      if (err) res.send({ error: err.message })
+      if (!account) res.send({ success: false, message: 'Sign up failed.' })
 
       // Automatically sign in after successful sign up
       Auth.signin(req, res, next)
@@ -76,9 +76,9 @@ const Auth = module.exports = {
     Account.count({
       username: req.body.username
     }, (err, count) => {
-      if (err) return res.json({ success: false, message: 'Failed to check Account existency.' })
+      if (err) return res.send({ success: false, message: 'Failed to check Account existency.' })
       else if (count === 0) next()
-      else return res.json({ 'message': `Account with username ${req.body.username} is already exist.` })
+      else return res.send({ 'message': `Account with username ${req.body.username} is already exist.` })
     })
   },
 
@@ -97,7 +97,7 @@ const Auth = module.exports = {
       // Verifies secret and checks expiration
       jwt.verify(token, process.env.SECRET, (err, decoded) => {
         if (err) {
-          return res.json({
+          return res.send({
             success: false,
             message: 'Failed to authenticate token.'
           })
