@@ -11,7 +11,7 @@ before_install:
 before_script:
   - yarn
   - cd ../../servers/server-express
-  - npm install
+  - yarn
   - cd ../../tests/test-chai
 script:
   - npm test
