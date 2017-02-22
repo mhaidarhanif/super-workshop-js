@@ -24,8 +24,8 @@ router.get('/', auth.isAdmin, api.getAccounts)
 // PROFILE
 // -----------------------------------------------------------------------------
 
-router.post('/profile/actions/edit-profile', auth.isAuthenticated, (req, res) => { res.json({m: `Profile has been updated.`}) })
-router.post('/profile/actions/edit-image', auth.isAuthenticated, (req, res) => { res.json({m: `Profile image or avatar has been updated.`}) })
+router.post('/profile/actions/edit-profile', auth.isAuthenticated, (req, res) => { res.send({m: `Profile has been updated.`}) })
+router.post('/profile/actions/edit-image', auth.isAuthenticated, (req, res) => { res.send({m: `Profile image or avatar has been updated.`}) })
 
 // -----------------------------------------------------------------------------
 // PUBLIC

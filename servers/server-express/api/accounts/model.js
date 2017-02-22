@@ -3,6 +3,7 @@ Account is a Person: A person is either alive, dead, undead, or fictional.
 http://schema.org/Person
 */
 
+const winston = require('winston')
 const bcrypt = require('bcryptjs')
 const mongoose = require('mongoose')
 const sequence = require('mongoose-sequence')
@@ -227,22 +228,22 @@ AccountSchema.pre('save', function (next) {
   // assign created by who
   if (this.createdBy.length === 0) this.createdBy = this._id
   // only hash the password if it has been modified (or is new)
-  if (!this.isModified('password')) next()
+  if (!this.isModified('password')) return next()
   else {
     // Generate salt with predefined factor
     // BEWARE! We cannot do these in synchronous way
     bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
-      if (err) next(err)
+      if (err) return next(err)
       else {
         // Generate hash with current plain password and salt
         bcrypt.hash(this.password, salt, (err, hash) => {
-          if (err) next(err)
+          if (err) return next(err)
           else {
             // override the clear text password with the hashed one
             this.password = hash
             this.hash = hash
             this.salt = salt
-            next() // finally!
+            return next() // finally!
           }
         })
       }
@@ -251,16 +252,16 @@ AccountSchema.pre('save', function (next) {
 })
 
 AccountSchema.post('init', function (doc) {
-  console.log(`[i] ACCOUNT: ${doc._id} ${doc.username} has been initialized`)
+  // console.log(`[i] ACCOUNT: ${doc._id} ${doc.username} has been initialized`)
 })
 AccountSchema.post('validate', function (doc) {
-  console.log(`[i] ACCOUNT: ${doc._id} ${doc.username} has been validated (but not saved yet)`)
+  // console.log(`[i] ACCOUNT: ${doc._id} ${doc.username} has been validated (but not saved yet)`)
 })
 AccountSchema.post('save', function (doc) {
-  console.log(`[i] ACCOUNT: ${doc._id} ${doc.username} has been saved`)
+  // console.log(`[i] ACCOUNT: ${doc._id} ${doc.username} has been saved`)
 })
 AccountSchema.post('remove', function (doc) {
-  console.log(`[i] ACCOUNT: ${doc._id} ${doc.username} has been removed`)
+  // console.log(`[i] ACCOUNT: ${doc._id} ${doc.username} has been removed`)
 })
 
 // -----------------------------------------------------------------------------

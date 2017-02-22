@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+const AuthController = require('../../auth/controller')
 const Account = require('./model')
 const superAccounts = require('./seed.super.json')
 const normalAccounts = require('./seed.json')
@@ -11,17 +12,17 @@ module.exports = {
   // ---------------------------------------------------------------------------
 
   /* ---------------------------------------------------------------------------
-   * @api {get} Seed super accounts
+   * @api {post} Seed super accounts
    */
   seedSuperAccounts: (req, res) => {
     // Drop all collections
     mongoose.connection.db.dropCollection('counters', (err, result) => {
       if (err) res.status(400).json({ id: 'counters_drop_error', e: `${err}` })
-      console.log('[x] Dropped collection: counters')
+      console.log(`[x] ACCOUNT SEED: Dropped collection 'counters'`)
     })
     mongoose.connection.db.dropCollection('accounts', (err, result) => {
       if (err) res.status(400).json({ id: 'accounts_drop_error', e: `${err}` })
-      console.log('[x] Dropped collection: accounts')
+      console.log(`[x] ACCOUNT SEED: Dropped collection 'accounts'`)
     })
 
     // Seed them
@@ -42,7 +43,7 @@ module.exports = {
   },
 
   /* ---------------------------------------------------------------------------
-   * @api {get} Seed some accounts
+   * @api {post} Seed some accounts
    */
   seedAccounts: (req, res) => {
     Account
@@ -61,7 +62,7 @@ module.exports = {
   },
 
   /* ---------------------------------------------------------------------------
-   * @api {get} Seed accounts <entities> collection
+   * @api {post} Seed accounts <entities> collection
    */
   seedAccountsEntities: (req, res) => {
     Account
