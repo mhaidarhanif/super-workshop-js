@@ -5,13 +5,16 @@
 | Code | Title | Description |
 |------|-------|-------------|
 | `200` | OK | The request was successful.
-| `201` | Created | The resource was successfully created.
-| `202` | Async created | The resource was asynchronously created.
-| `400` | Bad request | Bad request.
-| `422` | Validation error | A validation error occurred.
-| `401` | Unauthorized | Your API key is invalid.
-| `404` | Not found | The resource does not exist.
-| `50X` | Internal Server Error | An error occurred with our API.
+| `201` | CREATED | The resource was successfully created.
+| `202` | ASYNC CREATED | The resource was asynchronously created.
+| `304` | NOT MODIFIED | The resource cannot be modified.
+| `400` | BAD REQUEST | Bad request.
+| `401` | UNAUTHORIZED | Your API key is invalid.
+| `404` | NOT FOUND | The resource does not exist.
+| `409` | CONFLICT | The request could not be completed due to a conflict.
+| `410` | GONE | The target resource is no longer available.
+| `422` | VALIDATION ERROR | A validation error occurred.
+| `50X` | INTERNAL SERVER ERROR | An error occurred with our API.
 
 ## All
 
