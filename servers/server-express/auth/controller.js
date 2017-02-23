@@ -3,7 +3,7 @@ const Account = require('../api/accounts/model')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
-require('../config/auth.schema')(passport)
+require('./providers')(passport)
 
 const auth = module.exports = {
 
