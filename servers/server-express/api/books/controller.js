@@ -54,23 +54,22 @@ module.exports = {
     // Drop books collection
     mongoose.connection.db.dropCollection('books', (err, result) => {
       if (err) res.status(400).send({ id: 'books_drop_error', e: `${err}` })
-      console.log('[x] Dropped collection: books')
+      console.log(`[x] ACCOUNT SEED: Dropped collection 'books'`)
 
       // Get the admin you're looking for...
-      Account.findOne({ roles: { '$in': ['admin']} }, (err, user) => {
-        if (err) res.status(400).send({ id: 'books_seed_find_users_error', m: err })
-        if (!user) res.status(400).send({ id: 'books_seed_find_users_failed', m: 'Failed to find users.' })
+      Account.findOne({ roles: { '$in': ['admin']} }, (err, admin) => {
+        if (err) res.status(400).send({ id: 'books_seed_find_admin_error', m: err })
+        if (!user) res.status(400).send({ id: 'books_seed_find_admin_failed', m: 'Failed to find admin.' })
         // Post seed books
         else {
           Book.create(books, (err, data) => {
             if (err) res.status(400).send({ id: 'books_seed_failed', m: 'Failed to seed books.' })
-
-          // Put the one account id into book owners field
+            // Put the admin id into book owners field
             Book.update({}, {
               $addToSet: {
-                'createdBy': user._id,
-                'updatedBy': user._id,
-                'owners': {owner: user._id}
+                'createdBy': admin._id,
+                'updatedBy': admin._id,
+                'owners': {owner: admin._id}
               }
             }, {
               multi: true, // add more than one items
@@ -95,7 +94,7 @@ module.exports = {
   },
 
   /* ---------------------------------------------------------------------------
-   * @api {get} //actions/seed-lot
+   * @api {get} /actions/seed-lot
    */
   seedBooksLot: (req, res) => {
     // Get the admin you're looking for...
@@ -185,7 +184,7 @@ module.exports = {
   },
 
   /* ---------------------------------------------------------------------------
-   * @api {get} //all
+   * @api {get} /all
    */
   getBooksAll: (req, res) => {
     Book
@@ -244,7 +243,7 @@ module.exports = {
   },
 
   /* ---------------------------------------------------------------------------
-   * @api {post} //search Search some books
+   * @api {post} /search Search some books
    */
   searchBooks: (req, res) => {
     let book = {}
