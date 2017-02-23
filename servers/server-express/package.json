@@ -36,7 +36,7 @@
   },
   "homepage": "https://github.com/mhaidarh/super-workshop-js#readme",
   "dependencies": {
-    "bcryptjs": "2.4.0",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.15.2",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.1",
@@ -57,7 +57,7 @@
     "passport-github": "^1.1.0",
     "passport-google-oauth": "^1.0.0",
     "passport-twitter": "^1.0.4",
-    "ramda": "0.23.0",
+    "ramda": "^0.23.0",
     "request-ip": "1.2.3",
     "winston": "^2.3.1"
   },
