@@ -1,0 +1,30 @@
+{
+  "name": "super-workshop-js",
+  "version": "1.0.0",
+  "description": "Super Workshop JavaScript",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mhaidarh/super-workshop-js.git"
+  },
+  "keywords": [
+    "super",
+    "workshop",
+    "javascript"
+  ],
+  "author": "M Haidar Hanif <npm@mhaidarhanif.com> (https://mhaidarhanif.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mhaidarh/super-workshop-js/issues"
+  },
+  "homepage": "https://github.com/mhaidarh/super-workshop-js#readme",
+  "devDependencies": {
+    "bithound": "^1.7.0"
+  }
+}
