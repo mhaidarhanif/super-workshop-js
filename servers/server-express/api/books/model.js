@@ -1,14 +1,14 @@
+/*
+Book: A collection of pages
+http://schema.org/Book
+*/
+
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const sequence = require('mongoose-sequence')
 const mongoosePaginate = require('mongoose-paginate')
-
 // const searchPlugin = require('mongoose-search-plugin')
 // const textSearch = require('mongoose-text-search')
-
-const statusTypes = ['unknown', 'available', 'unavailable', 'rare']
-
-// -----------------------------------------------------------------------------
 
 mongoosePaginate.paginate.options = {
   // lean: true,
@@ -19,8 +19,20 @@ mongoosePaginate.paginate.options = {
 }
 
 // -----------------------------------------------------------------------------
+// PRECONFIGURATION
 
-const BookSchema = new Schema({
+const modelName = 'Book'
+
+const statusTypes = [
+  'unknown',
+  'available',
+  'unavailable',
+  'rare'
+]
+
+// -----------------------------------------------------------------------------
+
+const schema = new Schema({
   isbn: {
     type: String,
     unique: true,
@@ -79,23 +91,27 @@ const BookSchema = new Schema({
 
 // -----------------------------------------------------------------------------
 // AUTO INCREMENT ID
-BookSchema.plugin(sequence, { inc_field: 'bookId' })
+
+schema.plugin(sequence, { inc_field: 'bookId' })
 
 // -----------------------------------------------------------------------------
 // PAGINATION
-BookSchema.plugin(mongoosePaginate)
+
+schema.plugin(mongoosePaginate)
 
 // -----------------------------------------------------------------------------
 // ADDITIONALS
-BookSchema.virtual('lenders', {
+
+schema.virtual('lenders', {
   ref: 'Account',
   localField: 'owners', // Find account where `localField`
   foreignField: 'books' // is equal to `foreignField`
 })
 
 // -----------------------------------------------------------------------------
-// POPULATE
-BookSchema.pre('find', function (next) {
+// DATA POPULATION
+
+schema.pre('find', function (next) {
   this.select({ __v: false })
   this.populate([
     {path: 'owners.owner', select: 'username name'},
@@ -104,7 +120,8 @@ BookSchema.pre('find', function (next) {
   ])
   next()
 })
-BookSchema.pre('findOne', function (next) {
+
+schema.pre('findOne', function (next) {
   this.select({ __v: false })
   this.populate([
     {path: 'owners.owner', select: 'username name'},
@@ -118,15 +135,15 @@ BookSchema.pre('findOne', function (next) {
 // FULL TEXT SEARCH
 
 // Give our schema text search capabilities
-// BookSchema.plugin(searchPlugin, {
+// schema.plugin(searchPlugin, {
 //   fields: ['isbn', 'name', 'price']
 // })
 
 // Give our schema text search capabilities
-// BookSchema.plugin(textSearch)
+// schema.plugin(textSearch)
 
 // Add a text index
-// BookSchema.index({ name: 'text' })
+// schema.index({ name: 'text' })
 // -----------------------------------------------------------------------------
 
-module.exports = mongoose.model('Book', BookSchema)
+module.exports = mongoose.model(modelName, schema)

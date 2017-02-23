@@ -3,13 +3,16 @@ Account is a Person: A person is either alive, dead, undead, or fictional.
 http://schema.org/Person
 */
 
-const winston = require('winston')
 const bcrypt = require('bcryptjs')
 const mongoose = require('mongoose')
 const sequence = require('mongoose-sequence')
 const validate = require('mongoose-validator')
-
 const Schema = mongoose.Schema
+
+// -----------------------------------------------------------------------------
+// PRECONFIGURATION
+
+const modelName = 'Account'
 
 const roleTypes = [
   'super',
@@ -68,7 +71,7 @@ const validateURL = [validate({ validator: 'isURL', message: 'URL must be a vali
 // -----------------------------------------------------------------------------
 // SCHEMA
 
-const AccountSchema = new Schema({
+const schema = new Schema({
   // Internal
   name: {
     type: String,
@@ -213,7 +216,7 @@ const AccountSchema = new Schema({
 // GENERATED FIELDS
 
 // Auto increment accountId
-AccountSchema.plugin(sequence, { inc_field: 'accountId' })
+schema.plugin(sequence, { inc_field: 'accountId' })
 
 // -----------------------------------------------------------------------------
 // MIDDLEWARES
@@ -221,7 +224,7 @@ AccountSchema.plugin(sequence, { inc_field: 'accountId' })
 // - PASSWORD HASH + SALT GENERATOR
 
 // BEWARE! We cannot define the same mongoose middlewares separately
-AccountSchema.pre('save', function (next) {
+schema.pre('save', function (next) {
   // assign roles
   if (this.username === 'super') this.roles.push('super')
   if (this.username === ('super' || 'admin')) this.roles.push('admin')
@@ -251,16 +254,16 @@ AccountSchema.pre('save', function (next) {
   }
 })
 
-AccountSchema.post('init', function (doc) {
+schema.post('init', function (doc) {
   // console.log(`[i] ACCOUNT: ${doc._id} ${doc.username} has been initialized`)
 })
-AccountSchema.post('validate', function (doc) {
+schema.post('validate', function (doc) {
   // console.log(`[i] ACCOUNT: ${doc._id} ${doc.username} has been validated (but not saved yet)`)
 })
-AccountSchema.post('save', function (doc) {
+schema.post('save', function (doc) {
   // console.log(`[i] ACCOUNT: ${doc._id} ${doc.username} has been saved`)
 })
-AccountSchema.post('remove', function (doc) {
+schema.post('remove', function (doc) {
   // console.log(`[i] ACCOUNT: ${doc._id} ${doc.username} has been removed`)
 })
 
@@ -268,7 +271,7 @@ AccountSchema.post('remove', function (doc) {
 // EXTRA INFORMATION
 
 // Public profile information
-AccountSchema.virtual('profile').get(function () {
+schema.virtual('profile').get(function () {
   return {
     username: this.username,
     name: this.name,
@@ -288,31 +291,35 @@ AccountSchema.virtual('profile').get(function () {
 })
 
 // Non-sensitive info we'll be putting in the token
-AccountSchema.virtual('token').get(function () {
+schema.virtual('token').get(function () {
   return { _id: this._id, name: this.name, username: this.username, role: this.role }
 })
 
 // -----------------------------------------------------------------------------
 // DATA POPULATION
 
-AccountSchema.pre('find', function (next) {
+schema.pre('find', function (next) {
   this.populate('books.book', 'title')
   next()
 })
 
-AccountSchema.pre('findOne', function (next) {
+schema.pre('findOne', function (next) {
   this.populate('books.book', 'title')
   next()
 })
 
-// AccountSchema.plugin(deepPopulate)
+schema.pre('update', function () {
+  this.update({}, { $set: { updatedAt: new Date() } })
+})
 
-// AccountSchema.pre('find', function (next) {
+// schema.plugin(deepPopulate)
+
+// schema.pre('find', function (next) {
 //   this.populate('books.isbn', 'name')
 //   next()
 // })
 
-// AccountSchema.pre('findOne', function (next) {
+// schema.pre('findOne', function (next) {
 //   this.populate('books.isbn', 'name')
 //   next()
 // })
@@ -320,4 +327,4 @@ AccountSchema.pre('findOne', function (next) {
 // -----------------------------------------------------------------------------
 // FINALLY REGISTER THE SCHEMA INTO MODEL
 
-module.exports = mongoose.model('Account', AccountSchema)
+module.exports = mongoose.model(modelName, schema)
