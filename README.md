@@ -17,6 +17,8 @@ This experimental workshop repo is intended as a fuondation and designed for fas
 
 By telling and teaching directly to learners in the most simple and interactive fashion. As we want to actualize good ideas, architectures, and infrastructures of RESTful web application.
 
+--------------------------------------------------------------------------------
+
 ## Hall of Badges
 
 ### General
@@ -49,13 +51,17 @@ By telling and teaching directly to learners in the most simple and interactive 
 | Coverage       | [![Coveralls](https://coveralls.io/repos/github/mhaidarh/super-workshop-js/badge.svg?branch=master)](https://coveralls.io/github/mhaidarh/super-workshop-js?branch=master)
 | Security       | [![NSP Status](https://nodesecurity.io/orgs/mhaidarh/projects/f52244a3-8070-4e73-817d-729065fad38e/badge)](https://nodesecurity.io/orgs/mhaidarh/projects/f52244a3-8070-4e73-817d-729065fad38e)
 
-## Requirements
+--------------------------------------------------------------------------------
+
+## Hall of Requirements
 
 - Understanding of JavaScript and Node.js essentials
 - Client & Server Side concepts
 - Database & Deployment technologies
 
-## Ingredients
+--------------------------------------------------------------------------------
+
+## Hall of Technologies
 
 Tooling:
 
@@ -120,7 +126,7 @@ Continuous X:
 
 --------------------------------------------------------------------------------
 
-## Development
+## Hall of Development
 
 Make sure you have installed the latest Node.js and npm. Afterwards, install the required global dependencies.
 
@@ -164,27 +170,55 @@ travis login --auto
 
 --------------------------------------------------------------------------------
 
-## Deployment
+## Hall of Deployment
 
-(Later, define usage with Codeship or Snap CI)
+(Later, define usage of CI/CD with Codeship or Snap CI)
 
-### Last Check
+### Local Check => Deploy to Cloud
+
+**Server**
 
 ```sh
+cd servers/server-x
 npm start
+pm2 list
 ```
 
-### Deploy to Server
+**Client**
+
+```sh
+cd clients/client-x
+npm start
+# open browser
+```
+
+**Test**
+
+```sh
+cd tests/test-x
+npm test
+```
+
+**Deploy**
 
 ```sh
 npm run deploy:dev:setup
 npm run deploy:dev
 ```
 
+### Integration Check
+
+```sh
+git push origin master
+# open https://travis-ci.org/mhaidarh/super-workshop-js
+```
+
 --------------------------------------------------------------------------------
 
-## References and Resources
+## Hall of References
 
+- [JavaScript](https://javascript.com)
+- [Node.js](https://nodejs.org)
 - [Cloud9 Workspace](https://ide.c9.io/mhaidarh/super-workshop-js)
 
 --------------------------------------------------------------------------------
