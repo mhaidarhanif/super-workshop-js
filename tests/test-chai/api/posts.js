@@ -4,12 +4,9 @@ const server = require(process.env.SERVER_DIR + 'server')
 // -----------------------------------------------------------------------------
 
 const chai = require('chai')
-const chaiHTTP = require('chai-http')
-const chaiArrays = require('chai-arrays')
 const expect = chai.expect
-
-chai.use(chaiArrays)
-chai.use(chaiHTTP)
+chai.use(require('chai-http'))
+chai.use(require('chai-arrays'))
 
 // -----------------------------------------------------------------------------
 

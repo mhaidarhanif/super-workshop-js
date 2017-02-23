@@ -1,13 +1,9 @@
 require('dotenv-extended').load()
 const server = require(process.env.SERVER_DIR + 'server')
 
-// -----------------------------------------------------------------------------
-
 const chai = require('chai')
-const chaiHTTP = require('chai-http')
 const expect = chai.expect
-
-chai.use(chaiHTTP)
+chai.use(require('chai-http'))
 
 // -----------------------------------------------------------------------------
 
