@@ -59,7 +59,7 @@ module.exports = {
       // Get the admin you're looking for...
       Account.findOne({ roles: { '$in': ['admin']} }, (err, admin) => {
         if (err) res.status(400).send({ id: 'books_seed_find_admin_error', m: err })
-        if (!user) res.status(400).send({ id: 'books_seed_find_admin_failed', m: 'Failed to find admin.' })
+        if (!admin) res.status(400).send({ id: 'books_seed_find_admin_failed', m: 'Failed to find admin.' })
         // Post seed books
         else {
           Book.create(books, (err, data) => {
@@ -98,9 +98,9 @@ module.exports = {
    */
   seedBooksLot: (req, res) => {
     // Get the admin you're looking for...
-    Account.findOne({ roles: { '$in': ['admin']} }, (err, user) => {
-      if (err) res.status(400).send({ id: 'books_seed_find_users_error', m: err })
-      if (!user) res.status(400).send({ id: 'books_seed_find_users_failed', m: 'Failed to find users.' })
+    Account.findOne({ roles: { '$in': ['admin']} }, (err, admin) => {
+      if (err) res.status(400).send({ id: 'books_seed_find_admin_error', m: err })
+      if (!admin) res.status(400).send({ id: 'books_seed_find_admin_failed', m: 'Failed to find admin.' })
       // Post seed a lot of books
       else {
         Book.create(booksLot, (err, data) => {
@@ -109,9 +109,9 @@ module.exports = {
             // Put the one account id into book owners field
             Book.update({}, {
               $addToSet: {
-                'createdBy': user._id,
-                'updatedBy': user._id,
-                'owners': {owner: user._id}
+                'createdBy': admin._id,
+                'updatedBy': admin._id,
+                'owners': {owner: admin._id}
               }
             }, {
               multi: true, // add more than one items
@@ -133,7 +133,7 @@ module.exports = {
                   m: `Failed to update books' owners.`
                 })
               } else {
-            // Finally send the info
+                // Finally send the info
                 res.status(200).send({
                   books: {
                     s: true,
