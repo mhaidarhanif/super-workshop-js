@@ -1,6 +1,6 @@
 const Account = require('../api/accounts/model')
 
-const github = function (req, accessToken, refreshToken, profile, done) {
+const github = (req, accessToken, refreshToken, profile, done) => {
   if (profile) {
     Account.findOneAndUpdate({
       username: req.decoded.username
@@ -24,7 +24,7 @@ const github = function (req, accessToken, refreshToken, profile, done) {
   }
 }
 
-const facebook = function (req, accessToken, refreshToken, profile, done) {
+const facebook = (req, accessToken, refreshToken, profile, done) => {
   if (profile) {
     Account.findOneAndUpdate({
       username: req.decoded.username
@@ -51,7 +51,7 @@ const facebook = function (req, accessToken, refreshToken, profile, done) {
 // BE AWARE, AVOID: (req, accessToken, refreshToken, profile, done)
 // You cannot just assign email deliberately
 // need to contain this format: profile.emails[0].value
-const twitter = function (req, token, tokenSecret, profile, done) {
+const twitter = (req, token, tokenSecret, profile, done) => {
   if (profile) {
     Account.findOneAndUpdate({
       username: req.decoded.username
@@ -75,7 +75,7 @@ const twitter = function (req, token, tokenSecret, profile, done) {
   }
 }
 
-const google = function (req, accessToken, refreshToken, profile, done) {
+const google = (req, accessToken, refreshToken, profile, done) => {
   if (profile) {
     Account.findOneAndUpdate({
       username: req.decoded.username
@@ -98,6 +98,8 @@ const google = function (req, accessToken, refreshToken, profile, done) {
     done(new Error('Your email privacy settings prevent you.'), null)
   }
 }
+
+// -----------------------------------------------------------------------------
 
 module.exports = {
   github,
