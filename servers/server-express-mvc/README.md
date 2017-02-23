@@ -1,4 +1,4 @@
-# Server Express MVC
+# Server Express MVC [DEPRECATED]
 
 Legacy server appplication with Express. Please continue with the main `server-express` version.
 
