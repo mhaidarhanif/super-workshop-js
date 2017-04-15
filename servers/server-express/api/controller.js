@@ -12,9 +12,9 @@ module.exports = {
   home: (req, res) => {
     res.send({
       id: 'root',
-      m: `You might want to check ${process.env.URL}/api instead.`,
+      m: `You might want to check ${req.protocol}://${req.get('host')}/api instead.`,
       name: process.env.NAME,
-      url: process.env.URL
+      url: `${req.protocol}://${req.get('host')}`
     })
   },
 
