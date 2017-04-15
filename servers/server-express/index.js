@@ -3,11 +3,6 @@ const server = require('./server')
 const host = process.env.HOST || 'localhost'
 const port = process.env.PORT || 3000
 
-// Load .env if not using pm2
-if (!process.env.PM2_USAGE) {
-  require('dotenv-extended').load()
-}
-
 // Listen on configured host:port
 server.listen(port, host, (err) => {
   if (err) console.error(err)
