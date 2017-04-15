@@ -25,6 +25,8 @@
   },
   "homepage": "https://github.com/mhaidarh/super-workshop-js#readme",
   "devDependencies": {
+    "babel-core": "6.24.1",
+    "babel-preset-es2015": "6.24.1",
     "bithound": "^1.7.0"
   }
 }
