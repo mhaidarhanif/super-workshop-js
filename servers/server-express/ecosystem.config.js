@@ -23,8 +23,8 @@ module.exports = {
         COMMON_VARIABLE: 'true',
         // APP
         NAME: meta.name,
-        HOST: connection.HOST.SERVER,
-        PORT: connection.PORT.SERVER,
+        HOST: connection.SERVER.HOST,
+        PORT: connection.SERVER.PORT,
         URL: connection.URL.SERVER,
         // DATABASE
         NEDB_PATH: database.NEDB_PATH,
