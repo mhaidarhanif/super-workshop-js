@@ -35,7 +35,7 @@ By telling and teaching directly to learners in the most simple and interactive 
 | Codacy Grade   | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9820a9dd1787489dae6122392e101f53)](https://www.codacy.com/app/mhaidarh/super-workshop-js?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mhaidarh/super-workshop-js&amp;utm_campaign=Badge_Grade)
 | Code Climate   | [![GPA](https://codeclimate.com/github/mhaidarh/super-workshop-js/badges/gpa.svg)](https://codeclimate.com/github/mhaidarh/super-workshop-js) [![Issue Count](https://codeclimate.com/github/mhaidarh/super-workshop-js/badges/issue_count.svg)](https://codeclimate.com/github/mhaidarh/super-workshop-js/issues) [![Test Coverage](https://codeclimate.com/github/mhaidarh/super-workshop-js/badges/coverage.svg)](https://codeclimate.com/github/mhaidarh/super-workshop-js/coverage)
 | Travis CI      | [![Build Status](https://travis-ci.org/mhaidarh/super-workshop-js.svg?branch=master)](https://travis-ci.org/mhaidarh/super-workshop-js)
-| Snap CI        | ...
+| Snap CI        | []
 | Codeship       | [![Codeship Status for mhaidarh/super-workshop-js](https://app.codeship.com/projects/110b6980-981b-0134-b488-52e360588e5c/status?branch=master)](https://app.codeship.com/projects/187266)
 | Inch CI Docs   | [![Inch CI](https://inch-ci.org/github/mhaidarh/super-workshop-js.svg?branch=master)](https://inch-ci.org/github/mhaidarh/super-workshop-js)
 
@@ -55,9 +55,10 @@ By telling and teaching directly to learners in the most simple and interactive 
 
 ## Hall of Requirements
 
-- Understanding of JavaScript and Node.js essentials
-- Client & Server Side concepts
-- Database & Deployment technologies
+- Engineering software the right way
+- Understanding the essentials of JavaScript and Node.js
+- Concepts of client & server side
+- Technologies of database & deployment pipeline
 
 --------------------------------------------------------------------------------
 
@@ -75,49 +76,47 @@ Documentation:
 
 Web Development:
 
-* JavaScript and Node.js
-* HTML, Handlebars, and EJS
-* CSS, PostCSS, and Stylus
-* npm, Yarn, and Bower
-* Express and Feathers
-* Axios or SuperAgent
-* jQuery or Zepto
-* Angular 1 or Angular 2
-* Vue
-* React
-* Webpack or Gulp
+* JavaScript, Node.js
+* HTML, Handlebars, EJS
+* CSS, PostCSS, Stylus
+* npm, Yarn, Bower
+* Express, Feathers, Hapi, Koa
+* Axios, SuperAgent
+* jQuery, Zepto
+* Angular 2
+* Vue.js
+* React.js
+* Webpack
 * PM2
 
 Web Application:
 
-* REST API
-* HTTP and CORS
+* RESTful HTTP API
+* Application CORS
 * Environment Variables
 
 Database:
 
 * NeDB
-* MongoDB with Mongoose ODM
-* PostgreSQL with Sequelize
+* MongoDB, Mongoose
+* PostgreSQL, MySQL/MariaDB, SQLite, Sequelize
 
 Authentication:
 
 * Local Password
-* OAuth
+* OAuth, Passport
   * GitHub
   * Facebook
   * Twitter
   * Google
-* Passport
 
 Testing:
 
-* Mocha or Karma
-* Jasmine
-* Chai and Chai HTTP
-* PhantomJS, Electron, and Nightmare
+* Mocha, Karma, Jasmine
+* Chai, Chai HTTP
+* PhantomJS, Electron, Selenium, Nightmare
 
-Continuous X:
+Continuous Integration/Deployment/Delivery:
 
 * Travis CI
 * Snap CI
@@ -133,6 +132,7 @@ Make sure you have installed the latest Node.js and npm. Afterwards, install the
 ```sh
 # node modules
 npm install -g yarn pnpm pm2 nodemon mocha karma-cli live-server bower vue-cli react-native-cli
+
 # ruby gems
 sudo gem install travis
 ```
@@ -147,7 +147,7 @@ Then open these directories separately, based on your own preference:
 
 ```sh
 npm install
-# copy config/*.schema.js to their own config/*.js
+./bootstrap.sh # will copy config/*.schema.js to their own config/*.js
 # edit each config/*.js
 npm run start:dev
 ```

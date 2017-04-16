@@ -90,9 +90,9 @@ app.use(expressSession({
 // -----------------------------------------------------------------------------
 
 if (app.get('env') === 'dev') {
-  // Log into file
+  // Log into file inside logs folder
   const accessLogStream = fs.createWriteStream(
-    path.join(__dirname, 'access.log'), {flags: 'a'})
+    path.join(__dirname, 'logs', 'access.log'), {flags: 'a'})
   app.use(morgan('combined', {stream: accessLogStream}))
 
   // Log request
