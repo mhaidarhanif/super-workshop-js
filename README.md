@@ -2,6 +2,26 @@
 <h1>Super Workshop JS :gear: Workshop with JavaScript</h1>
 </div>
 
+## Table of Contents
+
+* [Why?](#why)
+* [What?](#what)
+* [How?](#how)
+* [Hall of Badges](#hall-of-badges)
+  * [General](#general)
+  * [Server with Node.js and Express](#server-with-nodejs-and-express)
+* [Hall of Requirements](#hall-of-requirements)
+* [Hall of Technologies](#hall-of-technologies)
+* [Hall of Development](#hall-of-development)
+  * [Server Express (`server-express`)](#server-express-server-express)
+  * [Client jQuery (`client-jquery`)](#client-jquery-client-jquery)
+  * [Test Chai (`test-chai`)](#test-chai-test-chai)
+* [Hall of Deployment](#hall-of-deployment)
+  * [Local Check => Deploy to Cloud](#local-check-deploy-to-cloud)
+  * [Integration Check](#integration-check)
+* [Hall of References](#hall-of-references)
+* [License](#license)
+
 ## Why? [![Start with Why](https://img.shields.io/badge/start%20with-why%3F-orange.svg)](http://www.ted.com/talks/simon_sinek_how_great_leaders_inspire_action)
 
 > "Tell me and I forget. Teach me and I remember. Involve me and I learn."
@@ -223,7 +243,9 @@ git push origin master
 
 --------------------------------------------------------------------------------
 
-## [MIT License](https://mhaidarh.mit-license.org)
+## License
+
+[Verbatim copy of MIT License](https://mhaidarh.mit-license.org)
 
 Copyright (c) 2016
 [M Haidar Hanif, https://mhaidarhanif.com](https://mhaidarhanif.com)
