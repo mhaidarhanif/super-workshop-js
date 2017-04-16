@@ -1,23 +1,35 @@
-const PROTOCOL = 'http://'
+'use strict'
 
-const HOST = {
-  SERVER: process.env.HOST_SERVER || 'localhost',
-  CLIENT: process.env.HOST_CLIENT || 'localhost'
+const url = require('url')
+
+const PROTOCOL = 'http'
+
+const SERVER = {
+  HOST: process.env.SERVER_HOST || 'localhost',
+  PORT: process.env.SERVER_PORT || 3000
 }
 
-const PORT = {
-  SERVER: process.env.PORT_SERVER || 3000,
-  CLIENT: process.env.PORT_CLIENT || 8000
+const CLIENT = {
+  HOST: process.env.CLIENT_HOST || 'localhost',
+  PORT: process.env.CLIENT_PORT || 3000
 }
 
 const URL = {
-  SERVER: `${PROTOCOL}${HOST.SERVER}:${PORT.SERVER}`,
-  CLIENT: `${PROTOCOL}${HOST.CLIENT}:${PORT.CLIENT}`
+  SERVER: url.format({
+    protocol: PROTOCOL,
+    host: SERVER.HOST,
+    port: SERVER.PORT
+  }),
+  CLIENT: url.format({
+    protocol: PROTOCOL,
+    host: CLIENT.HOST,
+    port: CLIENT.PORT
+  })
 }
 
 module.exports = {
   PROTOCOL,
-  HOST,
-  PORT,
+  SERVER,
+  CLIENT,
   URL
 }
