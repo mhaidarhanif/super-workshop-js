@@ -86,12 +86,12 @@ By telling and teaching directly to learners in the most simple and interactive 
 
 Tooling:
 
-* Terminal and zsh
-* Git
+* Terminal and shell (zsh)
+* Version control with Git
 
 Documentation:
 
-* README
+* README with Markdown
 * API Blueprint
 
 Web Development:
@@ -240,6 +240,30 @@ git push origin master
 - [JavaScript](https://javascript.com)
 - [Node.js](https://nodejs.org)
 - [Cloud9 Workspace](https://ide.c9.io/mhaidarh/super-workshop-js)
+
+--------------------------------------------------------------------------------
+
+## Keywords
+
+- professional developer workflow, software development life cycle (waterfall, agile, scrum, kanban, lean)
+- code editors (Vim, Atom) and its various plugins
+- terminal and shell scripting, Git version control and GitHub, a bit of automation, terminal multiplexer (tmux)
+- HTML5, CSS3, JavaScript (ES6) and Node.js + npm (mostly REPL and Express.js), with its specific concepts of AJAX, callback, promise, async/await, also day-to-day tools like nodemon and PM2
+- problem solving, knowledge discovery, documentation (Markdown), code reviews, debugging, refactoring, error handling
+- data structures (string, number, boolean, array, queue, graph, linked list), algorithms and pseudocode (sort, search, queue), programming, and its paradigms (imperative like procedural, declarative like functional, object-oriented, reactive, immutability, etc)
+- application architecture (SPA, MVC, MVVM, routing) and their libraries/frameworks (jQuery, Backbone, Angular, Vue, React + JSX with state management Redux or Mobx), build system (Webpack, Gulp, Grunt), diagram with D3.js
+- user interface and experience design, product development, design sprint, building MVP applications like catalogue, directory, forums, commerce, ereader, procurement, chat, game, simulation, productivity tools, social network
+- preprocessing of HTML (Jade, EJS, Handlebars) and CSS (Sass, Less, Stylus)
+- data modeling, query and CRUD operations, and the database with SQL (relation: MySQL, PostgreSQL, SQLite) and its ORM (Sequelize, Knex.js), also NoSQL (document: MongoDB+Mongoose, key-value store: Redis, Firebase)
+- testing (assertion, unit, integration, e2e, test double) with test framework (mocha, chai, jasmine)
+- RESTful HTTP API and authentication/authorization (basic, OAuth, passwordless), roles, session, token (JWT), realtime with websocket/Socket.io, multimedia with WebRTC
+- deployment to PaaS (Heroku), VPS (DigitalOcean, Linode), cloud (AWS, Google Cloud)
+- system administration and networking (domain management, DNS)
+- devops, continuous automated analysis/integration/deployment/delivery with SaaS (Travis, Jenkins, Codeship, Snap CI), containerization with Docker, microservices infrastructure
+- measurement benchmark of load speed and monitoring websites/services
+- mobile with React Native and Realm
+- query language for API with GraphQL and Relay
+- management with Holacracy
 
 --------------------------------------------------------------------------------
 
