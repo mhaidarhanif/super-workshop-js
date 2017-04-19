@@ -39,6 +39,9 @@ const morgan = require('morgan')
 const winston = require('winston')
 const expressWinston = require('express-winston')
 
+// SECURITY
+const helmet = require('helmet')
+
 // -----------------------------------------------------------------------------
 // REQUIRE INTERNAL MODULES
 // -----------------------------------------------------------------------------
@@ -65,6 +68,9 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(expressValidator())
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(helmet())
+app.use(helmet.noCache())
+app.use(helmet.referrerPolicy({ policy: 'same-origin' }))
 
 // -----------------------------------------------------------------------------
 // USE DATABASE
