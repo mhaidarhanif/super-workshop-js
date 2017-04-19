@@ -6,12 +6,14 @@ const expect = chai.expect
 chai.use(require('chai-http'))
 
 // -----------------------------------------------------------------------------
+// CONFIGURE MAIN RESOURCES + ENDPOINTS
 
 const resource = `account`
 const resources = `${resource}s`
 const endpoint = `/api/${resources}`
 
 // -----------------------------------------------------------------------------
+// CREATE A FAKE DATA
 
 const faker = require('faker')
 const Chance = require('chance')
@@ -33,15 +35,16 @@ account.roles = 'user'
 describe('auth', () => {
   // ---------------------------------------------------------------------------
 
-  describe('DELETE', () => {
-    it('delete all accounts', (done) => {
-      chai.request(server).delete(`${endpoint}/actions/delete`)
+  describe('accounts preparation', () => {
+    it('should able to delete all accounts via /accounts/actions/delete', (done) => {
+      chai
+        .request(server)
+        .delete(`${endpoint}/actions/delete`)
         .set('X-API-Key', process.env.API_KEY_SETUP)
         .then(res => {
           expect(res.body).to.be.an('object')
           done()
-        })
-        .catch(err => {
+        }).catch(err => {
           done(err)
         })
     })
@@ -49,11 +52,17 @@ describe('auth', () => {
 
   // ---------------------------------------------------------------------------
 
-  describe('GET', () => {
-    it('root', (done) => {
-      chai.request(server).get('/auth')
-        .then(response => { res = response; done() })
-        .catch(err => { res = err })
+  describe('auth preparation', () => {
+    it('should able to get root on /auth', (done) => {
+      chai
+        .request(server)
+        .get('/auth')
+        .then(response => {
+          res = response
+          done()
+        }).catch(err => {
+          res = err
+        })
     })
 
     it('expect json object that contains specific keys', (done) => {
@@ -88,10 +97,17 @@ describe('auth', () => {
     // -------------------------------------------------------------------------
 
     describe('with no data', () => {
-      it('execute request', (done) => {
-        chai.request(server).post('/auth/signup')
-          .then(response => { res = response; done() })
-          .catch(err => { res = err; done() }) // must be error
+      it('should not able to create account via /auth/signup if there is no data', (done) => {
+        chai
+          .request(server)
+          .post('/auth/signup')
+          .then(response => {
+            res = response
+            done()
+          }).catch(err => {
+            res = err
+            done()
+          }) // must be error
       })
 
       it('expect json object that contains specific keys', (done) => {
@@ -111,10 +127,17 @@ describe('auth', () => {
     // -------------------------------------------------------------------------
 
     describe('with a new account data', () => {
-      it('execute request', (done) => {
-        chai.request(server).post('/auth/signup').send(account)
-        .then(response => { res = response; done() })
-        .catch(err => { done(err) })
+      it('should able create new account via /auth/signup', (done) => {
+        chai
+          .request(server)
+          .post('/auth/signup')
+          .send(account)
+          .then(response => {
+            res = response
+            done()
+          }).catch(err => {
+            done(err)
+          })
       })
 
       it('expect json object that contains specific keys', (done) => {
@@ -144,12 +167,18 @@ describe('auth', () => {
       // since there is an auth.isAccountExist middleware
 
       before(() => {
-        chai.request(server).post('/auth/signup').send(account)
-        .then(response => { res = response })
-        .catch(err => { res = err })
+        chai
+          .request(server)
+          .post('/auth/signup')
+          .send(account)
+          .then(response => {
+            res = response
+          }).catch(err => {
+            res = err
+          })
       })
 
-      it('execute request', (done) => {
+      it('should not able to create account via /auth/signup if the data is already exist', (done) => {
         setTimeout(() => done(), 10)
       })
 
@@ -174,12 +203,17 @@ describe('auth', () => {
 
     describe('with no username and password', () => {
       before(() => {
-        chai.request(server).post('/auth/signin')
-        .then(response => { res = response })
-        .catch(err => { res = err })
+        chai
+          .request(server)
+          .post('/auth/signin')
+          .then(response => {
+            res = response
+          }).catch(err => {
+            res = err
+          })
       })
 
-      it('execute request', (done) => {
+      it('should not able to sign in via /auth/signin if there is no username and password', (done) => {
         setTimeout(() => done(), 1)
       })
 
