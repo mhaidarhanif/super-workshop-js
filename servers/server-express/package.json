@@ -40,6 +40,7 @@
     "body-parser": "^1.17.1",
     "cookie-parser": "^1.4.3",
     "cors": "2.8.3",
+    "csurf": "^1.9.0",
     "debug": "^2.6.3",
     "dotenv-extended": "^1.0.4",
     "express": "^4.15.2",

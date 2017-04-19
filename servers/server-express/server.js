@@ -41,6 +41,7 @@ const expressWinston = require('express-winston')
 
 // SECURITY
 const helmet = require('helmet')
+const csrf = require('csurf')
 
 // -----------------------------------------------------------------------------
 // REQUIRE INTERNAL MODULES
@@ -64,13 +65,10 @@ const apiPosts = require('./api/posts/route')
 // EXPRESS
 app.use(cors())
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({extended: true}))
 app.use(cookieParser())
 app.use(expressValidator())
 app.use(express.static(path.join(__dirname, 'public')))
-app.use(helmet())
-app.use(helmet.noCache())
-app.use(helmet.referrerPolicy({ policy: 'same-origin' }))
 
 // -----------------------------------------------------------------------------
 // USE DATABASE
@@ -85,11 +83,7 @@ mongoose.connect(process.env.MONGODB_URI)
 // -----------------------------------------------------------------------------
 
 // EXPRESS SESSION
-app.use(expressSession({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false
-}))
+app.use(expressSession({secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false}))
 
 // -----------------------------------------------------------------------------
 // USE LOGGER
@@ -97,42 +91,47 @@ app.use(expressSession({
 
 if (app.get('env') === 'dev') {
   // Log into file inside logs folder
-  const accessLogStream = fs.createWriteStream(
-    path.join(__dirname, 'logs', 'access.log'), {flags: 'a'})
+  const accessLogStream = fs.createWriteStream(path.join(__dirname, 'logs', 'access.log'), {flags: 'a'})
   app.use(morgan('combined', {stream: accessLogStream}))
 
   // Log request
   app.use(expressWinston.logger({
-    transports: [
-      new winston.transports.Console({
-        json: false,
-        colorize: true
-      })
-    ],
+    transports: [new winston.transports.Console({json: false, colorize: true})],
     meta: true, // log the meta data about the request
     msg: 'HTTP {{req.method}} {{req.url}}', // logging message formatting
     expressFormat: false, // default Express/morgan request formatting
     colorize: true, // Color the text and status code
-    ignoreRoute: function (req, res) { return false } // skip some log messages
+    ignoreRoute: (req, res) => {
+      return false
+    } // skip some log messages
   }))
 
   // development error handler, will print stacktrace
-  app.use(function (err, req, res, next) {
+  app.use((err, req, res, next) => {
     res.status(err.status || 500)
-    res.send({
-      message: err.message,
-      error: err
-    })
+    res.send({message: err.message, error: err})
   })
 }
 
 // production error handler, no stacktraces leaked to user
-app.use(function (err, req, res, next) {
+app.use((err, req, res, next) => {
   res.status(err.status || 500)
-  res.send({
-    message: err.message,
-    error: {}
-  })
+  res.send({message: err.message, error: {}})
+})
+
+// -----------------------------------------------------------------------------
+// USE SECURITY MIDDLEWARES
+// -----------------------------------------------------------------------------
+
+app.use(helmet())
+app.use(helmet.noCache())
+app.use(helmet.referrerPolicy({policy: 'same-origin'}))
+
+app.use(csrf())
+app.use((req, res, next) => {
+  // Expose variable to templates via locals
+  res.locals.csrftoken = req.csrfToken()
+  next()
 })
 
 // -----------------------------------------------------------------------------
