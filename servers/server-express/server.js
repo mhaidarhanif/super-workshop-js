@@ -43,6 +43,9 @@ const expressWinston = require('express-winston')
 const helmet = require('helmet')
 const csrf = require('csurf')
 
+// LIMITER
+const limiter = require('express-limiter')(app)
+
 // -----------------------------------------------------------------------------
 // REQUIRE INTERNAL MODULES
 // -----------------------------------------------------------------------------
@@ -137,6 +140,16 @@ app.use(helmet.referrerPolicy({policy: 'same-origin'}))
 // -----------------------------------------------------------------------------
 // CONFIGURE ROUTERS
 // -----------------------------------------------------------------------------
+
+// LIMITER
+limiter({
+  lookup: ['connection.remoteAddress'],
+  total: 800, // 800 requests per hour
+  expire: 1000 * 60 * 60,
+  onRateLimited: (req, res, next) => {
+    next({message: 'Rate limit exceeded', status: 429})
+  }
+})
 
 // PASSPORT
 app.use(passport.initialize())
