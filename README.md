@@ -251,13 +251,13 @@ git push origin master
 - HTML5, CSS3, JavaScript (ES6) and Node.js + npm/yarn (mostly REPL and Express.js), with its specific concepts of AJAX, callback, promise, async/await, also day-to-day tools like nodemon and PM2
 - problem solving, knowledge discovery, documentation (Markdown), code reviews, debugging, refactoring, error handling
 - data structures (string, number, boolean, array, queue, graph, linked list), algorithms and pseudocode (sort, search, queue), programming, and its paradigms (imperative like procedural, declarative like functional, object-oriented, reactive, immutability, etc)
-- client-server separation, application architecture (SPA, MVC, MVVM, routing) and their libraries/frameworks (jQuery, Backbone, Angular, Vue, React + JSX with state management Redux or Mobx), build system (Webpack, Gulp, Grunt), diagram with D3.js
-- user interface and experience design, product development, design sprint, building MVP applications like catalogue, directory, forums, commerce, ereader, procurement, chat, game, simulation, productivity tools, social network
+- client-server separation, application architecture (SPA, MVC, MVVM, routing) and their libraries/frameworks (jQuery, Backbone, Angular, Vue, React + JSX with state management Redux or Mobx), build system (Webpack, Rollup, Gulp, Grunt), diagram with D3.js
+- user interface and experience design (Inkscape, GIMP, ImageMagick, Sketch), product development, design sprint, building MVP applications like catalogue, directory, forums, commerce, ereader, procurement, chat, game, simulation, productivity tools, social network
 - preprocessing of HTML (Jade, EJS, Handlebars) and CSS (Sass, Less, Stylus)
 - data modeling and schema, query and CRUD operations, and the database with SQL (relation: MySQL, PostgreSQL, SQLite) and its ORM (Sequelize, Knex.js), also NoSQL (document: MongoDB+Mongoose, key-value store: Redis, Firebase)
-- testing (assertion, unit, integration, e2e, test double) with test framework (mocha, chai, jasmine)
-- RESTful HTTP API and authentication/authorization (basic, OAuth, passwordless), roles, session, token (JWT), realtime with websocket/Socket.io, multimedia with WebRTC
-- deployment to PaaS (Heroku), VPS (DigitalOcean, Linode), cloud (AWS, Google Cloud)
+- testing (assertion, unit, integration, e2e, test double) with test framework (mocha, chai, jasmine), TDD/BDD/ATDD
+- RESTful HTTP API and authentication/authorization (basic, OAuth, passwordless), roles, session, token (JWT), 3rd party APIs (GitHub, Facebook, Twitter, Google), realtime with websocket/Socket.io, multimedia with WebRTC
+- deployment to PaaS (Heroku), VPS (DigitalOcean, Linode), cloud (Amazon Web Services, Google Cloud)
 - system administration and networking (domain management, DNS)
 - devops to streamlining and automation (development, build, package, and distribution), continuous automated analysis/integration/deployment/delivery with SaaS (Travis, Jenkins, Codeship, Snap CI), containerization with Docker, microservices infrastructure
 - apps/websites/services measurement benchmark of load speed (PageSpeed) and monitoring (New Relic)
