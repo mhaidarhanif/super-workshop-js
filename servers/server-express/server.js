@@ -127,12 +127,12 @@ app.use(helmet())
 app.use(helmet.noCache())
 app.use(helmet.referrerPolicy({policy: 'same-origin'}))
 
-app.use(csrf())
-app.use((req, res, next) => {
-  // Expose variable to templates via locals
-  res.locals.csrftoken = req.csrfToken()
-  next()
-})
+// app.use(csrf())
+// app.use((req, res, next) => {
+//   // Expose variable to templates via locals
+//   res.locals.csrftoken = req.csrfToken()
+//   next()
+// })
 
 // -----------------------------------------------------------------------------
 // CONFIGURE ROUTERS
