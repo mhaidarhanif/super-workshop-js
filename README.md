@@ -190,5 +190,5 @@ git push origin master
 
 [Verbatim copy of MIT License](https://mhaidarh.mit-license.org)
 
-Copyright (c) 2016
+Copyright (c) 2017
 [M Haidar Hanif, https://mhaidarhanif.com](https://mhaidarhanif.com)
