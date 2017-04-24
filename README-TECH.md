@@ -93,6 +93,7 @@ Based on personal preferences:
 - JavaScript (ECMAScript)
   - CoffeeScript
   - TypeScript
+  - Elm
   - Dart
   - PureScript
   - NativeScript
