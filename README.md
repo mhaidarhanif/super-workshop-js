@@ -84,64 +84,7 @@ By telling and teaching directly to learners in the most simple and interactive 
 
 ## Hall of Technologies
 
-Tooling:
-
-* Terminal and shell (zsh)
-* Version control with Git
-
-Documentation:
-
-* README with Markdown
-* API Blueprint
-
-Web Development:
-
-* JavaScript, Node.js
-* HTML, Handlebars, EJS
-* CSS, PostCSS, Stylus
-* npm, Yarn, Bower
-* Express, Feathers, Hapi, Koa
-* Axios, SuperAgent
-* jQuery, Zepto
-* Angular 2
-* Vue.js
-* React.js
-* Webpack
-* PM2
-
-Web Application:
-
-* RESTful HTTP API
-* Application CORS
-* Environment Variables
-
-Database:
-
-* NeDB
-* MongoDB, Mongoose
-* PostgreSQL, MySQL/MariaDB, SQLite, Sequelize
-
-Authentication:
-
-* Local Password
-* OAuth, Passport
-  * GitHub
-  * Facebook
-  * Twitter
-  * Google
-
-Testing:
-
-* Mocha, Karma, Jasmine
-* Chai, Chai HTTP
-* PhantomJS, Electron, Selenium, Nightmare
-
-Continuous Integration/Deployment/Delivery:
-
-* Travis CI
-* Snap CI
-* GitLab CI
-* Codeship
+[See the Tech Stack, Technical Keywords, and Programming Languages](./README-TECH.md)
 
 --------------------------------------------------------------------------------
 
@@ -240,12 +183,6 @@ git push origin master
 - [JavaScript](https://javascript.com)
 - [Node.js](https://nodejs.org)
 - [Cloud9 Workspace](https://ide.c9.io/mhaidarh/super-workshop-js)
-
---------------------------------------------------------------------------------
-
-## Technical Keywords
-
-[See the README on TECH](./README-TECH.md)
 
 --------------------------------------------------------------------------------
 
