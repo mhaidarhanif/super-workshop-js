@@ -20,3 +20,43 @@
 - mobile (Android or iOS) with React Native and Realm
 - query language for API with GraphQL and Relay
 - management with Holacracy
+
+### Programming Languages
+
+Based on personal preferences:
+
+- JavaScript (ECMAScript)
+  - CoffeeScript
+  - TypeScript
+  - Dart
+  - PureScript
+  - NativeScript
+- Go
+- Python
+- Ruby
+- Swift
+- Perl
+- PHP
+  - Hack
+- Java
+  - Groovy
+- Kotlin
+- Scala
+- Crystal
+- Clojure
+- C
+  - C#
+  - C++
+- Rust
+- Haskell
+- Erlang
+  - Elixir
+- Julia
+- Nim
+- Pony
+- Racket
+- Haxe
+- F#
+- OCaml
+
+Explore more via [Programming languages Showcase on GitHub](https://github.com/showcases/programming-languages).
