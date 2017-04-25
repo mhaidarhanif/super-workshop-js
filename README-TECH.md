@@ -64,7 +64,7 @@ Continuous Integration/Deployment/Delivery:
 ## Technical Keywords
 
 - professional developer workflow, software development life cycle (waterfall, agile, scrum, kanban, lean), semantic versioning
-- code editors (Vim, Atom) and its various plugins
+- operating system (Macintosh, Linux: Ubuntu, Mint, Fedora, CentOS), code editors (Vim, Atom) and its various plugins
 - terminal and shell scripting, Git version control and GitHub, a bit of automation, terminal multiplexer (tmux)
 - HTML5, CSS3, JavaScript (ES6) and Node.js + npm/yarn, with its specific concepts of AJAX, callback, promise, async/await, also day-to-day tools like nodemon and PM2
   - Node.js web frameworks: Express.js, Hapi, Restify, Koa, LoopBack, Seneca
